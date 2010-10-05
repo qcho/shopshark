@@ -119,3 +119,12 @@ serviceURL: this.baseURL + "Common.groovy?method=",
 //
 //ApiWrapper.getLanguageList();
 //var intel = asda;
+
+/**
+ * API SAMPLE
+ */
+
+hci.fetch(hci.GetLanguageList(), hci.GetCountryList(1), function(langList, countryList){
+	console.info("langList", $(langList).text());
+	console.info("countryList", $(countryList).text());
+	});
