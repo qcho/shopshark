@@ -1,8 +1,4 @@
 function EnglishDict(){
-	this["hola como estas"] = "hello jau ar iu";
+	this["SEARCH"] = "Search for products...";
 	
 }
-
-a = new EnglishDict();
-
-//alert(a["hola como estas"]);

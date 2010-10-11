@@ -9,19 +9,28 @@ function load() {
     }
 }
 
-function IndexPage() {
-    var elements = ['main', 'header', 'footer', 'content-wrapper',
-                    'content', 'sidebar', 'content-searchbar'];
-                         
-    for (i in elements) {
-        element = elements[i];
-        this[element] = document.getElementById(element);
+function getElementsById(elements) {
+
+    var ret = new Array();
+    
+    for (var i in elements) {
+        var element = elements[i];
+        ret[element] = document.getElementById(element);
     }
+
+    return ret;
 }
 
-
 function load_index() {
-    page = new IndexPage();
+    var ids = ['main', 'header', 'footer', 'content-wrapper',
+               'content', 'sidebar', 'content-searchbar'];
+                        
+    var elements = getElementsById(ids);
 
-    alert(page['content-searchbar'].style.height = 400);
+    var contentH = elements['content'].clientHeight;
+    var contentsb = elements['content-searchbar'];
+    var contentsbH = contentsb.clientHeight;
+
+    //alert(contentH + "and " + contentsbH);
+    contentsb.style['margin-top'] = contentH / 2 - contentsbH + 'px'    
 }
