@@ -48,6 +48,16 @@ html, body, #main {
     width: 200px;
 }
 
+#cart {
+    visibility: hidden;
+    position: absolute;
+    bottom: 1px;
+    left: 200px;
+    right: 0;
+    background-color: #0011FF;
+    height: 200px;
+}
+
 #content-searchbar {
     width: 60%;
     margin-left: 20%;
