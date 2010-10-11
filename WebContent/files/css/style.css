@@ -1,13 +1,17 @@
 
 div {
     border: 1px solid;
+    margin: -2px -2px;
 }
 
 html, body, #main {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
     margin: 0;
     padding: 0;
-    width: 100%;
-    height: 100%;
 }
 
 #header, #footer, #content-wrapper {
@@ -21,13 +25,13 @@ html, body, #main {
 }
 
 #footer {
-    bottom: 0;
+    bottom: 1px;
     height: 30px;
 }
 
 #content-wrapper {
-    top: 30px;
-    bottom: 30px;
+    top: 31px;
+    bottom: 31px;
 }
 
 #content, #sidebar {
