@@ -2,11 +2,11 @@
 
 var translate, resize;
 
-function init() {
+function init(page) {
 
     translate = doTranslate; /* in lang.js */
 
-    switch(document.getElementById('main').getAttribute('role')) {
+    switch(page) {
         case 'index':
             resize = resize_index;
             break;
@@ -15,8 +15,8 @@ function init() {
     window.onresize = resize;
 }
 
-function load() {
-    init();
+function load(page) {
+    init(page);
 
     if (resize)
         resize();
