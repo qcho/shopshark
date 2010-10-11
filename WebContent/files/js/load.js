@@ -1,27 +1,31 @@
 // Page load script for ShopShark.
 
-function load() {
+var translate, resize;
+
+function init() {
+
+    translate = doTranslate; /* in lang.js */
 
     switch(document.getElementById('main').getAttribute('role')) {
         case 'index':
-            load_index();
+            resize = resize_index;
             break;
     }
+
+    window.onresize = resize;
 }
 
-function getElementsById(elements) {
+function load() {
+    init();
 
-    var ret = new Array();
-    
-    for (var i in elements) {
-        var element = elements[i];
-        ret[element] = document.getElementById(element);
-    }
+    if (resize)
+        resize();
 
-    return ret;
+    if (translate)
+        translate();
 }
 
-function load_index() {
+function resize_index() {
     var ids = ['main', 'header', 'footer', 'content-wrapper',
                'content', 'sidebar', 'content-searchbar'];
                         
@@ -32,5 +36,7 @@ function load_index() {
     var contentsbH = contentsb.clientHeight;
 
     //alert(contentH + "and " + contentsbH);
-    contentsb.style['margin-top'] = contentH / 2 - contentsbH + 'px'    
+    contentsb.style['margin-top'] = contentH / 2 - contentsbH + 'px';
+
+    return;
 }
