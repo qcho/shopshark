@@ -6,7 +6,7 @@ var main_visible, cart_visible;       /* Global boolean variable */
 function init(page) {
     
     /* First, let's put that LOADING sign in the proper language: */
-    main_visible = true;
+    
     cart_visible = (getFromURL('cart') == 'true');
 
     switch(page) {

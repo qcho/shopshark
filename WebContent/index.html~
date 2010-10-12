@@ -9,7 +9,7 @@
 	
 	<script type="text/javascript">
 	 $(document).ready(function() {
-    	 $('#content').load('searchr.html');
+    	 $('#content').load('main.html');
     	 $('#sidebar').load('sidebar.html');
 	 })
 	</script>

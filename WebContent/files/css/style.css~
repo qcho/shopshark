@@ -141,6 +141,10 @@ html, body, #main {
 
 .list {
     height: 90%;
+}
+
+.list table tbody {
+    height: 80%;
     overflow: auto;
 }
 

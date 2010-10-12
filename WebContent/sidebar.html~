@@ -1,0 +1,13 @@
+<a href="http://"><span class="translate">MY_ACCOUNT</span></a>
+
+<a href="http://"><span class="translate">CATEGORIES</span></a>
+
+<ul>
+    <li><a href="http://">Autos</a>
+        <ul><li><a href="http://">Ford</a></li>
+        <li><a href="http://">Mercedes Benz</a></li>
+        <li><a href="http://">El Grillo</a></li>
+        <li><a href="http://">Santi</a></li>        
+        </li></ul>
+    </li>
+</ul>
