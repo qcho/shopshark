@@ -198,6 +198,34 @@ html, body, #main {
     width: 75px;
 }
 
+#cart-content {
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.hlist {
+    width: 100%;
+    height: 100%;
+}
+
+.hlist .hlist-item {
+    float: left;
+    width: 10%;
+    height: 100%;
+    text-align: center;
+    border: 1px solid;
+}
+
+.hlist .hitem-pic {
+    height: 75px;
+    width: 75px;
+}
+
+.hlist .hitem-desc {
+    display: block;
+}
+
 .template {
     visibility: hidden;
 }

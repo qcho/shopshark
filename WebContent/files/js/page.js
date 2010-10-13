@@ -5,39 +5,69 @@ var SECTIONS = { 'main' : 'main.html',
                  'google' : 'http://www.google.com'
                }
 
+var results_list;
+var cart_list;
+
 $(document).ready(function() {
     	 $('#sidebar').load('sidebar.html');
+         $('#cart').load('cart.html',
+            function() {
+                cart_list = new TemplatedList('cart-content', 'hitem-template');
+            });
+         
         show('main');
 })
 
 function show(section) {
     if (!$.inArray(section, SECTIONS))
         section = 'main'
-    $('#content').load(SECTIONS[section]);
+
+    $('#content').load(SECTIONS[section],
+        function() {
+            switch(section) {
+                case 'searchr':
+                    results_list = new TemplatedList('list-body', 'item-template');
+                    /* aca se puede cargar mas cosas. Como resultados posta. */
+                break;
+            }
+
+        });
+
 }
 
-function testShowProducts() {
-    var array = [ { 'pic' : 'files/images/logo.png',
-                    'title' : 'Logo de ShopShark',
-                    'price' : '$10000',
-                    'rank' : '10 ptos' } ];
-
-    showProducts(array);
+function testItem() {
+    return { '%PIC' : 'files/images/logo.png',
+                     '%TITLE' : 'Logo de ShopShark',
+                     '%PRICE' : '$10000',
+                     '%RANK' : '10 ptos' };
 }
 
-function showProducts(array) {
-    var template = $('#item-template').html();
-    template = template.substring(4, template.length - 3);
-    
-    for (var i = 0; i < array.length; i++) {
-        var item = array[i];
+function testShowProducts() {    
+    results_list.add(testItem());
+}
+
+function testCart() {
+    cart_list.add(testItem());
+}
+
+function TemplatedList(div_id, template_id) {
+    this.div = $('#' + div_id);
+    this.template = $('#' + template_id).html();
+    this.template = this.template.substring(4, this.template.length - 3)
+
+    this.add = function(dict) {
+
+        var item = this.template;
         
-        var item_html = template.replace(
-                        '%PIC', item.pic).replace(
-                        '%TITLE', item.title).replace(
-                        '%PRICE', item.price).replace(
-                        '%RANK', item.rank);
+        for (var key in dict) {
+            item = item.replace(key, dict[key]);
+        }
 
-        $('#list-body').append(item_html);
+        this.div.append(item);
+
+    }
+
+    this.clear = function() {
+        this.div.html('');
     }
 }
