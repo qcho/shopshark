@@ -198,3 +198,6 @@ html, body, #main {
     width: 75px;
 }
 
+.template {
+    visibility: hidden;
+}
