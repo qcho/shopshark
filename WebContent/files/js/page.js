@@ -19,8 +19,8 @@ function show(section) {
 function testShowProducts() {
     var array = [ { 'pic' : 'files/images/logo.png',
                     'title' : 'Logo de ShopShark',
-                    'price' : 10000,
-                    'rank' : 10 } ];
+                    'price' : '$10000',
+                    'rank' : '10 ptos' } ];
 
     showProducts(array);
 }
