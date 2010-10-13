@@ -2,6 +2,7 @@
 a {
     color: #1874DE;
     font-weight: bold;
+    cursor: pointer;
 }
 
 a:link {
@@ -146,6 +147,7 @@ html, body, #main {
 
 .list-header {
     text-align: right;
+    
     height: 8%;
     border-bottom: 1px solid;
 }

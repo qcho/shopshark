@@ -7,20 +7,13 @@
     <link rel="stylesheet" type="text/css" href="files/css/style.css">
 	<title>ShopShark Beta</title>
 	
-	<script type="text/javascript">
-	 $(document).ready(function() {
-    	 $('#content').load('searchr.html');
-    	 $('#sidebar').load('sidebar.html');
-	 })
-	</script>
-	
 </head>
 
 <body>
     <!--<div id="loading"><span class="translate">LOADING</span></div>-->
 	<div id="main">
 		<div id="header">
-		    <img src="files/images/logo.png" alt="ShopShark" id="logo" />
+		    <a onclick="show('main')"><img src="files/images/logo.png" alt="ShopShark" id="logo" /></a>
 		    
 			<div id="header-searchbar">
 			    <input id="header-search" type="text" class="translate" value="SEARCH" />
@@ -28,7 +21,7 @@
          	</div>
          	        	
 			<div id="login">
-				<a href="http://www.youtube.com" target="_blank" class="reg"><span class="translate">REGISTER</span></a> |
+				<a onclick="show('searchr')" class="reg"><span class="translate">REGISTER</span></a> |
 				<a href="http://www.google.com" target="_blank" class="acc"><span class="translate">LOGIN</span></a>
 			</div>
 			
