@@ -140,12 +140,20 @@ html, body, #main {
 }
 
 .list {
-    height: 90%;
+    height: 84%;
     overflow: auto;
 }
 
-.paginator {
-    height: 10%;
+.list-header {
+    text-align: right;
+    height: 8%;
+    border-bottom: 1px solid;
+}
+
+.list-footer {
+    text-align: right;
+    height: 8%;
+    border-top: 1px solid;
 }
 
 #search-results {
@@ -154,7 +162,7 @@ html, body, #main {
 
 .list table {
     width: 100%;
-    border-collapse: collapse;
+    border: 0;
 }
 
 .list table thead, tfoot {
@@ -164,5 +172,27 @@ html, body, #main {
 .list table td {
     padding: 4px;
     border: 1px solid;
+}
+
+.list .item-rank, .item-add, .item-price, .item-pic {
+    text-align: center;
+}
+
+.list .item-pic {
+    width: 80px;
+    text-align: center;
+}
+
+.list .item-rank, .item-add {
+    width: 3em;
+}
+
+.list .item-price {
+    width: 5em;
+}
+
+.list .item-pic img {
+    height: 75px;
+    width: 75px;
 }
 

@@ -1,7 +1,0 @@
-<div id="main-searchbar">
-	<img src="files/images/logo.png" alt="ShopShark" id="main-logo" />
-    <form>
-        <input type="text" id="main-search" name="main-search" class="translate" value="SEARCH"></input>
-        <input type="submit" id="main-dosearch" name="main-dosearch" class="translate" value="DO_SEARCH"></input>
-    </form>
-</div>
