@@ -229,3 +229,41 @@ html, body, #main {
 .template {
     visibility: hidden;
 }
+
+#product {
+    height: 100%;
+}
+
+.product-header {
+    text-align: right;
+    
+    height: 8%;
+    border-bottom: 1px solid;
+}
+
+.product-info {
+    height: 92%;
+    overflow: auto;
+}
+
+#addlink{
+	float: right;
+}
+
+.product-info img, .product-info .translate, .category-bread{
+    float: left;
+}
+
+.product-info .translate{
+	font-wight: bolder;
+	margin-right: 8px;
+}
+
+.product-info img{
+	max-width: 200px;
+}
+
+.product-info .info{
+	margin-bottom: 8px;
+}
+
