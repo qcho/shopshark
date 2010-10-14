@@ -1,0 +1,803 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en"><head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>ShopShark - Browsing all products</title>
+	
+	<script type="text/javascript" charset="utf-8">
+				
+		// The store handle to access the api
+		var STORE_HANDLE = "examplestore";
+		var CURRENCY = "USD";
+		var DATA_URL = "http://enstoresecure.appspot.com/examplestore/data"
+		var CHECKOUT_URL = "http://enstoresecure.appspot.com/examplestore/checkout";
+	
+	</script>
+
+	<script src="files/js/lib/jquery-1.4.2.js" type="text/javascript"></script>
+	<link href="files/styles/style.css" rel="stylesheet" type="text/css" media="screen">
+
+	<script type="text/javascript" charset="utf-8">
+			
+		function showImage(image) {
+			$("#fullimage").attr('src', image);
+		};
+		
+		
+		
+		// Toggle white overlays for the small featured products images
+		$(document).ready(function () {
+			
+			// sort variations if we have em.
+			$("#variations-table").tablesorter({sortList: [[1,0]] }); 
+		
+			var activeOverlay = $(".no_overlay");
+			var featured_products_name = ""
+			
+			$(".imgholder_small").click(function(){
+				
+				var overlay = $(this).children("#white_overlay");
+				
+				if (activeOverlay != null)
+					activeOverlay.toggleClass("no_overlay")
+					
+				overlay.toggleClass("no_overlay");
+				activeOverlay = overlay
+
+				productUuid = $(this).attr("id");
+				productPrice = $(this).children("#product_info_"+productUuid+"").text();
+				productName = $(this).children("#product_name_"+productUuid+"").text();
+				productBrand = $(this).children("#product_brand_"+productUuid+"").text();
+				
+				$("#product_price").text(productPrice)
+				$("#product_name").text(productName)
+				$("#product_brand").text(productBrand)
+
+				small_featured_image_url = $(this).children(".featured_product_images").attr("src");
+				big_featured_image_url = small_featured_image_url.split("?")[0];
+				big_featured_image_url += "?width=534&height=400&crop=1";
+
+				$("#fullimage_featured").attr("src", big_featured_image_url);
+				$("#imgholder_first .feature_link").attr("href", "/item/" + $(this).attr("id") )
+			});
+		});
+
+		function addVariation() {
+			var str = $("input:checked").val();
+			if (str == null) {
+				alert("Please make your selection in the drop down box.")
+			} else {
+				enstore.cart.addItem(str);
+			};
+		};
+	
+		function backToShop() {
+			var url = document.referrer.indexOf("")
+			if (url != -1) {
+				window.location.href=document.referrer
+			} else {
+				window.location.href=""
+			}
+		};
+	
+		enstore.cart.addListener('preFetch', function() {
+			$("#loading_cart").show();
+		})
+
+		enstore.cart.addListener('postRender', function() {
+			$("#loading_cart").fadeOut("fast");
+				
+			// $(".in_cart").each(function() {
+			// 		
+			// 	var totalInCart = 0;
+			// 	var buttonProductUUID = $(this).parent().parent().parent().attr("id");
+			// 	
+			// 	$.each(enstore.cart.products, function(i, product) {
+			// 		if (product.productUUID == buttonProductUUID) {
+			// 			totalInCart += parseInt(product.quantity);
+			// 		}
+			// 	});
+			// 		
+			// 	if (totalInCart > 0) {
+			// 		$(this).children(".totalincart").html(totalInCart);
+			// 		if ($.browser.msie){
+			// 			$(this).show();
+			// 		} else {
+			// 		$(this).fadeIn();
+			// 		}
+			// 	} else {
+			// 		$(this).fadeOut();
+			// 	}	
+			// 	
+			// });
+		});
+
+	</script>
+
+</head>
+
+<body>
+	<!-- CENTER THE PAGE -->	
+	<div id="bodywrapper">
+		<div id="topnav">
+			<div id="menu">
+				<a href="http://examplestore.enstore.com/page/welcome">Welcome</a>
+				<a href="http://www.enstore.com/examplestore">Shop</a>
+				<a href="http://examplestore.enstore.com/page/textile">Textile Example</a>
+			</div>
+			<div id="sorting">
+				<form action="/browse/1" method="get" accept-charset="utf-8">
+					<input name="query" type="search">
+				</form>
+					<a href="http://examplestore.enstore.com/browse/1?sort=price" class="sortbutton">
+						<span class="left"></span>
+						<span class="right"></span>
+						Price
+					</a>
+					<a href="http://examplestore.enstore.com/browse/1?sort=name" class="sortbutton">
+						<span class="left"></span>
+						<span class="right"></span>
+						Name
+					</a>
+					<a href="http://examplestore.enstore.com/browse/1?sort=brand" class="sortbutton_selected">
+						<span class="left"></span>
+						<span class="right"></span>
+						Brand
+					</a>
+			</div>
+		</div>
+		<div id="contentwrapper_top"></div>
+		<div id="contentwrapper">
+			<div id="sidebar">
+				<div id="logo">
+					<a href="http://examplestore.enstore.com/browse/1"><img src="files/images/logo.png" alt="Logo" width="200"></a>
+				</div>
+				<h4><span style="display: none;" id="loading_cart">Loading</span>Cart</h4>
+				<div id="empty_cart" style="display: none;">
+					<p>No items in cart.</p>
+				</div>
+				<div class="chain-element" id="cart" style="">
+					<table class="alternating" cellpadding="0" cellspacing="0" border="0">
+						<tbody class="chain-element" id="lines"><tr class="item chain-item chain-element odd">
+								<td><input class="quantity" value="21" type="text"></td>
+								<td class="name">A Clock.</td>
+								
+								<td class="subtotal formattedCurrency">$1,047.90</td>
+								
+							</tr><tr class="item chain-item chain-element even">
+								<td><input class="quantity" value="3" type="text"></td>
+								<td class="name">Back To School</td>
+								
+								<td class="subtotal formattedCurrency">$197.97</td>
+								
+							</tr></tbody>
+					</table>
+					<div class="totals">
+						<span class="title">Subtotal</span>
+						<span class="subtotal formattedCurrency">$1,245.87</span>
+					</div>
+					<div id="cart_clear" class="clickable">Clear</div>
+					<div id="cart_checkout" class="clickable">Checkout</div>
+				</div>
+				<!-- MENU -->
+					<div class="supermenu">
+
+						<a href="http://examplestore.enstore.com/browse/1">All Products</a>
+							<hr>
+						<div class="submenu">
+							
+						</div>
+					</div>
+					<div class="supermenu">
+						<a href="http://examplestore.enstore.com/browse/electronics/1">Electronics</a>
+							<hr>
+						<div class="submenu">
+								<a href="http://examplestore.enstore.com/browse/screens/1">TV screens</a>
+								<a href="http://examplestore.enstore.com/browse/camera,cameras/1">Cameras</a>
+						</div>
+					</div>
+					<div class="supermenu">
+						<a href="http://examplestore.enstore.com/browse/office,supplies/1">Office Supplies</a>
+							<hr>
+						<div class="submenu">
+								<a href="http://examplestore.enstore.com/browse/cardholders/1">Card holders</a>
+								<a href="http://examplestore.enstore.com/browse/various_items/1">Various Items</a>
+						</div>
+					</div>
+					<div class="supermenu">
+
+						<a href="http://examplestore.enstore.com/browse/photography/1">Photography</a>
+							<hr>
+						<div class="submenu">
+								<a href="http://examplestore.enstore.com/browse/city/1">Cities</a>
+								<a href="http://examplestore.enstore.com/browse/architecture/1">Architecture</a>
+								<a href="http://examplestore.enstore.com/browse/interior/1">Interior</a>
+								<a href="http://examplestore.enstore.com/browse/nature/1">Nature</a>
+						</div>
+					</div>
+					<div class="supermenu">
+						<a href="http://examplestore.enstore.com/browse/fragrance/1">Perfumes</a>
+							<hr>
+						<div class="submenu">
+								<a href="http://examplestore.enstore.com/browse/men/1">Mens fragrance</a>
+								<a href="http://examplestore.enstore.com/browse/women/1">Womens fragrance</a>
+						</div>
+					</div>
+					<div class="supermenu">
+						<a href="http://examplestore.enstore.com/browse/toys/1">Toys</a>
+							<hr>
+						<div class="submenu">
+								<a href="http://examplestore.enstore.com/browse/braggyville/1">Braggyvile</a>
+								<a href="http://examplestore.enstore.com/browse/special-collections/1">Special Collections</a>
+						</div>
+					</div>
+					<div class="supermenu">
+						<a href="http://examplestore.enstore.com/browse/bags/1">Bags</a>
+							<hr>
+						<div class="submenu">
+								<a href="http://examplestore.enstore.com/browse/laptops/1">Laptop bags</a>
+								<a href="http://examplestore.enstore.com/browse/design/1">Designer bags</a>
+						</div>
+					</div>
+			</div>
+			<!-- MAIN CONTENT -->
+			<div id="main">
+
+	<div class="product" id="256d6b9dd3dd46d7ab65aa45e3db7486">
+		<h4>A Clock. <span>by</span> Bhaise Ick</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/a-clock">
+				<img src="1_files/52436761ae134ef8924e336d8c567b6c.jpg" class="productimg" height="104" width="119">
+			</a>
+
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				Bhaise Ick likes his designs really simple and really boring. This clock ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/a-clock" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('256d6b9dd3dd46d7ab65aa45e3db7486')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$49.90</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="margin"></div>
+	
+	
+	<div class="product" id="2208b4058fa44e47bcb244a73cd7032c">
+		<h4>Pure <span>by</span> Bhaise Ick</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/pure">
+				<img src="1_files/2d4432a851b34bcd95a61e12312a7efd.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				This Incredibly basic shaped card holder was originally designed in the early ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/pure" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('2208b4058fa44e47bcb244a73cd7032c')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$14.95</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="break"></div>
+	
+	
+	<div class="product" id="a573ef3739ca4f50a8db25ac8d3c3670">
+		<h4>Mercury <span>by</span> Brulo</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/mercury">
+				<img src="1_files/d3132437404040ccadfb79ab63b79e3b.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				Sit at your desk in style with the Mercury from Brulo. So ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/mercury" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('a573ef3739ca4f50a8db25ac8d3c3670')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$300.00</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="margin"></div>
+	
+	
+	<div class="product" id="f9b0e03591ea4220a2e78ac06fb2a0b6">
+		<h4>Chocolate <span>by</span> Channel</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/chocolate">
+				<img src="1_files/0877aead648343349dcc17f21cc95d64.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				The sweet Chocolate fragrance is made from pure pheromones, driving any man ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/chocolate" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('f9b0e03591ea4220a2e78ac06fb2a0b6')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$44.95</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="break"></div>
+	
+	
+	<div class="product" id="7d1cc8ac5dd34f59bafc24c05dcad0b4">
+		<h4>Bikes <span>by</span> Chauspére Ousére</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/bikes">
+				<img src="1_files/cf38c7f2896c40fe91a5c4329e112d5e.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				Two bikes in an alley. The front bike is used by firemen ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/bikes" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('7d1cc8ac5dd34f59bafc24c05dcad0b4')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$260.00</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="margin"></div>
+	
+	
+	<div class="product" id="a52ccd80ed9a43a3add29bc15f5c14c7">
+		<h4>Plastic Bag <span>by</span> Chauspére Ousére</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/plastic-bag">
+				<img src="1_files/a49099fcdd964b11ac1ad2966f197bb9.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				A plastic bag, stuck in a tree. Most beautiful thing the photographer ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/plastic-bag" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('a52ccd80ed9a43a3add29bc15f5c14c7')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$109.99</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="break"></div>
+	
+	
+	<div class="product" id="a264b6cef8734dd69c1117c3defb3171">
+		<h4>Blue Plants <span>by</span> Chauspére Ousére</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/blue-plants">
+				<img src="1_files/323d708b659d462eb064863db1af4732.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				Nice blue plants. Photo taken by photographer Chauspére Ousére. Model: Canon EOS ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/blue-plants" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('a264b6cef8734dd69c1117c3defb3171')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$150.00</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="margin"></div>
+	
+	
+	<div class="product" id="a944cd95b484465fa7702c4fc738624f">
+		<h4>Romantic Alley <span>by</span> Chauspére Ousére</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/romantic-alley">
+				<img src="1_files/fa48f4a703c84bf1b558774ac091edac.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				An alley in France. Photo taken by photographer Chauspére Ousére. Model: Canon ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/romantic-alley" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('a944cd95b484465fa7702c4fc738624f')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$390.00</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="break"></div>
+	
+	
+	<div class="product" id="5a8b35ec70ff49898d72f214549bc6ad">
+		<h4>Red Neon <span>by</span> Chauspére Ousére</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/red-neon">
+				<img src="1_files/6678c6f74a674c49a28420768b723a28.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				The color red created by a neon billboard. Photo taken by photographer ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/red-neon" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('5a8b35ec70ff49898d72f214549bc6ad')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$260.00</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="margin"></div>
+	
+	
+	<div class="product" id="70c71d5d0e2541fe991fb8e8e1b54e1f">
+		<h4>Mountainscape <span>by</span> Chauspére Ousére</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/mountainscape">
+				<img src="1_files/ced710b34a3d4f77bff4557f88eb6d9e.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				A sunset in the mountains. Photo taken by photographer Chauspére Ousére. Model: ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/mountainscape" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('70c71d5d0e2541fe991fb8e8e1b54e1f')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$200.00</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="break"></div>
+	
+	
+	<div class="product" id="baec1475c0be4a1ebd73e936c0616d04">
+		<h4>Brick <span>by</span> Dehrck Støphe</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/brick">
+				<img src="1_files/a40f50e4b0ec464ebb658ccbe56099aa.jpg" class="productimg" height="104" width="119">
+			</a>
+			
+				
+			
+				
+			
+		</div>		
+		
+		
+		<div class="description">
+
+			<div class="wrap">
+				Sleek, stylish and elegant. This leather sleeve was hand-made from the finest ...
+			</div>
+			<!-- IE6 Can't handle pos:absolute near a float, so we put an empty element between them -->
+			<!--[if IE 6]>
+				<div></div>
+			<![endif]-->
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/brick" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				
+				<a class="greenbutton" onclick="enstore.cart.addItem('baec1475c0be4a1ebd73e936c0616d04')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$89.99</span>
+				</a>
+				
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="margin"></div>
+	
+	
+	<div class="product" id="c3f8662dff3546c5995aefd51993ba94">
+		<h4>Tile <span>by</span> Dehrck Støphe</h4>
+		
+		<div class="imgholder">
+			<a href="http://examplestore.enstore.com/item/tile">
+				<img src="1_files/1aa5d831d54a427d990724299404c272.jpg" class="productimg" height="104" width="119">
+			</a>
+		</div>		
+		<div class="description">
+			<div class="wrap">
+				Dehrck Støphe lifelong ambition has been to combine the elegance of tiles ...
+			</div>
+			<div class="buttons">
+				<a href="http://examplestore.enstore.com/item/tile" class="greybutton">
+					<span class="left"></span><span class="right"></span>
+						Info
+				</a>
+				<a class="greenbutton" onclick="enstore.cart.addItem('c3f8662dff3546c5995aefd51993ba94')">
+					<span class="left"></span><span class="right"></span>
+					<span class="formattedCurrency">$79.99</span>
+				</a>
+				<span class="in_cart">
+						<span class="totalincart">1</span> in<br>cart
+				</span>
+			</div>
+		</div>
+	</div>
+	
+	<div class="break"></div>
+
+	<div id="bottombar">
+			<a href="http://examplestore.enstore.com/browse/2?sort=brand" class="greybutton" style="float: right;">
+				<span class="left"></span><span class="right"></span>
+					Next
+			</a>
+				<div class="pagination">
+					<span class="active">1</span>&nbsp;
+					<a href="http://examplestore.enstore.com/browse/2?sort=brand">2</a>&nbsp;
+					<a href="http://examplestore.enstore.com/browse/3?sort=brand">3</a>&nbsp;
+					<a href="http://examplestore.enstore.com/browse/4?sort=brand">4</a>&nbsp;
+					<a href="http://examplestore.enstore.com/browse/5?sort=brand">5</a>&nbsp;
+					...
+					<a href="http://examplestore.enstore.com/browse/7?sort=brand">7</a>&nbsp;
+				</div>
+			</div>
+		</div>
+		</div>
+		<div id="contentwrapper_bottom"></div>
+		<!-- FOOTER -->
+		<div id="footer">
+			<p>ShopShark Argentina. <br>All rights reserved.</p>
+		</div>
+	</div>	
+</body></html>

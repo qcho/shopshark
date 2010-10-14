@@ -133,15 +133,14 @@ var hci = hci || {
 		});
 		return [ "Catalog.groovy", queryStr ];
 	},
-	
+
 	/**
 	 * Resources. Order
 	 */
-	
-	
-	
-	
-	
+
+
+
+
 
 	/**
 	 * Misc.
