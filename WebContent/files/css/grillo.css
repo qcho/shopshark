@@ -1,0 +1,131 @@
+
+div {
+    border: 1px solid;
+    margin: -2px -2px;
+}
+
+html, body, #main {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#header, #footer, #content-wrapper {
+    position: absolute;
+    width: 100%;
+}
+
+#header {
+    top: 0;
+    height: 45px; /*cambio*/
+}
+
+#logoimg {
+	float: left;
+	padding-top: 1px;
+	padding-left: 1px;
+	width:60px;
+	height:45px;
+}
+
+#searchText {
+	margin-right: 5px;
+}
+
+#searchButton{
+	float: left;
+}
+
+#header p,#header h1 {
+	margin: 0;
+	padding: 5px 0 0 10px;
+	margin-right: 4%;
+}
+
+#searchButton, #searchText, #logoimg, #header h1 {
+	float: left;
+}
+
+#searchButton, #searchText {
+	margin-top: 12px;
+}
+
+#login {
+	float:right;
+	padding-top: 14px;
+	padding-right: 10px;
+	right: 10px;
+}
+
+#login a {
+	border-left: 1px solid;
+	padding: 0.1em 0.8em;
+	cursor: auto;
+}
+
+#login a.reg{
+	border-left: none;
+}
+
+#login a:link {
+	text-decoration: none;
+}
+#login a:hover {
+	text-decoration: underline;
+}
+#login a:active {
+	text-decoration: underline;
+}
+
+body, button, input, textarea {
+	font: normal normal normal 14px/normal Arial, Helvetica, sans-serif;
+}
+
+#footer {
+    bottom: 1px;
+    height: 30px;
+}
+
+#content-wrapper {
+    top: 46px; /*cambio*/
+    bottom: 31px;
+}
+
+#content, #sidebar {
+    position: absolute;
+    height: 100%;
+}
+
+#content {
+    left: 200px;
+    right: 0;
+}
+
+#sidebar {
+    width: 200px;
+}
+
+#cart {
+    visibility: hidden;
+    position: absolute;
+    bottom: 1px;
+    left: 200px;
+    right: 0;
+    background-color: #0011FF;
+    height: 200px;
+}
+
+#content-searchbar {
+    width: 60%;
+    margin-left: 20%;
+
+    padding: 10px;
+    background-color: #FF00FF;
+    /* Searchbar vertical position is adjusted in load.js */
+}
+
+git clone git@github.com:qcgo/shopshark.git
