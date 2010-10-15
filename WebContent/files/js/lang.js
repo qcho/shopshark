@@ -1,4 +1,4 @@
-function doTranslate() {
+function translate(parent) {
     var dict;
     
     switch(getFromURL('lang')) {
@@ -21,14 +21,16 @@ function doTranslate() {
     }
     
 
-    return ret;
+    return;
 }
 
 function EnglishDict() {
 	this["SEARCH"] = "Search for products...";
+	this["LOADING"] = "Cargando... ";
 	
 }
     
 function SpanishDict() {
     this["SEARCH"] = "Buscar productos...";
+    this["LOADING"] = "Loading...";
 }

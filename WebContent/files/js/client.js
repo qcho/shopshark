@@ -395,7 +395,6 @@ var hci = hci
 				}
 				return d + (p.length > 1 ? '.' + p[1] : '');
 			}
-
 		};
 /*
  * hci.fetch(hci.GetLanguageList(), function(xml){ console.info("test", xml);

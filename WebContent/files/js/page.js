@@ -1,52 +1,73 @@
 // Page load script for ShopShark.
 
-var translate, redraw;  /* Global names for functions */
-var cart_visible;       /* Global boolean variable */
+var SECTIONS = { 'main' : 'main.html',
+                 'searchr' : 'searchr.html',
+                 'google' : 'http://www.google.com'
+               }
 
-function init(page) {
+var results_list;
+var cart_list;
 
-    translate = doTranslate; /* in lang.js */
-    cart_visible = (getFromURL('cart') == 'true');
+$(document).ready(function() {
+    	 $('#sidebar').load('sidebar.html');
+         $('#cart').load('cart.html',
+            function() {
+                cart_list = new TemplatedList('cart-content', 'hitem-template');
+            });
+         
+        show('main');
+})
 
-    switch(page) {
-        case 'index':
-            redraw = redraw_index;
-            break;
+function show(section) {
+    if (!$.inArray(section, SECTIONS))
+        section = 'main'
+
+    $('#content').load(SECTIONS[section],
+        function() {
+            switch(section) {
+                case 'searchr':
+                    results_list = new TemplatedList('list-body', 'item-template');
+                    /* aca se puede cargar mas cosas. Como resultados posta. */
+                break;
+            }
+
+        });
+
+}
+
+function testItem() {
+    return { '%PIC' : 'files/images/logo.png',
+                     '%TITLE' : 'Logo de ShopShark',
+                     '%PRICE' : '$10000',
+                     '%RANK' : '10 ptos' };
+}
+
+function testShowProducts() {    
+    results_list.add(testItem());
+}
+
+function testCart() {
+    cart_list.add(testItem());
+}
+
+function TemplatedList(div_id, template_id) {
+    this.div = $('#' + div_id);
+    this.template = $('#' + template_id).html();
+    this.template = this.template.substring(4, this.template.length - 3)
+
+    this.add = function(dict) {
+
+        var item = this.template;
+        
+        for (var key in dict) {
+            item = item.replace(key, dict[key]);
+        }
+
+        this.div.append(item);
+
     }
 
-    window.onresize = redraw;
-}
-
-function load(page) {
-    init(page);
-
-    if (redraw)
-        redraw();
-
-    if (translate)
-        translate();
-}
-
-function redraw_index() {
-
-    var mainH = document.getElementById('main').clientHeight;
-    var headerH = document.getElementById('header').clientHeight;
-    var footerH = document.getElementById('footer').clientHeight;
-
-    var contentMaxH = mainH - headerH - footerH;
-    
-    var cart = document.getElementById('cart');
-    var content = document.getElementById('content');
-    var contentsb = document.getElementById('content-searchbar');
-
-    if (cart_visible) {
-    
-        cart.style['visibility'] = 'visible';
-        content.style['height'] = contentMaxH - cart.clientHeight + 'px';
+    this.clear = function() {
+        this.div.html('');
     }
-
-    contentsb.style['margin-top'] = content.clientHeight / 2 - contentsb.clientHeight / 2 + 'px';
-    
-    return;
 }
-
