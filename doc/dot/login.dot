@@ -1,0 +1,22 @@
+digraph G {
+
+    node[shape=box];
+    
+    { node[shape=diamond] "Existe?"
+    }
+    
+    { node[shape=ellipse] "Pagina principal"
+                          "Sidebar: mensaje usuario incorrecto"
+                          "Sidebar: datos de usuario"
+    }
+    
+    { node [shape=note color=blue] "INGRESAR AL SISTEMA (LOGIN)" }
+    
+    "Pagina principal" -> "Ingresar usuario" -> "Ingresar password"
+    -> "Boton de login" -> "Existe?"
+    
+    "Existe?" -> "Sidebar: datos de usuario" [label="y"]
+    "Existe?" -> "Sidebar: mensaje usuario incorrecto" [label="n"]
+}
+
+

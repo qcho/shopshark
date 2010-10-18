@@ -1,0 +1,23 @@
+digraph G {
+
+    node[shape=box];
+    
+    { node[shape=diamond] "Correcto?"
+    }
+    
+    { node[shape=ellipse] "Pagina principal"
+                          "Formulario de registro"
+                          "Sidebar: datos de usuario"
+    }
+    
+    { node [shape=note color=blue] "REGISTRAR UNA CUENTA" }
+    
+  "Pagina principal" -> "Registrar" -> "Formulario de registro" -> "Ingresar datos"
+    -> "Boton de enviar" -> "Correcto?"
+
+    "Correcto?" -> "Formulario de registro" [label="n"]
+    "Correcto?" -> "Sidebar: datos de usuario" [label="y"]
+  
+    "Sidebar: datos de usuario" -> "Pagina principal (logueado)"
+    
+}
