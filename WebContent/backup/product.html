@@ -3,13 +3,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>ShopShark - Browsing all products</title>
 	
-	<link href="files/styles/style.css" rel="stylesheet" type="text/css" media="screen">	
+	<link href="files/styles/style.css" rel="stylesheet" type="text/css" media="screen">
+	
 	<script src="files/js/lib/jquery-1.4.2.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.xml2json.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.tmpl.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.cookie.js" type="text/javascript"></script>
-	<script src="files/js/lib/jquery.ba-bbq.js" type="text/javascript"></script>
-	<script src="files/js/lib/jquery.tools.min.js" type="text/javascript"></script>
 	<script src="files/js/client.js" type="text/javascript"></script>
 	<script src="files/js/shopshark.js" type="text/javascript"></script>
 <!--  
@@ -146,28 +145,28 @@
 	<div id="bodywrapper">
 		<div id="topnav">
 			<div id="menu">
-				<form action="" method="get" accept-charset="utf-8">
-					<div>
-						<select name="language"><option></option></select>
-					</div>
-				</form>
-				<p>Language </p>
+				<a href="http://examplestore.enstore.com/page/welcome">Welcome</a>
+				<a href="http://www.enstore.com/examplestore">Shop</a>
+				<a href="http://examplestore.enstore.com/page/textile">Textile Example</a>
 			</div>
 			<div id="sorting">
-				<form action="" method="get" accept-charset="utf-8">
-					<div>
-						<input name="query">
-					</div>
+				<form action="/browse/1" method="get" accept-charset="utf-8">
+					<input name="query" type="search">
 				</form>
-					<a href="#order=DESC" class="sortbutton">
+					<a href="http://examplestore.enstore.com/browse/1?sort=price" class="sortbutton">
 						<span class="left"></span>
 						<span class="right"></span>
-						Sort Desc
+						Price
 					</a>
-					<a href="#order=ASC" class="sortbutton_selected">
+					<a href="http://examplestore.enstore.com/browse/1?sort=name" class="sortbutton">
 						<span class="left"></span>
 						<span class="right"></span>
-						Sort Asc
+						Name
+					</a>
+					<a href="http://examplestore.enstore.com/browse/1?sort=brand" class="sortbutton_selected">
+						<span class="left"></span>
+						<span class="right"></span>
+						Brand
 					</a>
 			</div>
 		</div>
@@ -175,15 +174,13 @@
 		<div id="contentwrapper">
 			<div id="sidebar">
 				<div id="logo">
-					<a href="/"><img src="files/images/logo.png" alt="Logo" width="200"></a>
-				</div>
-				<div id="user">
+					<a href="http://examplestore.enstore.com/browse/1"><img src="files/images/logo.png" alt="Logo" width="200"></a>
 				</div>
 				<h4><span style="display: none;" id="loading_cart">Loading</span>Cart</h4>
-				<div id="empty_cart" style="">
+				<div id="empty_cart" style="display: none;">
 					<p>No items in cart.</p>
 				</div>
-				<div class="chain-element" id="cart" style="display: none;">
+				<div class="chain-element" id="cart" style="">
 					<table class="alternating" cellpadding="0" cellspacing="0" border="0">
 						<tbody class="chain-element" id="lines"><tr class="item chain-item chain-element odd">
 								<td><input class="quantity" value="21" type="text"></td>
@@ -202,29 +199,69 @@
 					<div id="cart_clear" class="clickable">Clear</div>
 					<div id="cart_checkout" class="clickable">Checkout</div>
 				</div>
-				<!-- MENU -->	
-				<div id="categories" class="bbq">	
+				<div id="categories">
+					<!-- MENU -->			
 				</div>
 			</div>
-			<!-- MAIN CONTENT -->
-			<div id="main" class="bbq-content">
-				<div id="productdatatop">
-					<h3 id="main_title"></h3>
-				</div>
-				<div id="main_content">
-					<div class="centered">
-						<img src="files/images/loading.gif" alt="loading...">
-					</div>
-				</div>
+			<div id="main">
+				<div id="main">
+				
+
+
+<!-- IMG GALLERY -->
+
+<div id="productdatatop">
+	<h3>A Clock. <span>by</span> Bhaise Ick</h3>
+</div>
+
+
+<div id="gallery">
+	<!-- FULL IMAGES / LOADS FIRST IMAGE INITIALLY -->
+	
+	<div class="img_top"></div>
+	<img width="391" id="fullimage" class="fullimage" name="productimage" src="http://enstoresecure.appspot.com/examplestore/data/images/52436761ae134ef8924e336d8c567b6c.jpg?width=391&amp;crop=0">
+	<div class="img_bottom"></div>
+	
+	<!-- THUMBS -->	
+	<!-- DON'T SHOW A THUMBNAIL GALLERY IF THERES ONLY ONE PIC-->
+	
+	
+</div>
+
+
+
+<div id="productdata">
+	<div class="description-wrapper">
+			<p>Bhaise Ick likes his designs really simple and really boring. This clock is the masterpiece of his collection.</p>
+	</div>
+
+	<!--   -->
+
+
+
+
+	
+	<a onclick="enstore.cart.addItem('256d6b9dd3dd46d7ab65aa45e3db7486')" class="greenbutton_big">
+		<span class="left"></span><span class="right"></span>
+		Buy <span class="for">for</span> <span class="formattedCurrency">$49.90</span>
+	</a>
+	
+
+</div>	
+
+<div id="bottombar">
+	<span style="cursor: pointer;" onclick="backToShop()" class="bluebutton">
+		<span class="left"></span><span class="right"></span>
+		Back <span>to</span> Shop
+	</span>
+</div>
+			</div>
 			</div>
 		</div>
 		<div id="contentwrapper_bottom"></div>
 		<!-- FOOTER -->
 		<div id="footer">
-			<p>ShopShark Argentina. <a href="http://validator.w3.org/check?uri=referer"><img
-        src="http://www.w3.org/Icons/valid-html401"
-        alt="Valid HTML 4.01 Strict" height="31" width="88"></a><br>All rights reserved.</p>
-			
+			<p>ShopShark Argentina. <br>All rights reserved.</p>
 		</div>
 	</div>	
 </body>

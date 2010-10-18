@@ -1,0 +1,22 @@
+<html>
+    <head>
+         <title>Book Preview</title>
+         <script src='http://books.google.com/books/previewlib.js'></script>
+         <script>
+         	function gup( name ){
+			  name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+			  var regexS = "[\\?&]"+name+"=([^&#]*)";
+			  var regex = new RegExp( regexS );
+			  var results = regex.exec( window.location.href );
+			  if( results == null )
+			    return "";
+			  else
+			    return results[1];
+			}
+         </script>
+    </head>
+    <body>
+        <script>GBS_setLanguage('en');</script>
+        <script>GBS_insertEmbeddedViewer('ISBN:'+gup('isbn'),640,385);</script>
+    </body>
+</html>

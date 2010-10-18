@@ -1,3 +1,5 @@
+@charset "UTF-8";
+
 body 
 	{background:#b0b8bf;font:13px/18px "Helvetica";color:#778088;}
 hr 
@@ -35,23 +37,29 @@ hr
 #topnav 
 	{float:left;width:968px;margin-top:10px;margin-bottom:18px;}
 #topnav #menu 
-	{float:left;margin:3px 0 0px 5px; width:550px;}
+	{float:right;margin:3px 5px 0 5px;}
 #topnav #menu a
-	{margin:0px 10px 0 0px;color:#69747d;font-size:14px;text-shadow: #cdd2d7 0px 1px 0px;font-weight:bold;text-decoration:none;}
+	{margin:0 10px 0 0;color:#69747d;font-size:14px;text-shadow: #cdd2d7 0px 1px 0px;font-weight:bold;text-decoration:none;}
 #topnav #menu a.active
 	{color:#2c3136}
+#topnav #menu form
+	{float:right;}
+#topnav #menu p
+	{float:left; margin: 0 10px 0 0;}
 #topnav #menu a:hover
 	{color:#2c3136;}
 #topnav #sorting 
-	{width:390px; float:right;}
-#topnav form
-	{width:174px;height:24px;float:right;background:transparent;background-image:url('../images/sprite.gif');
+	{min-width:390px; float:left;}
+#topnav #sorting p
+	{float:right; margin: 5px 20px 0 0;}
+#sorting form
+	{width:174px;height:24px;float:left;background:transparent;background-image:url('../images/sprite.gif');
 	background-position:left 411px;padding-left:25px;}	
-* html #topnav form 
+* html #sorting form 
 	{margin-left:0;}
-#topnav form input
+#sorting form input
 	{width:170px;background:none;border:0px;color:#7E7E7E;margin-top:4px;line-height:14px;color:#111;font-size:12px;-webkit-appearance:none;}
-#topnav form input:focus 
+#sorting form input:focus 
 	{outline: 0;}
 
 /* TEXTILE */
@@ -317,13 +325,6 @@ hr
 	
 * html .greybutton 
 	{line-height:24px;}
-	
-#bottombar .greybutton.floatLeft{
-	float: left;
-}
-#bottombar .greybutton.floatRight{
-	float: right;
-}
 
 .greybutton .left
 	{background-image:url('../images/sprite.gif');background-position:left 212px;height:24px;width:4px;position:absolute;left:-4px;top:0;}
@@ -459,11 +460,14 @@ hr
 #notfound p
 	{font-size:16px;color:#778088;}
 
+/* LOGIN */
+#login
+	{margin-top: 20px;}
 
 
 /* ITEM */
 #productdatatop
-	{width:640px;border-bottom:1px dashed #cfd3d6;float:left;margin-bottom:20px;}
+	{width:640px;border-bottom:1px dashed #cfd3d6;margin-bottom:20px;}
 
 #productdatatop h3
 	{color:#2a3640;font-size:24px;/*border-bottom:1px dashed #cfd3d6*/;margin-top:0;margin-bottom:12px;padding:4px 0;line-height:1.2em;}
@@ -472,7 +476,7 @@ hr
 	{color:#9aa3ab;font-weight:normal;font-style:italic;}
 
 #gallery 
-	{width:403px;float:left;margin:0 25px 0 0;}
+	{margin:25px 0 0 0;min-height:250px;}
 
 #gallery .fullimage, #imgholder_first .fullimage
 	{margin:0;display:block;width:391px;padding:0px 6px;
@@ -497,7 +501,18 @@ hr
 
 
 #productdata
-	{width:212px;float:left;}
+	{width:640px;margin-top: 20px;min-height:270px}
+
+#productdata .description-wrapper {
+	float: left;
+	width: 80%;
+}
+	
+
+#productdata .button-wrapper {
+	float: right;
+	width: 20%;
+}
 
 #productdata .description-wrapper a {color:#238dea;}
 #productdata .description-wrapper a:hover {color:#238dea;}
@@ -513,7 +528,7 @@ hr
 #productdata h6:first-child {margin-top:0;}
 	
 #productdata .greenbutton_big
-	{position:relative;float:left;margin-left:5px;padding:0 5px;margin-top:20px;}
+	{position:relative;float:left;margin-left:5px;margin-bottom:5px;padding:0 5px;margin-top:20px;}
 
 #productdata .greenbutton_big .for
 	{font-weight:normal;}
@@ -562,7 +577,7 @@ hr
 #variations .variations-arrow {color:#238dea;font-size:20px;text-decoration:none;}
 /* PAGINATION */
 #bottombar
-	{float:left;width:640px;border-top:1px dashed #cfd3d6;padding:15px 0;margin-top:20px;text-align:center;}
+	{width:640px;border-top:1px dashed #cfd3d6;padding:15px 0;margin-top:20px;text-align:center;}
 
 #nextbutton {width:51px;height:24px;background-image:url('../images/sprite.gif');background-position:left 385px;display:block;float:right;}
 #previousbutton {width:76px;height:24px;background-image:url('../images/sprite.gif');background-position:right 385px;display:block;float:left;}
@@ -593,3 +608,23 @@ hr
 	{color:#24272A; text-decoration:underline;}
 #footer a:visited
 	{color:#24272A; text-decoration:underline;}
+
+.centered {
+	text-align: center;
+}
+
+.floatLeft{
+	float: left;
+}
+.floatRight{
+	float: right;
+}
+
+.smalltopmargin{
+	margin-top: 5px;
+}
+
+#gallery iframe {
+	width: 640px;
+	height: 385px;
+}
