@@ -1,191 +1,6 @@
-$.template("product_thumb", 
-"<div class='product' id='product_${id}'>" +
-"	<h4>${name} <span></span></h4>" +
-"	<div class='imgholder'>" +
-"		<a href='#product=${id}'>" +
-"			<img src='${image_url}' class='productimg' height='104' width='119'>" +
-"		</a>" +
-"	</div>" +
-"	<div class='description'>" +
-"		<div class='wrap'>" +
-"			Sales Rank: <span>${sales_rank}</span>" +
-"		</div>" +
-"		<div class='buttons'>" +
-"			<a href='#product=${id}' class='greybutton'>" +
-"				<span class='left'></span><span class='right'></span>" +
-"				+Info" +
-"			</a>" +
-"			<a class='greenbutton' onclick='enstore.cart.addItem('256d6b9dd3dd46d7ab65aa45e3db7486')'>" +
-"				<span class='left'></span><span class='right'></span>" +
-"				<span class='formattedCurrency'>$${price}</span>" +
-"			</a>" +
-"			<span class='in_cart'>" +
-"				<span class='totalincart'>1</span> in<br>cart" +
-"			</span>" +
-"		</div>" +
-"	</div>" +
-"</div>"
-);
-
-$.template("category",
-"<div id='category_${id}_div' class='supermenu'>" +
-"	<a id='category_${id}' href='#category=${id}'>${name}</a>" +
-"	<hr>" +
-"	<div class='submenu'>" +
-"			<a href='#${code}'>loading...</a>" +
-"	</div>" +
-"</div>"
-);
-
-$.template("subcategory", 
-"<a id='subcategory_${category_id}_${id}' href='#category=${category_id}&subcategory=${id}'>${name}</a>"
-);
-
-$.template("title",
-"<h1 class='h1-for-tags'>${title}</h1>"
-);
-
-$.template("paginator",
-"<div class='break'></div>" +
-"<div id='bottombar'>" +
-"	{{if prev}}" +
-"		<a href='#page=${prev}' class='greybutton floatLeft'>" +
-"			<span class='left'></span><span class='right'></span>" +
-"			Prev" +
-"		</a>" +
-"	{{/if}}" +
-"	{{if next}}" +
-"		<a href='#page=${next}' class='greybutton floatRight'>" +
-"			<span class='left'></span><span class='right'></span>" +
-"			Next" +
-"		</a>" +
-"	{{/if}}" +
-"	<div class='pagination'>" +
-"		{{each pages}}" +
-"			{{if $value}}" +
-"				<span class='active'>${$index + 1}</span>&nbsp;" +
-"    		{{else}}" +
-"				<a href='#page=${$index + 1}'>${$index + 1}</a>&nbsp;" +
-"    		{{/if}}" +
-"		{{/each}}" +
-"	</div>" +
-"</div>"
-);
-
-$.template("product",
-"<div id='gallery' class='centered'>" +
-"</div>" +
-"<div id='productdata'>" +
-"	<div class='description-wrapper'>" +
-"		<p>" +
-"			<ul>" +
-"				<li><strong>Category:</strong> ${category}</li>" +
-"				<li><strong>Subcategory:</strong> ${subcategory}</li>" +
-"				<li><strong>Name:</strong> ${name}</li>" +
-"				<li><strong>Sales rank:</strong> ${sales_rank}</li>" +
-"			{{if actors}}" +
-"				<li><strong>Actors:</strong> ${actors}</li>" +
-"    		{{/if}}" +
-"			{{if format}}" +
-"				<li><strong>Format:</strong> ${format}</li>" +
-"    		{{/if}}" +
-"			{{if language}}" +
-"				<li><strong>Language:</strong> ${language}</li>" +
-"    		{{/if}}" +
-"			{{if subtitles}}" +
-"				<li><strong>Subtitles:</strong> ${subtitles}</li>" +
-"    		{{/if}}" +
-"			{{if region}}" +
-"				<li><strong>Region:</strong> ${region}</li>" +
-"    		{{/if}}" +
-"			{{if aspect_ration}}" +
-"				<li><strong>Aspect ratio:</strong> ${aspect_ration}</li>" +
-"    		{{/if}}" +
-"			{{if number_discs}}" +
-"				<li><strong>Number of discs:</strong> ${number_discs}</li>" +
-"    		{{/if}}" +
-"			{{if release_date}}" +
-"				<li><strong>Release date:</strong> ${release_date}</li>" +
-"    		{{/if}}" +
-"			{{if run_time}}" +
-"				<li><strong>Duration:</strong> ${run_time}</li>" +
-"    		{{/if}}" +
-"			{{if ASIN}}" +
-"				<li><strong>ASIN(Amazon Standard Identification Number):</strong> ${ASIN}</li>" +
-"    		{{/if}}" +
-"			{{if authors}}" +
-"				<li><strong>Authors:</strong> ${authors}</li>" +
-"    		{{/if}}" +
-"			{{if publisher}}" +
-"				<li><strong>Publisher:</strong> ${publisher}</li>" +
-"    		{{/if}}" +
-"			{{if published_date}}" +
-"				<li><strong>Published  date:</strong> ${published_date}</li>" +
-"    		{{/if}}" +
-"			{{if ISBN_10}}" +
-"				<li><strong>ISBN 10:</strong> ${ISBN_10}</li>" +
-"    		{{/if}}" +
-"			{{if ISBN_13}}" +
-"				<li><strong>ISBN 13:</strong> ${ISBN_13}</li>" +
-"    		{{/if}}" +
-"			{{if language}}" +
-"				<li><strong>Language:</strong> ${language}</li>" +
-"    		{{/if}}" +
-"			</ul>" +
-"		</p>" +
-"	</div>" +
-"	<div class='button-wrapper'>" +
-"		<a class='greenbutton_big'>" +
-"		<span class='left'></span><span class='right'></span>" +
-"		Buy <span class='for'>for</span> <span class='formattedCurrency'>$${price}</span>" +
-"	</a>" +
-"	</div>" +
-"</div>" +
-"<div id='bottombar'>" +
-
-"	<a href='#category=${category_id}' class='bluebutton'>" +
-"		<span class='left'></span><span class='right'></span>" +
-"		Back <span>to</span> ${category}" +
-"	</a>" +
-"</div>"
-);
-
-$.template("signIn",
-"<div id='signIn'>" +
-"	<fieldset>" +
-"		<legend>Sign In</legend>" +
-"		<form action='' method='post'>" +
-"			<div>" +
-"				<label for='username'>Username: </label>" +
-"				<input id='username' name='username'>" +
-"				<label for='password'>Password: </label>" +
-"				<input id='password' name='password' type='password'>" +
-"			</div>" +
-"			<div class='centered'>" +
-"				<input class='greenbutton smalltopmargin' name='submit' type='submit' value='Login'>" +
-"			</div>" +
-"		</form>" +
-"	</fieldset>" +
-"	<div class='centered smalltopmargin'>" +
-"		Not Registered?" +
-"		<button class='bluebutton right smalltopmargin'>Register</button>" +
-"	</div>" +
-"</div>"		
-);
-
-$.template("userNav",
-"<div id='signIn'>" +
-"	<fieldset>" +
-"		<legend>User</legend>" +
-"		<p>${username}</p>" +
-"		<p>${name}</p>" +
-"		<p>${last_login_date}</p>" +
-"	</fieldset>" +
-"	<div class='centered smalltopmargin'>" +
-"		<button class='bluebutton right smalltopmargin' onclick='shopshark.signOut()'>Sign Out</button>" +
-"	</div>" +
-"</div>"		
-);
+/**
+ * SHOPSHARK FUNCTIONALITY
+ */
 
 var shopshark = shopshark
  || {
@@ -248,7 +63,8 @@ var shopshark = shopshark
 		// Add products.
 		$('#main_content').empty();
 		if(prodList.products.size > 0){
-			$.tmpl("product_thumb", prodList.products.product).appendTo("#main_content");
+			prodList.products.loc = locale.template.product_thumb;
+			$.tmpl("product_thumb", prodList.products).appendTo("#main_content");
 		} else {
 			$('#main_content').text("No products found.");
 		}
@@ -265,6 +81,7 @@ var shopshark = shopshark
 		if (shopshark.page != page_count){
 			data.next = parseInt(shopshark.page) + 1;
 		}
+		data.loc = locale.template.paginator;
 		$.tmpl("paginator", data).appendTo("#main_content");
 		
 	},
@@ -330,22 +147,16 @@ var shopshark = shopshark
 					var resp = $.xml2json(prodResp);
 					resp.product.category = $("#category_"+resp.product.category_id).text();
 					resp.product.subcategory = $("#subcategory_"+resp.product.category_id+"_"+resp.product.subcategory_id).text();
-		
+					resp.product.loc = locale.template.product;
+					console.info(resp);
 					$("#main_title").html(resp.product.name + " <span>" +resp.product.category + ":" + resp.product.subcategory + "</span>");
 					$("#main_content").empty();
 					$.tmpl("product", resp.product).appendTo("#main_content");
-					test = resp.product;
 					if(resp.product.actors){
-					$.get("youtube/?q="+escape(resp.product.name + " HD trailer")+"&lang=es&setSafeSearch=STRICT&max-results=10&v=2&fields=entry(title,media:group(yt:videoid),yt:noembed)", function(resp){
-						var video = $(resp).find("entry").not('entry:has(yt\\:noembed)').first();
-						var videoid = video.find('yt\\:videoid').text();
-						
-						var iframe = 	"	<iframe class='youtube-player' width='640' height='385' src='http://www.youtube.com/embed/" + videoid +"?autoplay=1' frameborder='0'>" +
-										"		Your browser does not support iframes." +
-										"	</iframe>";
-						
-						$("#gallery").append($(iframe));
-					});
+						$.ajax({
+							url: "youtube/?q="+escape(resp.product.name + " HD trailer")+"&lang=es&setSafeSearch=STRICT&max-results=10&v=2&fields=entry(title,media:group(yt:videoid),yt:noembed)",
+							success: shopshark.loadVideo
+						});
 					} else {
 						//GOOGLE API DOES NOT HAVE THE BOOKS for preview.
 						/*
@@ -363,6 +174,17 @@ var shopshark = shopshark
 				}
 			);
 		}
+	},
+	
+	loadVideo: function(resp){
+			var video = $(resp).find("entry").not('entry:has("[nodeName=yt:noembed]")').first();
+			var videoid = video.find("[nodeName=yt:videoid]").text();
+			
+			var iframe = 	"	<iframe class='youtube-player' width='640' height='385' src='//www.youtube.com/embed/" + videoid +"?autoplay=1' frameborder='0'>" +
+							"		Your browser does not support iframes." +
+							"	</iframe>";
+			
+			$("#gallery").append($(iframe));
 	},
 	
 	signIn: function(username, password){
@@ -408,7 +230,9 @@ var shopshark = shopshark
 	
 };
 
-
+/**
+ * ON DOCUMENT READY SETUP.
+ */
 $(document).ready(function(){
 	
 	//Set language from cookie
@@ -425,6 +249,13 @@ $(document).ready(function(){
 		  $(window).trigger( 'hashchange' );
 	});
 	
+	//Set some language code.
+	$('#l_search').text(locale.web.l_search);
+	$('#l_language').text(locale.web.l_language);
+	$('#b_asc').text(locale.web.b_asc);
+	$('#b_desc').text(locale.web.b_desc);
+	$('#p_copyright').text(locale.web.p_copyright);
+	
 	//Sign in.
 	if($.cookie("token")){
 		var data = {
@@ -435,15 +266,13 @@ $(document).ready(function(){
 		};
 		$.tmpl("userNav", data).appendTo("#user");
 	} else {
-		$.tmpl("signIn", {}).appendTo("#user");
+		$.tmpl("signIn", locale.template.signIn).appendTo("#user");
 		$('#user').find('form').bind('submit', function(e){
 			var l = $.deparam($(this).serialize());
 			shopshark.signIn(l.username,l.password);
 			return false;
 		});
 	}
-	
-	
 
 	//Search bar.
 	$('input[name=query]').keyup(function(event){
@@ -452,6 +281,10 @@ $(document).ready(function(){
 	});
 	
 	//Sort
+	
+	//MyAccount
+	// setup ul.tabs to work as tabs for each div directly under div.panes
+	$("ul.tabs").tabs("div.panes > div");
 	
 
 	  $('a[href^=#]').live( 'click', function(e){

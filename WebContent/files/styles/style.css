@@ -290,7 +290,7 @@ hr
 /* SORTBUTTONS */
 .sortbutton
 	{position:relative;float:right;height:23px;margin-top:2px;cursor:pointer;line-height:22px;width:auto;
-	text-shadow: #cdd2d7 0px 1px 0px;margin-right:25px; font-weight:normal;text-decoration:none;color:#69747d;}
+	text-shadow: #cdd2d7 0px 1px 0px;margin-left:25px; font-weight:normal;text-decoration:none;color:#69747d;}
 .sortbutton .left 
 	{background:transparent;height:23px;width:9px;position:absolute;left:-9px;top:0;}
 .sortbutton .right
@@ -303,7 +303,7 @@ hr
 	{background-image:url('../images/sprite.gif');background-position:right 816px;}
 .sortbutton_selected
 	{position:relative;float:right;height:23px;background-image:url('../images/sprite.gif');background-position:bottom;
-	cursor:pointer;line-height:22px;width:auto;text-shadow: #cdd2d7 0px 1px 0px;margin-right:25px;
+	cursor:pointer;line-height:22px;width:auto;text-shadow: #cdd2d7 0px 1px 0px;margin-left:25px;
 	color:#fff;text-shadow: #54595d 0px 1px 0px;font-weight:bold; text-decoration:none;margin-top:2px;}
 .sortbutton_selected .left 
 	{background-image:url('../images/sprite.gif');background-position:left 48px;
@@ -331,7 +331,7 @@ hr
 .greybutton .right
 	{background-image:url('../images/sprite.gif');background-position:right 212px;height:24px;width:4px;position:absolute;right:-4px;top:0;}
 #bottombar .greybutton 
-	{position:relative;float:left;}
+	{position:relative;}
 .product .buttons .greybutton 
 	{position:relative;float:left;}
 

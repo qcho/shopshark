@@ -3,13 +3,17 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title>ShopShark - Browsing all products</title>
 	
-	<link href="files/styles/style.css" rel="stylesheet" type="text/css" media="screen">	
+	<link href="files/styles/style.css" rel="stylesheet" type="text/css" media="screen">
+	<link href="files/styles/tabs.css" rel="stylesheet" type="text/css" media="screen">
+		
 	<script src="files/js/lib/jquery-1.4.2.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.xml2json.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.tmpl.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.cookie.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.ba-bbq.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.tools.min.js" type="text/javascript"></script>
+	<script src="files/js/lang/locale-es.js" type="text/javascript"></script>
+	<script src="files/js/templates.js" type="text/javascript"></script>
 	<script src="files/js/client.js" type="text/javascript"></script>
 	<script src="files/js/shopshark.js" type="text/javascript"></script>
 <!--  
@@ -151,7 +155,7 @@
 						<select name="language"><option></option></select>
 					</div>
 				</form>
-				<p>Language </p>
+				<p id="l_language">Language:</p>
 			</div>
 			<div id="sorting">
 				<form action="" method="get" accept-charset="utf-8">
@@ -162,12 +166,12 @@
 					<a href="#order=DESC" class="sortbutton">
 						<span class="left"></span>
 						<span class="right"></span>
-						Sort Desc
+						<span id="b_desc">Desc</span>
 					</a>
 					<a href="#order=ASC" class="sortbutton_selected">
 						<span class="left"></span>
 						<span class="right"></span>
-						Sort Asc
+						<span id="b_asc">Asc</span>
 					</a>
 			</div>
 		</div>
@@ -212,8 +216,23 @@
 					<h3 id="main_title"></h3>
 				</div>
 				<div id="main_content">
-					<div class="centered">
+					<div class="centered" style="display:none;">
 						<img src="files/images/loading.gif" alt="loading...">
+					</div>
+					<div>
+						<!-- the tabs -->
+						<ul class="tabs">
+							<li><a href="#">My Details</a></li>
+							<li><a href="#">Orders</a></li>
+							<li><a href="#">other...</a></li>
+						</ul>
+						
+						<!-- tab "panes" -->
+						<div class="panes">
+							<div>First tab content. Tab contents are called "panes"</div>
+							<div>Second tab content</div>
+							<div>Third tab content</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -223,8 +242,8 @@
 		<div id="footer">
 			<p>ShopShark Argentina. <a href="http://validator.w3.org/check?uri=referer"><img
         src="http://www.w3.org/Icons/valid-html401"
-        alt="Valid HTML 4.01 Strict" height="31" width="88"></a><br>All rights reserved.</p>
-			
+        alt="Valid HTML 4.01 Strict" height="31" width="88"></a><br></p>
+        <p id="p_copyright">All rights reserved.</p>
 		</div>
 	</div>	
 </body>
