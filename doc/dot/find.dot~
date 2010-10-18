@@ -1,0 +1,24 @@
+digraph G {
+
+    node[shape=box];
+    ratio=fill;
+    
+    { node[shape=diamond] "En esta pagina?"
+    }
+    
+    { node[shape=ellipse] "Pagina principal"
+                          "Pagina de categoria"
+                          "Pagina de producto"
+    }
+    
+    { node [shape=note color=blue] "NAVEGAR Y ENCONTRAR UN PRODUCTO" }
+    
+  "Pagina principal" -> "Link Categoria (sidebar)" -> "Pagina de categoria" -> "En esta pagina?"
+
+    "En esta pagina?" -> "Pasar pagina" [label="n"]
+    "En esta pagina?" -> "Seleccionar producto" [label="y"]
+    
+    "Pasar pagina" -> "Pagina de categoria"
+    "Seleccionar producto" -> "Pagina de producto"
+    
+}

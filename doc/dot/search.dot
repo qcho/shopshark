@@ -1,0 +1,19 @@
+digraph G {
+
+    node[shape=box];
+    
+    { node[shape=ellipse] "Pagina principal"
+                          "Pagina de producto"
+    }
+    
+    { node [shape=note color=blue] "BUSCAR Y ENCONTRAR UN PRODUCTO" }
+    
+    "Pagina principal" -> "Ingresar consulta (searchbar)" -> 
+    "La lista en el cuerpo de contenido se popula con cada tecla" -> "Aparece?"
+    
+    "Aparece?" -> "No hay stock" [label="n"]
+    "Aparece?" -> "Seleccionar el producto" [label="y"]
+    
+    "Seleccionar el producto" -> "Pagina de producto"
+    
+}
