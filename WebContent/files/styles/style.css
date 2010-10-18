@@ -505,13 +505,13 @@ hr
 
 #productdata .description-wrapper {
 	float: left;
-	width: 80%;
+	width: 70%;
 }
 	
 
 #productdata .button-wrapper {
 	float: right;
-	width: 20%;
+	width: 30%;
 }
 
 #productdata .description-wrapper a {color:#238dea;}

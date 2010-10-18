@@ -1,6 +1,6 @@
 /**
  * SHOPSHARK FUNCTIONALITY
- */
+ */ 
 
 var shopshark = shopshark
  || {
@@ -10,6 +10,16 @@ var shopshark = shopshark
 	order : "ASC",
 	items_per_page : "8",
 	page : "1",
+	
+	formatNumber : function(myNum, numOfDec){
+	     var decimal = 1;
+	     for(i=1; i<=numOfDec;i++){
+	   	  decimal = decimal *10;
+	     };
+	     var formatedNumber = (Math.round(myNum * decimal)/decimal).toFixed(numOfDec);
+	     return formatedNumber;
+	},
+	
 	populateBySearch: function(criteria){
 		if(criteria){
 			$("#main_title").html("Search: <span>" + criteria + "</span>");
@@ -65,25 +75,24 @@ var shopshark = shopshark
 		if(prodList.products.size > 0){
 			prodList.products.loc = locale.template.product_thumb;
 			$.tmpl("product_thumb", prodList.products).appendTo("#main_content");
+			
+			// Add paginator.
+			var page_count = Math.ceil(prodList.products.size/shopshark.items_per_page);
+			var data = {pages: new Array()};
+			for (i=0;i<page_count;i++){
+				data.pages[i]=(i+1==shopshark.page);
+			}
+			if (shopshark.page != 1){
+				data.prev = parseInt(shopshark.page) - 1;
+			}
+			if (shopshark.page != page_count){
+				data.next = parseInt(shopshark.page) + 1;
+			}
+			data.loc = locale.template.paginator;
+			$.tmpl("paginator", data).appendTo("#main_content");
 		} else {
 			$('#main_content').text("No products found.");
 		}
-		
-		// Add paginator.
-		var page_count = Math.ceil(prodList.products.size/shopshark.items_per_page);
-		var data = {pages: new Array()};
-		for (i=0;i<page_count;i++){
-			data.pages[i]=(i+1==shopshark.page);
-		}
-		if (shopshark.page != 1){
-			data.prev = parseInt(shopshark.page) - 1;
-		}
-		if (shopshark.page != page_count){
-			data.next = parseInt(shopshark.page) + 1;
-		}
-		data.loc = locale.template.paginator;
-		$.tmpl("paginator", data).appendTo("#main_content");
-		
 	},
 	
 	populateMenu: function(handler){
@@ -148,7 +157,6 @@ var shopshark = shopshark
 					resp.product.category = $("#category_"+resp.product.category_id).text();
 					resp.product.subcategory = $("#subcategory_"+resp.product.category_id+"_"+resp.product.subcategory_id).text();
 					resp.product.loc = locale.template.product;
-					console.info(resp);
 					$("#main_title").html(resp.product.name + " <span>" +resp.product.category + ":" + resp.product.subcategory + "</span>");
 					$("#main_content").empty();
 					$.tmpl("product", resp.product).appendTo("#main_content");
@@ -168,7 +176,7 @@ var shopshark = shopshark
 						
 						$("#gallery").append($(book));
 						*/
-						var book = "<img src='"+resp.product.image_url+"'></img>"
+						var book = "<img src='"+resp.product.image_url+"'></img>";
 						$("#gallery").append($(book));
 					}
 				}
@@ -225,6 +233,30 @@ var shopshark = shopshark
 				}
 			);
 		
+	},
+	
+	renderCart: function(order_id){
+		$('#loading_cart').show();
+		hci.fetch(hci.GetOrder($.cookie("username"), $.cookie("token"), order_id),function(orderResp){ 
+			shopshark.cartData = $.xml2json(orderResp);
+			var order = shopshark.cartData.order;
+			order.total = 0.0;
+			var count = order.items.item.length;
+			$.each(order.items.item, function(i,v){
+				order.total += parseFloat(v.price) * parseInt(v.count);
+				hci.fetch(
+					hci.GetProduct(v.product_id), function(prodResp){
+						order.items.item[i].name = $(prodResp).find('product name').text();
+						if (--count == 0){
+							order.loc = locale.template.cart;
+							$('#cart').empty();
+							order.total = shopshark.formatNumber(order.total, 2);
+							$.tmpl("cart", order).appendTo("#cart");
+							$('#loading_cart').hide();
+						}
+					});
+			});
+		});
 	}
 	
 	
@@ -233,110 +265,144 @@ var shopshark = shopshark
 /**
  * ON DOCUMENT READY SETUP.
  */
-$(document).ready(function(){
-	
+$(document).ready(function(){	
 	//Set language from cookie
 	if($.cookie("language_id") == null){
 		$.cookie("language_id", "1");
+		$.cookie("language_code", "es");
 	}
 	shopshark.language_id = $.cookie("language_id");
-	shopshark.renderLangSelect();
+	//Set some language locale.
+	$.getScript('files/js/lang/locale-'+shopshark.language_id+'.js', function() {
+		$('#l_search').text(locale.web.l_search);
+		$('#l_language').text(locale.web.l_language);
+		$('#b_asc').text(locale.web.b_asc);
+		$('#b_desc').text(locale.web.b_desc);
+		$('#p_copyright').text(locale.web.p_copyright);
+		$('#l_cart').text(locale.web.l_cart);
+		$('#l_loading').text(locale.web.l_loading);
+		$('#p_noitems').text(locale.web.p_noitems);
 	
-	//Menu
-	shopshark.populateMenu(function(){
-		// Since the event is only triggered when the hash changes, we need to trigger
-		// the event now, to handle the hash the page may have loaded with.
-		  $(window).trigger( 'hashchange' );
-	});
-	
-	//Set some language code.
-	$('#l_search').text(locale.web.l_search);
-	$('#l_language').text(locale.web.l_language);
-	$('#b_asc').text(locale.web.b_asc);
-	$('#b_desc').text(locale.web.b_desc);
-	$('#p_copyright').text(locale.web.p_copyright);
-	
-	//Sign in.
-	if($.cookie("token")){
-		var data = {
-			"user_id" : $.cookie("user_id"),
-			"username" : $.cookie("username"),
-			"name" : $.cookie("name"),
-			"last_login_date" : $.cookie("last_login_date")
-		};
-		$.tmpl("userNav", data).appendTo("#user");
-	} else {
-		$.tmpl("signIn", locale.template.signIn).appendTo("#user");
-		$('#user').find('form').bind('submit', function(e){
-			var l = $.deparam($(this).serialize());
-			shopshark.signIn(l.username,l.password);
-			return false;
+		shopshark.renderLangSelect();
+		
+		//Menu
+		shopshark.populateMenu(function(){
+			// Since the event is only triggered when the hash changes, we need to trigger
+			// the event now, to handle the hash the page may have loaded with.
+			  $(window).trigger( 'hashchange' );
 		});
-	}
+		
+		//Sign in.
+		var token = $.cookie("token");
+		if(token){
+			var data = {
+				"user_id" : $.cookie("user_id"),
+				"username" : $.cookie("username"),
+				"name" : $.cookie("name"),
+				"last_login_date" : $.cookie("last_login_date")
+			};
+			
+			hci.fetch(hci.GetOrderList(data.username, token),function(list){
+				var orders = $(list).find("order status:contains(1)");
+				if (orders.length){
+					order_id = orders.first().parent().attr('id');
+				} else {
+					//create an order.
+					hci.fetch(hci.CreateOrder(data.username, token),function(orderResp){
+					    order_id = orderResp.find('order').attr('id');
+					});
+				}
+				shopshark.renderCart(order_id);
+			});
+			
+			$('a.cart_buy').live('click', function(e){
+				$('#loading_cart').show();
+				var pid = $(this).attr('id').split('_')[1];
+				hci.fetch(hci.AddOrderItem(data.username, token, shopshark.cartData.order.id, pid, "1"),function(orderResp){
+				    console.info(data.username, token, shopshark.cartData, $(orderResp).text());
+				    shopshark.renderCart(shopshark.cartData.order.id);
+				});
+				
+			});
 
-	//Search bar.
-	$('input[name=query]').keyup(function(event){
-		$.bbq.removeState(['category', 'subcategory', 'product']);
-		$.bbq.pushState('search='+escape(event.currentTarget.value));
-	});
+			
+			
+			
+			$.tmpl("userNav", data).appendTo("#user");
+			
+		} else {
+			$.tmpl("signIn", locale.template.signIn).appendTo("#user");
+			$('#user').find('form').bind('submit', function(e){
+				var l = $.deparam($(this).serialize());
+				shopshark.signIn(l.username,l.password);
+				return false;
+			});
+		}
 	
-	//Sort
+		//Search bar.
+		$('input[name=query]').keyup(function(event){
+			$.bbq.removeState(['category', 'subcategory', 'product']);
+			$.bbq.pushState('search='+escape(event.currentTarget.value));
+		});
+		
+		//Sort
+		
+		//MyAccount
+		// setup ul.tabs to work as tabs for each div directly under div.panes
+		$("ul.tabs").tabs("div.panes > div");
+		
 	
-	//MyAccount
-	// setup ul.tabs to work as tabs for each div directly under div.panes
-	$("ul.tabs").tabs("div.panes > div");
+		  $('a[href^=#]').live( 'click', function(e){
 	
-
-	  $('a[href^=#]').live( 'click', function(e){
-
-		  url = $(this).attr( 'href' ).replace( /^#/, '' );
-		  if(url.indexOf("order")!=-1 || url.indexOf("page")!=-1){
-			  $.bbq.pushState(url);
-		  } else {
-			  //2 means override.
-			  $.bbq.pushState(url,2);
-		  }
-		  
-		  
-		  if (url.indexOf("order") != -1){
-			  $("a.sortbutton_selected").addClass("sortbutton");
-			  $("a.sortbutton_selected").removeClass("sortbutton_selected");
-			  $("a[href=#"+url+"]").addClass('sortbutton_selected');
-			  shopshark.order = $.bbq.getState('order');
-		  }
-	    
-	    // And finally, prevent the default link click behavior by returning false.
-	    return false;
-	  });
-	  
-	  // Bind an event to window.onhashchange that, when the history state changes,
-	  // iterates over all .bbq widgets, getting their appropriate url from the
-	  // current state. If that .bbq widget's url has changed, display either our
-	  // cached content or fetch new content to be displayed.
-	  $(window).bind( 'hashchange', function(e) {
-		  
-		  if(e.getState('page')){
-			  shopshark.page = e.getState('page');
-		  } else {
-			  shopshark.page = "1";
-		  }
-		  
-		  //PARSE CONTENT.
-		  if(e.getState('product')){
-			  shopshark.renderProductInfo(e.getState('product'));
-		  } else if(e.getState('search')){
-			  shopshark.populateBySearch(e.getState('search'));
-			  
-			  //set input value if coming from url.
-			  if($('input[name=query]').val() == ""){
-				  $('input[name=query]').val(e.getState('search'));
-			  }
-		  } else if(e.getState('category')){
-			  if(e.getState('subcategory')){
-				  shopshark.populateBySubcategory(e.getState('category'),e.getState('subcategory'));
+			  url = $(this).attr( 'href' ).replace( /^#/, '' );
+			  if(url.indexOf("order")!=-1 || url.indexOf("page")!=-1){
+				  $.bbq.pushState(url);
 			  } else {
-				  shopshark.populateByCategory(e.getState('category'));
+				  //2 means override.
+				  $.bbq.pushState(url,2);
 			  }
-		  }
-	  });
+			  
+			  
+			  if (url.indexOf("order") != -1){
+				  $("a.sortbutton_selected").addClass("sortbutton");
+				  $("a.sortbutton_selected").removeClass("sortbutton_selected");
+				  $("a[href=#"+url+"]").addClass('sortbutton_selected');
+				  shopshark.order = $.bbq.getState('order');
+			  }
+		    
+		    // And finally, prevent the default link click behavior by returning false.
+		    return false;
+		  });
+		  
+		  // Bind an event to window.onhashchange that, when the history state changes,
+		  // iterates over all .bbq widgets, getting their appropriate url from the
+		  // current state. If that .bbq widget's url has changed, display either our
+		  // cached content or fetch new content to be displayed.
+		  $(window).bind( 'hashchange', function(e) {
+			  
+			  if(e.getState('page')){
+				  shopshark.page = e.getState('page');
+			  } else {
+				  shopshark.page = "1";
+			  }
+			  
+			  //PARSE CONTENT.
+			  if(e.getState('product')){
+				  shopshark.renderProductInfo(e.getState('product'));
+			  } else if(e.getState('search')){
+				  shopshark.populateBySearch(e.getState('search'));
+				  
+				  //set input value if coming from url.
+				  if($('input[name=query]').val() == ""){
+					  $('input[name=query]').val(e.getState('search'));
+				  }
+			  } else if(e.getState('category')){
+				  if(e.getState('subcategory')){
+					  shopshark.populateBySubcategory(e.getState('category'),e.getState('subcategory'));
+				  } else {
+					  shopshark.populateByCategory(e.getState('category'));
+				  }
+			  }
+		  });
+	});
 	});

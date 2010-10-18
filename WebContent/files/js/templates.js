@@ -16,7 +16,7 @@ $.template("product_thumb",
 "					<span class='left'></span><span class='right'></span>" +
 "					+Info" +
 "				</a>" +
-"				<a class='greenbutton' onclick='enstore.cart.addItem('256d6b9dd3dd46d7ab65aa45e3db7486')'>" +
+"				<a class='greenbutton cart_buy' id='buy_${$value.id}'>" +
 "					<span class='left'></span><span class='right'></span>" +
 "					<span class='formattedCurrency'>$${$value.price}</span>" +
 "				</a>" +
@@ -130,10 +130,10 @@ $.template("product",
 "		</p>" +
 "	</div>" +
 "	<div class='button-wrapper'>" +
-"		<a class='greenbutton_big'>" +
-"		<span class='left'></span><span class='right'></span>" +
-"		${loc.b_buy} <span class='for'>${loc.b_for}</span> <span class='formattedCurrency'>$${price}</span>" +
-"	</a>" +
+"		<a class='greenbutton_big cart_buy' id='buy_${id}'>" +
+"			<span class='left'></span><span class='right'></span>" +
+"			${loc.b_buy} <span class='for'>${loc.b_for}</span> <span class='formattedCurrency'>$${price}</span>" +
+"		</a>" +
 "	</div>" +
 "</div>" +
 "<div id='bottombar'>" +
@@ -180,4 +180,24 @@ $.template("userNav",
 "		<button class='bluebutton right smalltopmargin' onclick='shopshark.signOut()'>Sign Out</button>" +
 "	</div>" +
 "</div>"		
+);
+
+$.template("cart",
+"	<table class='alternating' cellpadding='0' cellspacing='0' border='0'>" +
+"		<tbody class='chain-element' id='lines'>" +
+"		{{each items.item}}" +
+"			<tr class='item chain-item chain-element'>" +
+"				<td><input class='quantity' value='${$value.count}' type='text'></td>" +
+"				<td class='name'><a href='#product=${$value.product_id}'>${$value.name}</a></td>" +
+"				<td class='subtotal formattedCurrency'>$${$value.price}</td>" +
+"			</tr>" +
+"		{{/each}}" +
+"		</tbody>" +
+"	</table>" +
+"	<div class='totals'>" +
+"	<span class='title'>${loc.b_subtotal}</span>" +
+"	<span class='subtotal formattedCurrency'>$${total}</span>" +
+"	</div>" +
+"	<div id='cart_clear' class='clickable'>${loc.b_clear}</div>" +
+"	<div id='cart_checkout' class='clickable'>${loc.b_checkout}</div>"
 );

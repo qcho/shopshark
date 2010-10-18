@@ -1,24 +1,27 @@
 var locale = {
-	id : "1",
+	id : "2",
 	code : "es",
 	web : {
 		"l_search" : "Buscar",
 		"l_language" : "Cambiar idioma: ",
 		"b_asc" : "Ordenar Ascendente",
 		"b_desc" : "Ordenar Descendente",
-		"p_copyright" : "Todos los derechos reservados."
+		"p_copyright" : "Todos los derechos reservados.",
+		"l_cart" : "Carrito",
+		"p_noitems": "No hay items en el carrito.",
+		"l_loading" : "Procesando"
 	},
 	template : {
 		product_thumb : {
 			"l_sales_rank" : "Ranking de ventas"
 		},
-		paginator:{
+		paginator : {
 			"l_prev" : "Anterior",
 			"l_next" : "Siguiente"
 		},
 		product : {
-			"l_category": "Categoría",
-			"l_subcategory": "Subcategoría",
+			"l_category" : "Categoría",
+			"l_subcategory" : "Subcategoría",
 			"l_name" : "Nombre",
 			"l_sales_rank" : "Ranking de Ventas",
 			"l_actors" : "Actores",
@@ -27,7 +30,7 @@ var locale = {
 			"l_subtitles" : "Subtítulos",
 			"l_region" : "Region",
 			"l_aspect_ratio" : "Proporciones",
-			"l_number_discs": "Número de discos",
+			"l_number_discs" : "Número de discos",
 			"l_release_date" : "Fecha de lanzamiento",
 			"l_run_time" : "Duración",
 			"l_ASIN" : "ASIN(Código de identificación única de Amazon)",
@@ -37,21 +40,27 @@ var locale = {
 			"l_ISBN_10" : "ISBN 10",
 			"l_ISBN_13" : "ISBN 13",
 			"b_buy" : "Comprar",
-			"b_por" : "por",
-			"b_back": "Ir",
-			"b_to": "a"
+			"b_for" : "por",
+			"b_back" : "Ir",
+			"b_to" : "a"
 		},
 		signIn : {
 			"l_signIn" : "Autenticarse",
-			"l_username": "Usuario",
-			"l_password": "Contraseña",
-			"b_login": "Iniciar Sesión",
-			"l_register": "No estas registrado?",
-			"b_register": "Registrarse"
+			"l_username" : "Usuario",
+			"l_password" : "Contraseña",
+			"b_login" : "Iniciar Sesión",
+			"l_register" : "No estas registrado?",
+			"b_register" : "Registrarse"
+		},
+
+		signOut : {
+
 		},
 		
-		signOut : {
-			
+		cart : {
+			"b_subtotal" : "Subtotal",
+			"b_checkout" : "Confirmar",
+			"b_clear" : "Limpiar"
 		}
 	},
 	error : {
