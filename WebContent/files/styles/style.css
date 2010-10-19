@@ -122,7 +122,7 @@ hr
 #cart tfoot td
 	{border-top:1px solid #cfd3d6;color:#20252a;font-weight:bold;font-size:16px;padding:15px 0;}
 #cart td input
-	{width:20px;font-size:13px;font-weight:bold;color:#20252a;margin-right:10px;}
+	{width:30px;font-size:13px;font-weight:bold;color:#20252a;margin-right:10px;}
 #cart .subtotal.
 	{text-align:right;color:#20252a;font-weight:bold;}
 #cart .total.
@@ -313,8 +313,12 @@ hr
 	height:23px;width:9px;position:absolute;right:-9px;top:0;}
 
 /* BUTTONS IN PRODUCTS */
-.product .buttons
+.products .buttons
 	{position:absolute;height:25px;bottom:0;left:5px;}
+	
+/* BUTTONS IN CART */
+#cart .buttons
+	{float:right;}
 
 /* GREY BUTTON */
 
@@ -332,7 +336,7 @@ hr
 	{background-image:url('../images/sprite.gif');background-position:right 212px;height:24px;width:4px;position:absolute;right:-4px;top:0;}
 #bottombar .greybutton 
 	{position:relative;}
-.product .buttons .greybutton 
+.buttons .greybutton 
 	{position:relative;float:left;}
 
 .greybutton:hover {background-position:left 541px;}
@@ -352,11 +356,11 @@ hr
 
 * html .greenbutton {line-height:24px;}
 
-.product .buttons .greenbutton
-	{position:relative;float:left;margin-left:15px;}
+.buttons .greenbutton
+	{position:relative;float:left;margin-left:15px;text-decoration:none}
 
 .greenbutton .formattedCurrency
-	{text-decoration:none;padding:0 5px;}
+	{padding:0 5px;}
 
 .greenbutton .left
 	{background-image:url('../images/sprite.gif');background-position:left 100px;height:24px;width:4px;position:absolute;top:0;left:-4px;}
@@ -377,7 +381,7 @@ hr
 .bluebutton
 	{background-image:url('../images/sprite.gif');background-position:left 956px;
 	height:24px;font-weight:bold;cursor:pointer;line-height:24px;padding:0 3px;
-	color:#364b57;text-shadow:#b6d4e3 0px 1px 0px;display:inline-block;position:relative;}
+	color:#364b57;text-shadow:#b6d4e3 0px 1px 0px;display:inline-block;position:relative;text-decoration:none;}
 
 .bluebutton .left
 	{background-image:url('../images/sprite.gif');background-position:left 930px;height:24px;width:4px;position:absolute;top:0;left:-4px;}
@@ -399,7 +403,7 @@ hr
 .greenbutton_big
 	{background-image:url('../images/sprite.gif');background-position:left 130px;
 	height:28px;font-weight:bold;cursor:pointer;line-height:28px;
-	color:#336716;text-shadow:#dceccb 0px 1px 0px;}
+	color:#336716;text-shadow:#dceccb 0px 1px 0px;position:relative;float:right;padding:0 5px;}
 
 .product .greenbutton_big
 	{position:relative;float:left;margin-left:15px;}
@@ -526,9 +530,9 @@ hr
 #productdata h4:first-child {margin-top:0;}
 #productdata h5:first-child {margin-top:0;}
 #productdata h6:first-child {margin-top:0;}
-	
+
 #productdata .greenbutton_big
-	{position:relative;float:left;margin-left:5px;margin-bottom:5px;padding:0 5px;margin-top:20px;}
+	{margin-left:5px;margin-bottom:5px;margin-top:20px;}
 
 #productdata .greenbutton_big .for
 	{font-weight:normal;}
@@ -627,4 +631,65 @@ hr
 #gallery iframe {
 	width: 640px;
 	height: 385px;
+}
+
+/* REGISTER FORM */
+form.cmxform fieldset {
+	margin-bottom: 10px;
+}
+
+form.cmxform legend {
+	padding: 0 2px;
+	font-weight: bold;
+	_margin: 0 -7px; /* IE Win */
+}
+
+form.cmxform label {
+	display: inline-block;
+	line-height: 1.8;
+	vertical-align: top;
+	cursor: hand;
+}
+
+form.cmxform fieldset p {
+	list-style: none;
+	padding: 5px;
+	margin: 0;
+}
+
+form.cmxform fieldset fieldset {
+	border: none;
+	margin: 3px 0 0;
+}
+
+form.cmxform fieldset fieldset legend {
+	padding: 0 0 5px;
+	font-weight: normal;
+}
+
+form.cmxform fieldset fieldset label {
+	display: block;
+	width: auto;
+}
+
+form.cmxform label { 
+	width: 200px; 
+	color: #20252A;
+	text-align: right;
+} /* Width of labels */
+form.cmxform fieldset fieldset label { margin-left: 203px; } /* Width plus 3 (html space) */
+form.cmxform label.error {
+	margin-left: 20px;
+	width: 220px;
+	color: red;
+}
+
+form.cmxform label span.hint{
+	display: block;
+	font-size: 80%;
+	color: #616568;
+}
+
+form.cmxform input.submit {
+	margin-left: 103px;
 }

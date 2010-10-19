@@ -166,13 +166,21 @@ var hci = hci || {
 	},
 
 	CreateAccount : function(username, name, password, email, birth_date) {
-		var account = "<account>" + "<username>" + username + "</username>" + "<name>" + name + "</name>" + "<password>" + password + "</password>" + "<email>" + email + "</email>" + "<birth_date>" + birth_date + "</birth_date>" + "</account>";
+		var postData = this._queryParams( {			
+			"account" : "<account>" + 
+							"<username>" + username + "</username>" + 
+							"<name>" + name + "</name>" + 
+							"<password>" + password + "</password>" + 
+							"<email>" + email + "</email>" + 
+							"<birth_date>" + birth_date + "</birth_date>" + 
+						"</account>"
+		});
 		var queryStr = this._queryString( {
 			"method" : "CreateAccount"
 		});
 		return {
 			type : "POST",
-			data : account,
+			data : postData,
 			url : [ "Security.groovy", queryStr ]
 		};
 	},
@@ -190,13 +198,21 @@ var hci = hci || {
 	},
 
 	UpdateAccount : function(username, authentication_token, name, email, birth_date) {
-		var account = "<account>" + "<name>" + name + "</name>" + "<email>" + email + "</email>" + "<birth_date>" + birth_date + "</birth_date>" + "</account>";
+		var postData = this._queryParams( {
+			"username" : username,
+			"authentication_token" : authentication_token,
+			"account" : "<account>" + 
+							"<name>" + name + "</name>" + 
+							"<email>" + email + "</email>" + 
+							"<birth_date>" + birth_date + "</birth_date>" + 
+						"</account>"
+		});
 		var queryStr = this._queryString( {
-			"method" : "UpdateAccount"
+			"method" : "UpdateAccount",
 		});
 		return {
 			type : "POST",
-			data : "account=" + account,
+			data : postData,
 			url : [ "Security.groovy", queryStr ]
 		};
 	},

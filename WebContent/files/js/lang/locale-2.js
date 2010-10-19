@@ -9,7 +9,8 @@ var locale = {
 		"p_copyright" : "Todos los derechos reservados.",
 		"l_cart" : "Carrito",
 		"p_noitems": "No hay items en el carrito.",
-		"l_loading" : "Procesando"
+		"l_loading" : "Procesando",
+		"l_newaccount" : "Crear Cuenta"
 	},
 	template : {
 		product_thumb : {
@@ -53,15 +54,45 @@ var locale = {
 			"b_register" : "Registrarse"
 		},
 
-		signOut : {
-
+		userNav : {
+			"b_signout" : "Cerrar sessión"
 		},
 		
 		cart : {
 			"b_subtotal" : "Subtotal",
 			"b_checkout" : "Confirmar",
-			"b_clear" : "Limpiar"
+			"b_clear" : "Limpiar",
+			"p_loading" : "cargando..."
+		},
+		register:{
+			l_register: "Registrarse",
+			l_username: "Usuario",
+			l_password: "Contraseña",
+			l_name: "Nombre",
+			l_email: "Email",
+			l_date: "Fecha",
+			h_required: "requerido",
+			b_submit: "Registrar"
 		}
+	},
+	validator : {
+		  required: "Este campo es obligatorio.",
+		  remote: "Por favor, rellena esta campo.",
+		  email: "Por favor, escribe una dirección de correo válida",
+		  url: "Por favor, escribe una URL válida.",
+		  date: "Por favor, escribe una fecha válida.",
+		  dateISO: "Por favor, escribe una fecha (ISO) válida. (yyyy-mm-dd)",
+		  number: "Por favor, escribe un número entero válido.",
+		  digits: "Por favor, escribe sólo dígitos.",
+		  creditcard: "Por favor, escribe un número de tarjeta válido.",
+		  equalTo: "Por favor, escribe el mismo valor de nuevo.",
+		  accept: "Por favor, escribe una valor con una extensión aceptada.",
+		  maxlength: $.validator.format("Por favor, no escribas más de {0} caracteres."),
+		  minlength: $.validator.format("Por favor, no escribas menos de {0} caracteres."),
+		  rangelength: $.validator.format("Por favor, escribe un valor entre {0} y {1} caracteres."),
+		  range: $.validator.format("Por favor, escribe un valor entre {0} y {1}."),
+		  max: $.validator.format("Por favor, escribe un valor igual o menor que {0}."),
+		  min: $.validator.format("Por favor, escribe un valor igual o mayor que {0}.")
 	},
 	error : {
 		"1" : "La solicitud requiere de un método el cual no fue provisto.",

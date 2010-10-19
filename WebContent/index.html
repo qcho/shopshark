@@ -1,12 +1,14 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html><head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>ShopShark - Browsing all products</title>
+	<title>ShopShark</title>
 	
 	<link href="files/styles/style.css" rel="stylesheet" type="text/css" media="screen">
 	<link href="files/styles/tabs.css" rel="stylesheet" type="text/css" media="screen">
 		
-	<script src="files/js/lib/jquery-1.4.2.js" type="text/javascript"></script>
+	<script src="files/js/lib/jquery-1.4.3.min.js" type="text/javascript"></script>
+	<script src="files/js/lib/jquery.metadata.js" type="text/javascript"></script>
+	<script src="files/js/lib/jquery.validate.pack.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.xml2json.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.tmpl.js" type="text/javascript"></script>
 	<script src="files/js/lib/jquery.cookie.js" type="text/javascript"></script>
@@ -15,133 +17,6 @@
 	<script src="files/js/templates.js" type="text/javascript"></script>
 	<script src="files/js/client.js" type="text/javascript"></script>
 	<script src="files/js/shopshark.js" type="text/javascript"></script>
-<!--  
-	<script id="productTemplate" type="text/x-jquery-tmpl">
-		<div class="product" id="product_${id}">
-			<h4>The Dark Knight <span>dvd</span></h4>
-			<div class="imgholder">
-				<a href="item/">
-					<img src="http://eiffel.itba.edu.ar/hci/service/images/004.jpg" class="productimg" height="104" width="119">
-				</a>
-			</div>
-			<div class="description">
-				<div class="wrap">
-					Bhaise Ick likes his designs really simple and really boring. This clock ...
-				</div>
-				<div class="buttons">
-					<a href="http://examplestore.enstore.com/item/a-clock" class="greybutton">
-						<span class="left"></span><span class="right"></span>
-						Info
-					</a>
-					<a class="greenbutton" onclick="enstore.cart.addItem('256d6b9dd3dd46d7ab65aa45e3db7486')">
-						<span class="left"></span><span class="right"></span>
-						<span class="formattedCurrency">$49.90</span>
-					</a>
-					<span class="in_cart">
-						<span class="totalincart">1</span> in<br>cart
-					</span>
-				</div>
-			</div>
-		</div>
-	</script>
-
-	<script type="text/javascript" charset="utf-8">
-			
-		function showImage(image) {
-			$("#fullimage").attr('src', image);
-		};
-		
-		
-		
-		// Toggle white overlays for the small featured products images
-		$(document).ready(function () {
-			
-			// sort variations if we have em.
-			$("#variations-table").tablesorter({sortList: [[1,0]] }); 
-		
-			var activeOverlay = $(".no_overlay");
-			var featured_products_name = ""
-			
-			$(".imgholder_small").click(function(){
-				
-				var overlay = $(this).children("#white_overlay");
-				
-				if (activeOverlay != null)
-					activeOverlay.toggleClass("no_overlay")
-					
-				overlay.toggleClass("no_overlay");
-				activeOverlay = overlay
-
-				productUuid = $(this).attr("id");
-				productPrice = $(this).children("#product_info_"+productUuid+"").text();
-				productName = $(this).children("#product_name_"+productUuid+"").text();
-				productBrand = $(this).children("#product_brand_"+productUuid+"").text();
-				
-				$("#product_price").text(productPrice)
-				$("#product_name").text(productName)
-				$("#product_brand").text(productBrand)
-
-				small_featured_image_url = $(this).children(".featured_product_images").attr("src");
-				big_featured_image_url = small_featured_image_url.split("?")[0];
-				big_featured_image_url += "?width=534&height=400&crop=1";
-
-				$("#fullimage_featured").attr("src", big_featured_image_url);
-				$("#imgholder_first .feature_link").attr("href", "/item/" + $(this).attr("id") )
-			});
-		});
-
-		function addVariation() {
-			var str = $("input:checked").val();
-			if (str == null) {
-				alert("Please make your selection in the drop down box.")
-			} else {
-				enstore.cart.addItem(str);
-			};
-		};
-	
-		function backToShop() {
-			var url = document.referrer.indexOf("")
-			if (url != -1) {
-				window.location.href=document.referrer
-			} else {
-				window.location.href=""
-			}
-		};
-	
-		enstore.cart.addListener('preFetch', function() {
-			$("#loading_cart").show();
-		})
-
-		enstore.cart.addListener('postRender', function() {
-			$("#loading_cart").fadeOut("fast");
-				
-			// $(".in_cart").each(function() {
-			// 		
-			// 	var totalInCart = 0;
-			// 	var buttonProductUUID = $(this).parent().parent().parent().attr("id");
-			// 	
-			// 	$.each(enstore.cart.products, function(i, product) {
-			// 		if (product.productUUID == buttonProductUUID) {
-			// 			totalInCart += parseInt(product.quantity);
-			// 		}
-			// 	});
-			// 		
-			// 	if (totalInCart > 0) {
-			// 		$(this).children(".totalincart").html(totalInCart);
-			// 		if ($.browser.msie){
-			// 			$(this).show();
-			// 		} else {
-			// 		$(this).fadeIn();
-			// 		}
-			// 	} else {
-			// 		$(this).fadeOut();
-			// 	}	
-			// 	
-			// });
-		});
-
-	</script>
--->
 </head>
 
 <body>
@@ -184,9 +59,6 @@
 				</div>
 				<h4><span style="display: none;" id="loading_cart"><span id="l_loading">Loading</span></span><span id="l_cart">Cart</span></h4>
 				<div class="chain-element" id="cart">
-					<div id="empty_cart">
-					<p id="">No items in cart.</p>
-				</div>
 				</div>
 				<!-- MENU -->	
 				<div id="categories" class="bbq">	
@@ -198,23 +70,8 @@
 					<h3 id="main_title"></h3>
 				</div>
 				<div id="main_content">
-					<div class="centered" style="display:none;">
+					<div class="centered">
 						<img src="files/images/loading.gif" alt="loading...">
-					</div>
-					<div>
-						<!-- the tabs -->
-						<ul class="tabs">
-							<li><a href="#">My Details</a></li>
-							<li><a href="#">Orders</a></li>
-							<li><a href="#">other...</a></li>
-						</ul>
-						
-						<!-- tab "panes" -->
-						<div class="panes">
-							<div>First tab content. Tab contents are called "panes"</div>
-							<div>Second tab content</div>
-							<div>Third tab content</div>
-						</div>
 					</div>
 				</div>
 			</div>

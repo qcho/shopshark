@@ -137,7 +137,6 @@ $.template("product",
 "	</div>" +
 "</div>" +
 "<div id='bottombar'>" +
-
 "	<a href='#category=${category_id}' class='bluebutton'>" +
 "		<span class='left'></span><span class='right'></span>" +
 "		${loc.b_back} <span>${loc.b_to}</span> ${category}" +
@@ -157,19 +156,22 @@ $.template("signIn",
 "				<input id='password' name='password' type='password'>" +
 "			</div>" +
 "			<div class='centered'>" +
-"				<input class='greenbutton smalltopmargin' name='submit' type='submit' value='${b_login}'>" +
+"				<input class='greenbutton_big smalltopmargin' name='submit' type='submit' value='${b_login}'>" +
 "			</div>" +
 "		</form>" +
 "	</fieldset>" +
 "	<div class='centered smalltopmargin'>" +
 "		${l_register}" +
-"		<button class='bluebutton right smalltopmargin'>${b_register}</button>" +
+"		<a href='#register=reg' class='bluebutton'>" +
+"			<span class='left'></span><span class='right'></span>" +
+"			${b_register}" +
+"		</a>" +
 "	</div>" +
 "</div>"		
 );
 
 $.template("userNav",
-"<div id='signIn'>" +
+"<div id='userNav'>" +
 "	<fieldset>" +
 "		<legend>User</legend>" +
 "		<p>${username}</p>" +
@@ -177,7 +179,10 @@ $.template("userNav",
 "		<p>${last_login_date}</p>" +
 "	</fieldset>" +
 "	<div class='centered smalltopmargin'>" +
-"		<button class='bluebutton right smalltopmargin' onclick='shopshark.signOut()'>Sign Out</button>" +
+"		<a href='#logout=out' class='bluebutton'>" +
+"			<span class='left'></span><span class='right'></span>" +
+"			${loc.b_signout}" +
+"		</a>" +
 "	</div>" +
 "</div>"		
 );
@@ -187,8 +192,8 @@ $.template("cart",
 "		<tbody class='chain-element' id='lines'>" +
 "		{{each items.item}}" +
 "			<tr class='item chain-item chain-element'>" +
-"				<td><input class='quantity' value='${$value.count}' type='text'></td>" +
-"				<td class='name'><a href='#product=${$value.product_id}'>${$value.name}</a></td>" +
+"				<td><input class='quantity' id='count_${$value.product_id}' value='${$value.count}' type='text'></td>" +
+"				<td class='name'><a href='#product=${$value.product_id}'>${loc.p_loading}</a></td>" +
 "				<td class='subtotal formattedCurrency'>$${$value.price}</td>" +
 "			</tr>" +
 "		{{/each}}" +
@@ -198,6 +203,66 @@ $.template("cart",
 "	<span class='title'>${loc.b_subtotal}</span>" +
 "	<span class='subtotal formattedCurrency'>$${total}</span>" +
 "	</div>" +
-"	<div id='cart_clear' class='clickable'>${loc.b_clear}</div>" +
-"	<div id='cart_checkout' class='clickable'>${loc.b_checkout}</div>"
+"	<div class='buttons'>" +
+"		<a href='#clear=${id}' class='greybutton'>" +
+"			<span class='left'></span><span class='right'></span>" +
+"			${loc.b_clear}" +
+"		</a>" +
+"		<a href='#checkout=${id}' class='greenbutton'>" +
+"			<span class='left'></span><span class='right'></span>" +
+"			${loc.b_checkout}" +
+"		</a>" +
+"		<span class='in_cart'>" +
+"			<span class='totalincart'>1</span> in<br>cart" +
+"		</span>" +
+"	</div>"
+);
+
+$.template("register",
+
+"<div id='register'>" +
+"	<form class='cmxform' method='post' action=''>" +
+"		<fieldset>" +
+"			<legend>${loc.l_register}</legend>" +
+"			<p>" +
+"				<label for='cusername'>${loc.l_username} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cusername' name='username' class='{required:true, minlength:1, maxlength:15}' />" +
+"			</p>" +
+"			<p>" +
+"				<label for='cpassword'>${loc.l_password} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cpassword' name='password' type='password' class='{required:true, minlength:8, maxlength:15}' />" +
+"			</p>" +
+"			<p>" +
+"				<label for='cname'>${loc.l_name} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cname' name='name' class='{required:true, minlength:1, maxlength:80}' />" +
+"			</p>" +
+"			<p>" +
+"			<label for='cemail'>${loc.l_email} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cemail' name='email' class='{required:true, minlength:1, email:true, maxlength:128}' />" +
+"			</p>" +
+"			<p>" +
+"				<label for='cdate'>${loc.l_date} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cdate' name='dateISO' class='{required:true, minlength:1, dateISO:true, maxlength:128}' />" +
+"			</p>" +
+"			<p>" +
+"				<input class='submit greenbutton_big' type='submit' value='${loc.b_submit}'/>" +
+"			</p>" +
+"		</fieldset>" +
+"	</form>" +
+"</div>"
+);
+
+$.template("myaccount",
+"<div>" +
+"	<ul class='tabs'>" +
+"		<li><a href='#'>My Details</a></li>" +
+"		<li><a href='#'>Orders</a></li>" +
+"		<li><a href='#'>other...</a></li>" +
+"	</ul>" +
+"	<div class='panes'>" +
+"		<div>First tab content. Tab contents are called 'panes'</div>" +
+"		<div>Second tab content</div>" +
+"		<div>Third tab content</div>" +
+"	</div>" +
+"</div>"
 );
