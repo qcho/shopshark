@@ -179,6 +179,58 @@ var shopshark = shopshark || {
 
 		$("#gallery").append($(iframe));
 	},
+	
+	loadUser : function(){
+		var data = {
+				"user_id" : $.cookie("user_id"),
+				"username" : $.cookie("username"),
+				"name" : $.cookie("name"),
+				"last_login_date" : $.cookie("last_login_date")
+			};
+			data.loc = locale.template.userNav;
+			$.tmpl("userNav", data).appendTo("#user");
+	},
+	
+	loadCart : function(){
+		var username = $.cookie('username');
+		var token = $.cookie('token');
+		hci.fetch(hci.GetOrderList(username, token), function(list) {
+			var orders = $(list).find("order status:contains(1)");
+			if (orders.length) {
+				order_id = orders.first().parent().attr('id');
+				shopshark.renderCart(order_id);
+			} else {
+				// Create new Order for user to start shopping.
+				hci.fetch(hci.CreateOrder(username, token), function(orderResp) {
+					order_id = $(orderResp).find('order').attr('id');
+					shopshark.renderCart(order_id);
+				});
+			}
+		});
+
+		$('a.cart_buy').live('click', function(e) {
+			$('#loading_cart').show();
+			var pid = $(this).attr('id').split('_')[1];
+			hci.fetch(hci.AddOrderItem(username, token, shopshark.cartData.order.id, pid, "1"), function(orderResp) {
+				shopshark.renderCart(shopshark.cartData.order.id);
+			});
+
+		});
+	},
+	
+	loadAnonymous : function(){
+		$.tmpl("signIn", locale.template.signIn).appendTo("#user");
+		$('#user').find('form').bind('submit', function(e) {
+			var l = $.deparam($(this).serialize());
+			shopshark.signIn(l.username, l.password);
+			return false;
+		});
+		
+		$('a.cart_buy').live('click', function(e) {
+			var pid = $(this).attr('id').split('_')[1];
+			$.bbq.pushState("#register="+pid, 2);
+		});
+	},
 
 	signIn : function(username, password) {
 		hci.fetch(hci.SignIn(username, password), function(signInResp) {
@@ -221,11 +273,10 @@ var shopshark = shopshark || {
 			var order = shopshark.cartData.order;
 			order.total = 0.0;
 			if (order.items.item) {
-				if ($.type(order.items.item) === 'object') {
+				if (order.items.item && !$.isArray(order.items.item)) {
 					// make it array
 					order.items.item = [ order.items.item ];
 				}
-				;
 
 				$.each(order.items.item, function(i, v) {
 					order.total += parseFloat(v.price) * parseInt(v.count);
@@ -235,12 +286,20 @@ var shopshark = shopshark || {
 				order.total = shopshark.formatNumber(order.total, 2);
 				$.tmpl("cart", order).appendTo("#cart");
 
-				// This could be done better.
+				// Store cart names in cookies so we do not have to call the api
+				// every time.
 				$('#cart').find('a[href^=#product]').each(function(i, v) {
 					var p_id = $(v).attr('href').split('=')[1];
-					hci.fetch(hci.GetProduct(p_id), function(prodResp) {
-						$(v).html($(prodResp).find('name').text());
-					});
+					var name = $.cookie('c_p_' + p_id);
+					if (name) {
+						$(v).html(name);
+					} else {
+						hci.fetch(hci.GetProduct(p_id), function(prodResp) {
+							name = $(prodResp).find('name').text();
+							$.cookie('c_p_' + p_id, name);
+							$(v).html(name);
+						});
+					}
 				});
 
 				// Set changes
@@ -286,14 +345,27 @@ var shopshark = shopshark || {
 	register : function(form) {
 		var u = $.deparam($(form).serialize());
 
-		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.dateISO), function(accResp) {
-			if ($(accResp).find('error').length) {
-				alert(locale.error[$(accResp).find('error').attr('status')]);
+		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.dateISO), function(response) {
+			var error_code = $(response).find('error').attr('status');
+			if (error_code) {
+				alert(locale.error[error_code]);
 			} else {
 				shopshark.signIn(u.username, u.password);
 			}
 		});
 
+	},
+	
+	clearCart: function(order_id){
+		$('#cart').empty();
+		hci.fetch( hci.DeleteOrder($.cookie('username'), $.cookie('token'), order_id), function(response){
+			var error_code = $(response).find('error').attr('status');
+			if (error_code) {
+				alert(locale.error[error_code]);
+			} else {
+				shopshark.loadCart();
+			}
+		});
 	}
 
 };
@@ -303,11 +375,12 @@ var shopshark = shopshark || {
  */
 $(document).ready(function() {
 	// Set language from cookie
-	if ($.cookie("language_id") === null) {
+	if (!$.cookie("language_id")) {
 		$.cookie("language_id", "1");
 	}
 	shopshark.language_id = $.cookie("language_id");
-	// Set some language locale.
+
+	// Load Language.
 	$.getScript('files/js/lang/locale-' + shopshark.language_id + '.js', function() {
 		$('#l_search').text(locale.web.l_search);
 		$('#l_language').text(locale.web.l_language);
@@ -317,101 +390,43 @@ $(document).ready(function() {
 		$('#l_cart').text(locale.web.l_cart);
 		$('#l_loading').text(locale.web.l_loading);
 		$('#p_noitems').text(locale.web.p_noitems);
-
+		// Load validator messages.
 		jQuery.extend(jQuery.validator.messages, locale.validator);
 
 		shopshark.renderLangSelect();
 
 		// Menu
 		shopshark.populateMenu(function() {
-			// Since the event is only triggered when the hash changes, we need
-			// to trigger
-			// the event now, to handle the hash the page may have loaded with.
 			$(window).trigger('hashchange');
 		});
 
-		// Sign in.
+		// Display user or anonymous menu.
 		var token = $.cookie("token");
 		if (token) {
-			var data = {
-				"user_id" : $.cookie("user_id"),
-				"username" : $.cookie("username"),
-				"name" : $.cookie("name"),
-				"last_login_date" : $.cookie("last_login_date")
-			};
-
-			data.loc = locale.template.userNav;
-
-			hci.fetch(hci.GetOrderList(data.username, token), function(list) {
-				var orders = $(list).find("order status:contains(1)");
-				if (orders.length) {
-					order_id = orders.first().parent().attr('id');
-					shopshark.renderCart(order_id);
-				} else {
-					// create an order.
-					hci.fetch(hci.CreateOrder(data.username, token), function(orderResp) {
-						order_id = orderResp.find('order').attr('id');
-						shopshark.renderCart(order_id);
-					});
-				}
-			});
-
-			$('a.cart_buy').live('click', function(e) {
-				$('#loading_cart').show();
-				var pid = $(this).attr('id').split('_')[1];
-				hci.fetch(hci.AddOrderItem(data.username, token, shopshark.cartData.order.id, pid, "1"), function(orderResp) {
-					shopshark.renderCart(shopshark.cartData.order.id);
-				});
-
-			});
-
-			$.tmpl("userNav", data).appendTo("#user");
-
+			shopshark.loadUser();
+			shopshark.loadCart();
 		} else {
-			$.tmpl("signIn", locale.template.signIn).appendTo("#user");
-			$('#user').find('form').bind('submit', function(e) {
-				var l = $.deparam($(this).serialize());
-				shopshark.signIn(l.username, l.password);
-				return false;
-			});
+			shopshark.loadAnonymous();
 		}
 
-		// Search bar.
+		// Automatic Search bar
 		$('input[name=query]').keyup(function(event) {
 			$.bbq.removeState([ 'category', 'subcategory', 'product' ]);
 			$.bbq.pushState('search=' + escape(event.currentTarget.value));
 		});
 
-		// Sort
-
 		// MyAccount
 		// setup ul.tabs to work as tabs for each div directly under div.panes
 		$("ul.tabs").tabs("div.panes > div");
 
-		// UpdateForm
-		$("#register form").validate({
-			submitHandler : function(form) {
-				shopshark.register(form);
-			}
-		});
-
-		// SET LINK CLICK OVERRIDES!
+		// Override click events to enable hashing ie #product=1
 		$('a[href^=#]').live('click', function(e) {
 			url = $(this).attr('href').replace(/^#/, '');
+			console.info('click', url);
 			if (url.indexOf("page") != -1 || url.indexOf("order") != -1) {
 				$.bbq.pushState(url);
-			}
-			if (url.indexOf("register") != -1 || url.indexOf("category") != -1 || url.indexOf("subcategory") != -1 || url.indexOf("search") != -1) {
-				$.bbq.pushState(url, 2);// override
-			}
-			if (url.indexOf("logout") != -1) {
-				shopshark.signOut();
-			}
-			if (url.indexOf("clear") != -1) {
-				shopshark.clearCart();
-			}
-			if (url.indexOf("checkout") != -1) {
-				shopshark.checkoutCart();
+			} else {
+				$.bbq.pushState(url, 2);
 			}
 			return false;
 		});
@@ -424,11 +439,11 @@ $(document).ready(function() {
 		// our
 		// cached content or fetch new content to be displayed.
 		$(window).bind('hashchange', function(e) {
-			
-			if(!window.location.hash){
-				$.bbq.pushState('category=1',2);
+
+			if (!window.location.hash) {
+				$.bbq.pushState('category=1', 2);
 			}
-			
+
 			var state_page = e.getState('page');
 			var state_order = e.getState('order');
 			var state_product = e.getState('product');
@@ -437,6 +452,7 @@ $(document).ready(function() {
 			var state_subcategory = e.getState('subcategory');
 			var state_register = e.getState('register');
 			var state_logout = e.getState('logout');
+			var state_clear = e.getState('clear');
 
 			if (state_page) {
 				shopshark.page = state_page;
@@ -445,16 +461,26 @@ $(document).ready(function() {
 			}
 
 			if (state_order) {
-				$("a.sortbutton_selected").addClass("sortbutton");
-				$("a.sortbutton_selected").removeClass("sortbutton_selected");
-				$("a[href=#" + url + "]").addClass('sortbutton_selected');
+				$("a.sortbutton_selected").removeClass("sortbutton_selected").addClass("sortbutton");
+				$("a[href=#order=" + state_order + "]").addClass('sortbutton_selected');
 				shopshark.order = state_order;
 			} else {
 				shopshark.order = "ASC";
 			}
 
-			if (state_register) {
+			if (state_register === "" || state_register) {
 				shopshark.renderRegisterForm();
+				$.bbq.removeState('register');
+			}
+
+			if (state_logout === "" || state_logout) {
+				shopshark.signOut();
+				$.bbq.removeState('logout');
+			}
+			
+			if (state_clear){
+				shopshark.clearCart(state_clear);
+				$.bbq.removeState('clear');
 			}
 
 			if (state_product) {
@@ -477,13 +503,7 @@ $(document).ready(function() {
 					shopshark.populateByCategory(state_category);
 				}
 			}
-			
-			if (state_logout){
-				if($.cookie('token')){
-					shopshark.signOut();
-				}
-				$.bbq.removeState('logout');
-			}
+
 		});
 
 	});

@@ -10,7 +10,9 @@ var locale = {
 		"l_cart" : "Carrito",
 		"p_noitems": "No hay items en el carrito.",
 		"l_loading" : "Procesando",
-		"l_newaccount" : "Crear Cuenta"
+		"l_newaccount" : "Crear Cuenta",
+		"p_welcome" : "Hola! Bienvenido a ShopShark, si lo que estas buscando es comprar libros y peliculas, estas en el lugar indicado!",
+		"p_welcome2" : "Es muy facil empezar en ShopShark, simplemente empeza a navergar nuestros catalogos"
 	},
 	template : {
 		product_thumb : {

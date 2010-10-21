@@ -1,6 +1,6 @@
 var locale = {
 	id : "1",
-	code : "es",
+	code : "en",
 	web : {
 		"l_search" : "Search",
 		"l_language" : "Change languaje: ",
@@ -10,7 +10,10 @@ var locale = {
 		"l_cart" : "Cart",
 		"p_noitems": "The cart is empty.",
 		"l_loading" : "Processing",
-		"l_newaccount" : "Create Account"
+		"l_newaccount" : "Create Account",
+		"p_welcome" : "Hi!, welcome to ShopShark. We beleave you are going to have",
+		"p_welcome2" : "Es muy facil empezar en ShopShark, simplemente empeza a navergar nuestros catalogos"
+
 	},
 	template : {
 		product_thumb : {
@@ -28,7 +31,7 @@ var locale = {
 			"l_actors" : "Actors",
 			"l_format" : "Format",
 			"l_language" : "Laguaje",
-			"l_subtitles" : "Subi�tles",
+			"l_subtitles" : "Subitles",
 			"l_region" : "Region",
 			"l_aspect_ratio" : "Aspect Ratio",
 			"l_number_discs": "Number of discs",

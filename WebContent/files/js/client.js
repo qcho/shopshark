@@ -41,6 +41,7 @@ var hci = hci || {
 			type : type,
 			url : url,
 			dataType : "xml",
+			cache: true,
 			success : function(xml) {
 				results[resultIndex] = xml;
 				callback();
@@ -208,7 +209,7 @@ var hci = hci || {
 						"</account>"
 		});
 		var queryStr = this._queryString( {
-			"method" : "UpdateAccount",
+			"method" : "UpdateAccount"
 		});
 		return {
 			type : "POST",

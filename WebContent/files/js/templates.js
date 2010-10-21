@@ -162,7 +162,7 @@ $.template("signIn",
 "	</fieldset>" +
 "	<div class='centered smalltopmargin'>" +
 "		${l_register}" +
-"		<a href='#register=reg' class='bluebutton'>" +
+"		<a href='#register' class='bluebutton'>" +
 "			<span class='left'></span><span class='right'></span>" +
 "			${b_register}" +
 "		</a>" +
@@ -179,7 +179,7 @@ $.template("userNav",
 "		<p>${last_login_date}</p>" +
 "	</fieldset>" +
 "	<div class='centered smalltopmargin'>" +
-"		<a href='#logout=out' class='bluebutton'>" +
+"		<a href='#logout' class='bluebutton'>" +
 "			<span class='left'></span><span class='right'></span>" +
 "			${loc.b_signout}" +
 "		</a>" +

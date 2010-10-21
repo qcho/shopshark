@@ -110,7 +110,7 @@ hr
 #empty_cart p
 	{margin-top:3px;}
 #cart
-	{margin:0px 0 20px 0;float:left;}
+	{margin:0px 0 20px 0;}
 #cart table
 	{width:200px;}
 #cart td
@@ -151,7 +151,7 @@ hr
 /* MENU */
 
 .supermenu
-	{display:block;width:200px;margin-top:25px;float:left;}
+	{display:block;width:200px;margin-top:25px;}
 .supermenu a
 	{display:block;padding:2px 0;text-decoration:none;color:#20252a;font-weight:bold;font-size:14px;}
 .supermenu a:hover
