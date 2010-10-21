@@ -286,6 +286,26 @@ hr
 /* BUTTONS */
 
 
+.address
+	{width:600px;float:left;margin-bottom:25px; margin-right:20px; height: 152px;}
+.address h4 
+	{color:#2a3640;font-size:16px;border-bottom:1px dashed #cfd3d6;margin-top:0;margin-bottom:12px;padding:4px 0;}
+.address h4 span 
+	{color:#9aa3ab;font-weight:normal;font-style:italic;}
+	
+.address .description 
+	{width:600px;margin-left:11px;float:left;height:112px;position:relative;}
+	
+.address .description table { width: 578px; }
+.address .description table td { padding: 4px; }
+.address .description table td .short { width: 150px; }
+
+.address .description table td input { width: 100%; }
+.address .description table td select { width: 100%; }
+	
+.address .description p
+	{margin:0;}
+
 
 /* SORTBUTTONS */
 .sortbutton

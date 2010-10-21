@@ -57,6 +57,25 @@ var shopshark = shopshark || {
 			});
 		}
 	},
+	
+	populateAddressList : function() {
+	    //hci.fetch(...)
+	    shopshark.renderAddressList("<response status='ok'>" +
+                                    "  <addresses>" +
+                                    "    <address id='1'>" +
+                                    "      <full_name>ITBA 1</full_name>" +
+                                    "      <address_line_1>Av. Eduardo Madero 399</address_line_1>" +
+                                    "      <address_line_2 />" +
+                                    "      <country_id>1</country_id>" +
+                                    "      <state_id>1</state_id>" +
+                                    "      <city>Capital Federal</city>" +
+                                    "      <zip_code>C1106ACD</zip_code>" +
+                                    "      <phone_number>0800-888-ITBA</phone_number>" +
+                                    "    </address>" +
+                                    "  </addresses>" +
+                                    "</response>");
+	},
+	
 	renderProducts : function(prodResp) {
 		// Parse XML to JSON.
 		var prodList = $.xml2json(prodResp);
@@ -86,6 +105,20 @@ var shopshark = shopshark || {
 		} else {
 			$('#main_content').text("No products found.");
 		}
+	},
+	
+	renderAddressList : function(response) {
+	
+	    $('#addresses').empty();
+	    
+	    if (response.addresses.size > 0) {
+	    
+	        response.adresses.loc = locale.template.addresses;
+	        response.country_list = [{'id':1, 'name':'Mi Pais Imaginario'}]
+	        $.tmpl('address_form', response.addresses).appendTo('#addresses');
+	        
+	    }
+	
 	},
 
 	populateMenu : function(handler) {
