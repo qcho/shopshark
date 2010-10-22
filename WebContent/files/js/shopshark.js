@@ -22,7 +22,7 @@ var shopshark = shopshark || {
 
 	populateBySearch : function(criteria) {
 		if (criteria) {
-			$("#main_title").html("Search: <span>" + criteria + "</span>");
+			$("#main_title").html(locale.web.l_search_results + ": <span>" + criteria + "</span>");
 			$("#main_content").load('content/loading.html');
 			hci.fetch(hci.GetProductListByName(criteria, this.order, this.items_per_page, this.page), function(prodResp) {
 				shopshark.renderProducts(prodResp);
@@ -37,7 +37,7 @@ var shopshark = shopshark || {
 			$("#categories a.active").removeClass("active");
 			var link = $("#category_" + category_id);
 			link.addClass("active");
-			$("#main_title").html("Category <span>" + link.text() + "</span>");
+			$("#main_title").html(locale.web.l_category + ": <span>" + link.text() + "</span>");
 			$("#main_content").load('content/loading.html');
 			hci.fetch(hci.GetProductListByCategory(this.language_id, category_id, this.order, this.items_per_page, this.page), function(prodResp) {
 				shopshark.renderProducts(prodResp);
@@ -49,7 +49,7 @@ var shopshark = shopshark || {
 			$("#categories a.active").removeClass("active");
 			var link = $("#subcategory_" + category_id + "_" + subcategory_id);
 			link.addClass("active");
-			var title = "Subcategory <span>" + $("#category_" + category_id).text() + ": " + link.text() + "</span>";
+			var title = locale.web.l_subcategory + " <span>" + $("#category_" + category_id).text() + ": " + link.text() + "</span>";
 			$("#main_title").html(title);
 			$("#main_content").load('content/loading.html');
 			hci.fetch(hci.GetProductListBySubcategory(this.language_id, category_id, subcategory_id, this.order, this.items_per_page, this.page), function(prodResp) {
@@ -57,25 +57,7 @@ var shopshark = shopshark || {
 			});
 		}
 	},
-	
-	populateAddressList : function() {
-	    //hci.fetch(...)
-	    shopshark.renderAddressList("<response status='ok'>" +
-                                    "  <addresses>" +
-                                    "    <address id='1'>" +
-                                    "      <full_name>ITBA 1</full_name>" +
-                                    "      <address_line_1>Av. Eduardo Madero 399</address_line_1>" +
-                                    "      <address_line_2 />" +
-                                    "      <country_id>1</country_id>" +
-                                    "      <state_id>1</state_id>" +
-                                    "      <city>Capital Federal</city>" +
-                                    "      <zip_code>C1106ACD</zip_code>" +
-                                    "      <phone_number>0800-888-ITBA</phone_number>" +
-                                    "    </address>" +
-                                    "  </addresses>" +
-                                    "</response>");
-	},
-	
+
 	renderProducts : function(prodResp) {
 		// Parse XML to JSON.
 		var prodList = $.xml2json(prodResp);
@@ -84,6 +66,12 @@ var shopshark = shopshark || {
 		$('#main_content').empty();
 		if (prodList.products.size > 0) {
 			prodList.products.loc = locale.template.product_thumb;
+			
+			if (prodList.products.product && !$.isArray(prodList.products.product)) {
+				// make it array
+				prodList.products.product = [ prodList.products.product ];
+			}
+			
 			$.tmpl("product_thumb", prodList.products).appendTo("#main_content");
 
 			// Add paginator.
@@ -106,19 +94,71 @@ var shopshark = shopshark || {
 			$('#main_content').text("No products found.");
 		}
 	},
-	
+
+	renderUserPanel : function() {
+		var username = $.cookie('username');
+		var token = $.cookie('token');
+		var lang_id = $.cookie('language_id');
+		
+		$("#main_title").html(locale.web.l_user_panel);
+		
+		hci.fetch(hci.GetAddressList(username, token), hci.GetCountryList(lang_id), hci.GetAccountPreferences(username, token), function(addList, CountryList, Account) {
+			console.info('pepe');
+			var jAddList = $.xml2json(addList);
+			var jCountryList = $.xml2json(CountryList);
+			var jAccount = $.xml2json(Account);
+			
+			jAddList.loc = locale.template.address_form;
+			jAddList.country_list = jCountryList.countries.country;
+			
+			$('#main_content').empty();
+			
+			if (jAddList.addresses.address && !$.isArray(jAddList.addresses.address)) {
+				// make it array
+				jAddList.addresses.address = [ jAddList.addresses.address ];
+			}
+			
+			jAddList.addresses.address = jAddList.addresses.address.concat([{  'id' : -1,
+										     'full_name' : '',
+										     'address_line_1' : '',
+										     'address_line_2' : '',
+										     'phone_number' : '',
+										     'zip_code' : '',
+										     'country_id': '1',
+										     'state_id' : '1',
+										     'city' : '' }]);
+			
+			$.tmpl("address_form", jAddList).appendTo("#main_content");
+			
+			var $countrySelects = $("#main_content").find('.country');
+			$countrySelects.bind('change', function(e){
+				hci.fetch(hci.GetStateList(lang_id, e.target.value), function(states){
+					console.info(e);
+					var $stateSelect = $(e.target).closest('.address').find('.state');
+					$stateSelect.empty();
+					$(states).find('state').each(function(index){
+						$stateSelect.append('<option>'+$(this).find('name').text()+'</option>');
+					});
+				});
+			});
+			$countrySelects.trigger('change');
+			
+			
+			console.info("test", jAddList, jCountryList, jAccount);
+		});
+		shopshark.renderAddressList("<response status='ok'>" + "  <addresses>" + "    <address id='1'>" + "      <full_name>ITBA 1</full_name>" + "      <address_line_1>Av. Eduardo Madero 399</address_line_1>" + "      <address_line_2 />" + "      <country_id>1</country_id>" + "      <state_id>1</state_id>" + "      <city>Capital Federal</city>" + "      <zip_code>C1106ACD</zip_code>" + "      <phone_number>0800-888-ITBA</phone_number>" + "    </address>" + "  </addresses>" + "</response>");
+	},
+
 	renderAddressList : function(response) {
-	
-	    $('#addresses').empty();
-	    
-	    if (response.addresses.size > 0) {
-	    
-	        response.adresses.loc = locale.template.addresses;
-	        response.country_list = [{'id':1, 'name':'Mi Pais Imaginario'}]
-	        $.tmpl('address_form', response.addresses).appendTo('#addresses');
-	        
-	    }
-	
+		/*
+		 * $('#addresses').empty();
+		 * 
+		 * if (response.addresses.size > 0) {
+		 * 
+		 * response.adresses.loc = locale.template.addresses;
+		 * response.country_list = [{'id':1, 'name':'Mi Pais Imaginario'}]
+		 * $.tmpl('address_form', response.addresses).appendTo('#addresses'); }
+		 */
 	},
 
 	populateMenu : function(handler) {
@@ -163,7 +203,7 @@ var shopshark = shopshark || {
 			});
 		});
 		$('select[name=language]').bind('change', function(e) {
-			$.cookie("language_id", e.currentTarget.value);
+			$.cookie("language_id", e.target.value);
 			window.location.reload(true);
 		});
 	},
@@ -180,7 +220,7 @@ var shopshark = shopshark || {
 				$("#main_content").empty();
 				$.tmpl("product", resp.product).appendTo("#main_content");
 				if (resp.product.actors) {
-					$.ajax({
+					$.ajax( {
 						url : "youtube/?q=" + escape(resp.product.name + " HD trailer") + "&lang=es&setSafeSearch=STRICT&max-results=10&v=2&fields=entry(title,media:group(yt:videoid),yt:noembed)",
 						success : shopshark.loadVideo
 					});
@@ -212,19 +252,19 @@ var shopshark = shopshark || {
 
 		$("#gallery").append($(iframe));
 	},
-	
-	loadUser : function(){
+
+	loadUser : function() {
 		var data = {
-				"user_id" : $.cookie("user_id"),
-				"username" : $.cookie("username"),
-				"name" : $.cookie("name"),
-				"last_login_date" : $.cookie("last_login_date")
-			};
-			data.loc = locale.template.userNav;
-			$.tmpl("userNav", data).appendTo("#user");
+			"user_id" : $.cookie("user_id"),
+			"username" : $.cookie("username"),
+			"name" : $.cookie("name"),
+			"last_login_date" : $.cookie("last_login_date")
+		};
+		data.loc = locale.template.userNav;
+		$.tmpl("userNav", data).appendTo("#user");
 	},
-	
-	loadCart : function(){
+
+	loadCart : function() {
 		var username = $.cookie('username');
 		var token = $.cookie('token');
 		hci.fetch(hci.GetOrderList(username, token), function(list) {
@@ -250,18 +290,18 @@ var shopshark = shopshark || {
 
 		});
 	},
-	
-	loadAnonymous : function(){
+
+	loadAnonymous : function() {
 		$.tmpl("signIn", locale.template.signIn).appendTo("#user");
 		$('#user').find('form').bind('submit', function(e) {
 			var l = $.deparam($(this).serialize());
 			shopshark.signIn(l.username, l.password);
 			return false;
 		});
-		
+
 		$('a.cart_buy').live('click', function(e) {
 			var pid = $(this).attr('id').split('_')[1];
-			$.bbq.pushState("#register="+pid, 2);
+			$.bbq.pushState("#register=" + pid, 2);
 		});
 	},
 
@@ -278,6 +318,7 @@ var shopshark = shopshark || {
 			} else {
 				alert(locale.error[signIn.error.code]);
 			}
+			$.bbq.removeState('clear');
 		});
 
 	},
@@ -291,6 +332,7 @@ var shopshark = shopshark || {
 				$.cookie("username", null);
 				$.cookie("name", null);
 				$.cookie("last_login_date", null);
+				$.bbq.removeState('logout');
 				window.location.reload();
 			} else {
 				alert(signOut.error.message);
@@ -340,7 +382,7 @@ var shopshark = shopshark || {
 				$('input.quantity').bind('change', function(e) {
 					var o_id = $('a[href^=#checkout]').attr('href').split('=')[1];
 					var p_id = $(this).attr('id').split('_')[1];
-					var new_count = e.currentTarget.value;
+					var new_count = e.target.value;
 					hci.fetch(hci.DeleteOrderItem($.cookie("username"), $.cookie("token"), o_id, p_id, "9999"), function(resp) {
 						if (new_count > 0) {
 							hci.fetch(hci.AddOrderItem($.cookie("username"), $.cookie("token"), o_id, p_id, new_count), function(resp) {
@@ -367,7 +409,7 @@ var shopshark = shopshark || {
 		$("#main_title").html(locale.web.l_newaccount);
 		$("#main_content").empty();
 		$.tmpl("register", data).appendTo("#main_content");
-		$("#register form").validate({
+		$("#register form").validate( {
 			messages : locale.validator,
 			submitHandler : function(form) {
 				shopshark.register(form);
@@ -383,21 +425,24 @@ var shopshark = shopshark || {
 			if (error_code) {
 				alert(locale.error[error_code]);
 			} else {
+				alert(locale.web.success_register);
 				shopshark.signIn(u.username, u.password);
 			}
+			$.bbq.removeState('register');
 		});
 
 	},
-	
-	clearCart: function(order_id){
+
+	clearCart : function(order_id) {
 		$('#cart').empty();
-		hci.fetch( hci.DeleteOrder($.cookie('username'), $.cookie('token'), order_id), function(response){
+		hci.fetch(hci.DeleteOrder($.cookie('username'), $.cookie('token'), order_id), function(response) {
 			var error_code = $(response).find('error').attr('status');
 			if (error_code) {
 				alert(locale.error[error_code]);
 			} else {
 				shopshark.loadCart();
 			}
+			$.bbq.removeState('clear');
 		});
 	}
 
@@ -444,8 +489,8 @@ $(document).ready(function() {
 
 		// Automatic Search bar
 		$('input[name=query]').keyup(function(event) {
-			$.bbq.removeState([ 'category', 'subcategory', 'product' ]);
-			$.bbq.pushState('search=' + escape(event.currentTarget.value));
+			$.bbq.removeState( [ 'category', 'subcategory', 'product' ]);
+			$.bbq.pushState('search=' + escape(event.target.value));
 		});
 
 		// MyAccount
@@ -455,11 +500,12 @@ $(document).ready(function() {
 		// Override click events to enable hashing ie #product=1
 		$('a[href^=#]').live('click', function(e) {
 			url = $(this).attr('href').replace(/^#/, '');
-			console.info('click', url);
-			if (url.indexOf("page") != -1 || url.indexOf("order") != -1) {
-				$.bbq.pushState(url);
-			} else {
+			console.info('click url:', url);
+			
+			if (url.indexOf("category") != -1) {
 				$.bbq.pushState(url, 2);
+			} else {
+				$.bbq.pushState(url);
 			}
 			return false;
 		});
@@ -472,7 +518,6 @@ $(document).ready(function() {
 		// our
 		// cached content or fetch new content to be displayed.
 		$(window).bind('hashchange', function(e) {
-
 			if (!window.location.hash) {
 				$.bbq.pushState('category=1', 2);
 			}
@@ -486,6 +531,7 @@ $(document).ready(function() {
 			var state_register = e.getState('register');
 			var state_logout = e.getState('logout');
 			var state_clear = e.getState('clear');
+			var state_userpanel = e.getState('userpanel');
 
 			if (state_page) {
 				shopshark.page = state_page;
@@ -501,23 +547,29 @@ $(document).ready(function() {
 				shopshark.order = "ASC";
 			}
 
+			if (state_userpanel === "" || state_userpanel) {
+				console.info("panel", state_userpanel);
+				shopshark.renderUserPanel();
+				return;
+			}
+			
 			if (state_register === "" || state_register) {
 				shopshark.renderRegisterForm();
-				$.bbq.removeState('register');
+				return;
 			}
 
 			if (state_logout === "" || state_logout) {
 				shopshark.signOut();
-				$.bbq.removeState('logout');
+				return;
 			}
-			
-			if (state_clear){
+
+			if (state_clear) {
 				shopshark.clearCart(state_clear);
-				$.bbq.removeState('clear');
 			}
 
 			if (state_product) {
 				shopshark.renderProductInfo(state_product);
+				return;
 			}
 
 			if (state_search) {
@@ -527,6 +579,7 @@ $(document).ready(function() {
 				if ($('input[name=query]').val() == "") {
 					$('input[name=query]').val(state_search);
 				}
+				return;
 			}
 
 			if (state_category) {

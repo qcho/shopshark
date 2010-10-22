@@ -11,8 +11,13 @@ var locale = {
 		"p_noitems": "The cart is empty.",
 		"l_loading" : "Processing",
 		"l_newaccount" : "Create Account",
+		"l_search_results" : "Results for",
+		"l_category" : "Category",
+		"l_subcategory" : "Subcategory",
+		"l_user_panel" : "User panel",
 		"p_welcome" : "Hi!, welcome to ShopShark. We beleave you are going to have",
-		"p_welcome2" : "Es muy facil empezar en ShopShark, simplemente empeza a navergar nuestros catalogos"
+		"p_welcome2" : "todo",
+		success_register: "Thanks for registering at Shopshark. Start enjoying our services now!"
 
 	},
 	template : {
@@ -58,6 +63,10 @@ var locale = {
 		},
 		
 		userNav : {
+			"l_user_data" : "User data",
+			"l_username" : "Username",
+			"l_full_name" : "Full name",
+			"l_last_login" : "Last login",
 			"b_signout" : "Close session"
 		},
 		
@@ -76,6 +85,19 @@ var locale = {
 			l_date: "Date",
 			h_required: "required",
 			b_submit: "Register"
+		},
+		address_form:{
+			l_address_line: "Address Line",
+			l_zip_code:"Zip code",
+			l_phone_number:"Phone Number",
+			l_country:"Country",
+			l_state:"State",
+			l_city:"City",
+			l_new_name:"New address name",
+			b_update: "Update",
+			b_delete: "Delete",
+			l_new: "New address",
+			b_new: "Create New"
 		}
 	},
 	validator: {

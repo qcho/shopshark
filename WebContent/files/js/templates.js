@@ -1,35 +1,42 @@
 $.template("address_form",
-"<div class='address' id='address_${id}'>" +
-"    <h4>${name}</h4>" +
+"{{each addresses.address}}" +
+"<form class='address' id='address_${$value.id}' method='post' action=''>" +
+	"{{if $value.id >= 0}}" +
+	"    <h4>${$value.full_name}</h4>" +
+	"{{else}}" +
+		"<h4>${loc.l_new}</h4>" +
+		"<input type='text' class='full_name' value='${loc.l_new_name}'>" +
+	"{{/if}}" +
 "    <div class='description'>" +
-"        <table><tbody>" +
+"        <table>" +
+"			<tbody>" +
 "            <tr>" +
 "                <td colspan='2'>" +
 "                    ${loc.l_address_line} 1:<br />" +
-"                    <input type='text' class='address_line_1' value='${address_line_1}'>" +
+"                    <input type='text' class='address_line_1' value='${$value.address_line_1}'>" +
 "                </td>" +
 "                <td colspan='1' class='short'>" +
 "                    ${loc.l_phone_number}:<br />" +
-"                    <input type='text' class='phone_number' value='${phone_number}'>" +
+"                    <input type='text' class='phone_number' value='${$value.phone_number}'>" +
 "                </td>" +
 "            </tr>" +
 "            <tr>" +
 "                <td colspan='2'>" +
 "                    ${loc.l_address_line} 2:<br />" +
-"                    <input type='text' class='address_line_2' value='${address_line_2}'>" +
+"                    <input type='text' class='address_line_2' value='${$value.address_line_2}'>" +
 "                </td>" +
 "                <td colspan='1' class='short'>" +
 "                    ${loc.l_zip_code}:<br />" +
-"                    <input type='text' class='zip_code' value='${zip_code}'>" +
+"                    <input type='text' class='zip_code' value='${$value.zip_code}'>" +
 "                </td>" +
 "            </tr>" +
 "            <tr>" +
 "                <td>" +
 "                    ${loc.l_country}:<br />" +
 "                    <select class='country'>" +
-/*"                        {{each country_list}}" +  /* See the AddressList object
-"                            <option {{if ${$value.id} == ${country_id}}} selected='selected'{{/if}}>${$value.name}</option>" +
-"                        {{/each}}" + */
+"                        {{each(i,country) country_list}}" +
+"                            <option value='${country.id}' {{if (country.id == $value.country_id)}}selected=selected{{/if}}>${country.name}</option>" +
+"                        {{/each}}" +
 "                    </select>" +
 "                </td>" +
 "                <td>" +
@@ -38,12 +45,26 @@ $.template("address_form",
 "                </td>" +
 "                <td>" +
 "                    ${loc.l_city}:<br />" +
-"                    <select class='city'></select>" +
+"                    <input type='text' class='city' value='${$value.city}'>" +
 "                </td>" +
 "            </tr>" +
-"        </tbody></table>" +
-"    </div>" +
-"</div>"
+"            <tr>" +
+"			    <td colspan='3' class='buttons'>" +
+"					{{if $value.id >= 0}}" +
+"					    <input class='button submit greenbutton_big' type='submit' value='${loc.b_update}'/>" +
+"						<input class='button submit greenbutton_big' type='submit' value='${loc.b_delete}'/>" +
+"					{{else}}" +
+"						<input class='button submit greenbutton_big' type='submit' value='${loc.b_new}'/>" +
+"					{{/if}}" +
+"               </td>" +
+"            </tr>" +
+"        </tbody>" +
+"		</table>" +
+"	</div>" +
+"			<p>" +
+"			</p>" +
+"</form>" + 
+"{{/each}}"
 );
 
 $.template("product_thumb", 
@@ -221,10 +242,13 @@ $.template("signIn",
 $.template("userNav",
 "<div id='userNav'>" +
 "	<fieldset>" +
-"		<legend>User</legend>" +
-"		<p>${username}</p>" +
-"		<p>${name}</p>" +
-"		<p>${last_login_date}</p>" +
+"		<legend>${loc.l_user_data}</legend>" +
+"		<p><strong>${loc.l_username}:</strong><br />" +
+"		${username}</p>" +
+"		<p><strong>${loc.l_full_name}:</strong><br />" +
+"		${name}</p>" +
+"		<p><strong>${loc.l_last_login}:</strong><br />" +
+"		${last_login_date}</p>" +
 "	</fieldset>" +
 "	<div class='centered smalltopmargin'>" +
 "		<a href='#logout' class='bluebutton'>" +

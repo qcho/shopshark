@@ -11,8 +11,13 @@ var locale = {
 		"p_noitems": "No hay items en el carrito.",
 		"l_loading" : "Procesando",
 		"l_newaccount" : "Crear Cuenta",
+		"l_search_results" : "Resultados de",
+		"l_category" : "Categoría",
+		"l_subcategory" : "Subcategoría",
+		"l_user_panel" : "Panel de usuario",
 		"p_welcome" : "Hola! Bienvenido a ShopShark, si lo que estas buscando es comprar libros y peliculas, estas en el lugar indicado!",
-		"p_welcome2" : "Es muy facil empezar en ShopShark, simplemente empeza a navergar nuestros catalogos"
+		"p_welcome2" : "Es muy facil empezar en ShopShark, simplemente empeza a navergar nuestros catalogos",
+		success_register: "Gracias por registrarte en Shopshark. Empeza a disfrutar de nuestros servicios!"
 	},
 	template : {
 		product_thumb : {
@@ -57,6 +62,10 @@ var locale = {
 		},
 
 		userNav : {
+			"l_user_data" : "Datos de usuario",
+			"l_username" : "Nombre de usuario",
+			"l_full_name" : "Nombre completo",
+			"l_last_login" : "Último ingreso",	
 			"b_signout" : "Cerrar sessión"
 		},
 		
@@ -75,6 +84,19 @@ var locale = {
 			l_date: "Fecha",
 			h_required: "requerido",
 			b_submit: "Registrar"
+		},
+		address_form:{
+			l_address_line: "Dirección línea",
+			l_zip_code:"Código postal",
+			l_phone_number:"Teléfono",
+			l_country:"País",
+			l_state:"Provincia",
+			l_city:"Ciudad",
+			l_new_name:"Nombre de una nueva dirección",
+			b_update: "Actualizar",
+			b_delete: "Borrar",
+			l_new: "Nueva dirección",
+			b_new: "Crear Nueva"
 		}
 	},
 	validator : {

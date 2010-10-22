@@ -75,7 +75,7 @@ var hci = hci || {
 	GetLanguageList : function() {
 		var queryStr = this._queryString( {
 			"method" : "GetLanguageList"
-		});
+		});		
 		return {
 			type : "GET",
 			url : [ "Common.groovy", queryStr ]
@@ -102,22 +102,22 @@ var hci = hci || {
 			url : [ "Common.groovy", queryStr ]
 		};
 	},
-	GetAccountPreferences : function(username, auth_token) {
+	GetAccountPreferences : function(username, authentication_token) {
 		var queryStr = this._queryString( {
 			"method" : "GetAccountPreferences",
 			"username" : username,
-			"auth_token" : auth_token
+			"authentication_token" : authentication_token
 		});
 		return {
 			type : "GET",
 			url : [ "Common.groovy", queryStr ]
 		};
 	},
-	SetAccountPreferences : function(username, auth_token, value) {
+	SetAccountPreferences : function(username, authentication_token, value) {
 		var queryStr = this._queryString( {
 			"method" : "SetAccountPreferences",
 			"username" : username,
-			"auth_token" : auth_token,
+			"authentication_token" : authentication_token,
 			"value" : value
 		});
 		return {
