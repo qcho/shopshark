@@ -2,6 +2,13 @@
  * SHOPSHARK FUNCTIONALITY
  */
 
+function arrayify(thing) {
+    if ($.isArray(thing))
+        return thing;
+    else
+        return [thing];
+}
+
 var shopshark = shopshark || {
 	language_id : "1",
 	category_id : "1",
@@ -103,7 +110,7 @@ var shopshark = shopshark || {
 		$("#main_title").html(locale.web.l_user_panel);
 		
 		hci.fetch(hci.GetAddressList(username, token), hci.GetCountryList(lang_id), hci.GetAccountPreferences(username, token), function(addList, CountryList, Account) {
-			console.info('pepe');
+		
 			var jAddList = $.xml2json(addList);
 			var jCountryList = $.xml2json(CountryList);
 			var jAccount = $.xml2json(Account);
@@ -143,10 +150,26 @@ var shopshark = shopshark || {
 			});
 			$countrySelects.trigger('change');
 			
+			var 
 			
 			console.info("test", jAddList, jCountryList, jAccount);
 		});
 		shopshark.renderAddressList("<response status='ok'>" + "  <addresses>" + "    <address id='1'>" + "      <full_name>ITBA 1</full_name>" + "      <address_line_1>Av. Eduardo Madero 399</address_line_1>" + "      <address_line_2 />" + "      <country_id>1</country_id>" + "      <state_id>1</state_id>" + "      <city>Capital Federal</city>" + "      <zip_code>C1106ACD</zip_code>" + "      <phone_number>0800-888-ITBA</phone_number>" + "    </address>" + "  </addresses>" + "</response>");
+	},
+	
+	renderOrderList : function() {
+        var username = $.cookie('username');
+		var token = $.cookie('token');
+		var lang_id = $.cookie('language_id');
+		
+		$("#main_title").html(locale.web.l_order_list);
+		
+		hci.fetch(hci.GetOrderList(username, token), hci.GetAddressList(username, token), function(xmlorders, xmladdresses) {
+		
+		    var orders = arrayify($.xml2json(xmlorders).orders.order);
+		    var addresses = arrayify($.xml2json(xmladdresses).addresses.address);
+		
+		};
 	},
 
 	renderAddressList : function(response) {

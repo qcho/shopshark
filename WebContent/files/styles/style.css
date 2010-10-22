@@ -286,15 +286,22 @@ hr
 /* BUTTONS */
 
 
-.order h4 {
-	margin: 0;
-}
-
 #userNav p {
 	margin: 0;
 }
 
-.address, .order
+
+.order
+	{width:600px;float:left;margin-bottom:25px; margin-right:20px; }
+
+.order h4
+    { margin: 0; }
+
+.order table td .buttons { text-align: center; }
+    
+.order .description td .button {width: 150px; margin-left: 5px;}    
+    
+.address
 	{width:600px;float:left;margin-bottom:25px; margin-right:20px; }
 .address h4 
 	{color:#2a3640;font-size:16px;border-bottom:1px dashed #cfd3d6;margin-top:0;margin-bottom:12px;padding:4px 0;}
@@ -305,16 +312,16 @@ hr
 	width: 600px;
 }
 	
-.address .description 
+.description 
 	{width:600px;margin-left:11px;float:left;position:relative;}
-	
+
 .description table { width: 578px; }
 .description table td { padding: 4px; }
 .description table td .short { width: 150px; }
 
 .address td .buttons { text-align: right; }
-.order td buttons { text-align: center; }
-td .button {width: 150px; margin-left: 5px;}
+
+.address .description td .button {width: 150px; margin-left: 5px;}
 
 .address .description table td input { width: 100%; }
 .address .description table td select { width: 100%; }

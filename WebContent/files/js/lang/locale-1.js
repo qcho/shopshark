@@ -15,6 +15,7 @@ var locale = {
 		"l_category" : "Category",
 		"l_subcategory" : "Subcategory",
 		"l_user_panel" : "User panel",
+		"l_order_list" : "Orders",
 		"p_welcome" : "Hi!, welcome to ShopShark. We beleave you are going to have",
 		"p_welcome2" : "todo",
 		success_register: "Thanks for registering at Shopshark. Start enjoying our services now!"

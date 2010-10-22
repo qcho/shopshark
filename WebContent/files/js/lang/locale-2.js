@@ -15,6 +15,7 @@ var locale = {
 		"l_category" : "Categoría",
 		"l_subcategory" : "Subcategoría",
 		"l_user_panel" : "Panel de usuario",
+		"l_order_list" : "Órdenes",
 		"p_welcome" : "Hola! Bienvenido a ShopShark, si lo que estas buscando es comprar libros y peliculas, estas en el lugar indicado!",
 		"p_welcome2" : "Es muy facil empezar en ShopShark, simplemente empeza a navergar nuestros catalogos",
 		success_register: "Gracias por registrarte en Shopshark. Empeza a disfrutar de nuestros servicios!"

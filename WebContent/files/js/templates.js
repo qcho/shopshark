@@ -67,6 +67,32 @@ $.template("address_form",
 "{{/each}}"
 );
 
+$.template("order_detail",
+"{{each(i, o) order}}" +
+"    <div class='order'>" +
+"      <h4>Orden ${$o.id}</h4>" +
+"      <div class='description'>" +
+"        <table><tbody>" +
+"          <tr>" +
+"        <td>${loc.l_address}: </td>" +
+"        <td>${$o.address}</td>" +
+"          </tr>" +
+"          <tr>" +
+"        <td>${loc.l_status}:</td>" +
+"        <td>${$o.status}</td>" +
+"          </tr>" +
+"          <tr>" +
+"        <td colspan='2' class='buttons'>" +
+"          <input class='button submit greenbutton_big' type='submit' value='${loc.l_progress}'/>" +
+"          <input class='button submit greenbutton_big' type='submit' value='${loc.l_products}'/>" +
+"        </td>" +
+"          </tr>" +
+"        </tbody></table>" +
+"      </div>" +
+"    </div>" +
+"{{/each}}"
+);
+
 $.template("product_thumb", 
 "{{each product}}" +
 "	<div class='product' id='product_${$value.id}'>" +
