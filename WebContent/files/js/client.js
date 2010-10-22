@@ -1,7 +1,7 @@
 var hci = hci || {
 
 	/** Path prefix to the API. */
-	_path : "service/",
+	_path : "/service/",
 
 	/** Path prefix to the site. */
 	_appPath : "http://www.shopshark.com/",
