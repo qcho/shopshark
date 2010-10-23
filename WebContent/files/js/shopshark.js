@@ -201,8 +201,6 @@ var shopshark = shopshark || {
 			}
 			$.bbq.removeState('register');
 		});
-
->>>>>>> Stashed changes
 	},
 	
 	renderOrderList : function() {
