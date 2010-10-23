@@ -90,9 +90,10 @@ var locale = {
 			b_back: "Back"
 		},
 		address_form:{
-			l_address_line: "Address Line",
+			l_full_name: "Full name",
+			l_address_line: "Address line",
 			l_zip_code:"Zip code",
-			l_phone_number:"Phone Number",
+			l_phone_number:"Phone number",
 			l_country:"Country",
 			l_state:"State",
 			l_city:"City",

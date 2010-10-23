@@ -2,14 +2,10 @@ $.template("address_form",
 "{{each addresses.address}}" +
 "<form class='address' id='address_${$value.id}' method='post' action=''>" +
 	"{{if $value.id}}" +
-	"    <fieldset>" +
-	"	<legend>${$value.full_name}</legend>" +
 	"	<input id='address_id' name='address_id' type='hidden' value='${$value.id}'/>" +
-	"{{else}}" +
-		"<fieldset>" +
-		"<legend>${loc.l_new}</legend>" +
-		"<input type='text' name='full_name' class='{required:true, minlength:1, maxlength:15}' value='${loc.l_new_name}'>" +
 	"{{/if}}" +
+	"<fieldset>" +
+	"<legend><input type='text' name='full_name' class='{required:true, minlength:1, maxlength:15}' value='${$value.full_name}'></legend>" +
 "    <div class='description'>" +
 "        <table>" +
 "			<tbody>" +
@@ -20,7 +16,7 @@ $.template("address_form",
 "                </td>" +
 "                <td colspan='1' class='short'>" +
 "                    ${loc.l_phone_number}:<br />" +
-"                    <input type='text' name='phone_number' class='{required:true, type=number, minlength:1, maxlength:15}' value='${$value.phone_number}'>" +
+"                    <input type='text' name='phone_number' class='{required:true, number:true, minlength:1, maxlength:15}' value='${$value.phone_number}'>" +
 "                </td>" +
 "            </tr>" +
 "            <tr>" +
@@ -36,7 +32,7 @@ $.template("address_form",
 "            <tr>" +
 "                <td>" +
 "                    ${loc.l_country}:<br />" +
-"                    <select name='country' class='{required:true}'>" +
+"                    <select name='country_id' class='{required:true}'>" +
 "                        {{each(i,country) country_list}}" +
 "                            <option value='${country.id}' {{if (country.id == $value.country_id)}}selected=selected{{/if}}>${country.name}</option>" +
 "                        {{/each}}" +
@@ -44,7 +40,7 @@ $.template("address_form",
 "                </td>" +
 "                <td>" +
 "                    ${loc.l_state}:<br />" +
-"                    <select name='state' class='{required:true}'></select>" +
+"                    <select name='state_id' class='{required:true}'></select>" +
 "                </td>" +
 "                <td>" +
 "                    ${loc.l_city}:<br />" +

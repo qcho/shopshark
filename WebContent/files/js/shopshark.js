@@ -137,30 +137,41 @@ var shopshark = shopshark || {
 			
 			$.tmpl("address_form", jAddList).appendTo("#main_content");
 			
-			var $countrySelects = $("#main_content").find('select[name=country]');
+			var $countrySelects = $("#main_content").find('select[name=country_id]');
 			$countrySelects.bind('change', function(e){
 			hci.fetch(hci.GetStateList(lang_id, e.target.value), function(states){
-					var $stateSelect = $(e.target).closest('.address').find('select[name=state]');
+					var $stateSelect = $(e.target).closest('.address').find('select[name=state_id]');
 					$stateSelect.empty();
 					$(states).find('state').each(function(index){
-						$stateSelect.append('<option>'+$(this).find('name').text()+'</option>');
+						$stateSelect.append('<option value="'+$(this).attr('id')+'">'+$(this).find('name').text()+'</option>');
 					});
 				});
 			});
 			$countrySelects.trigger('change');
-			$('form.address').bind('submit', function(e){
-				$form = $(e.target);
-				console.info($form);
-				$form.validate();
-				if ($form.valid()){
-					var add = $.deparam($form.serialize());
-					if (add.address_id){
-						console.info('update', add);
-					} else {
-						console.info('new', add);
+			
+			$('form.address').each(function(i){
+				$(this).validate({
+					submitHandler: function(form) {
+						var add = $.deparam($(form).serialize());
+						if (add.address_id){
+							console.info('update', add);
+							hci.fetch(hci.UpdateAddress(username, token, add.address_id, add.full_name, 
+									add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, 
+									add.phone_number), function(response){
+								console.info($(response).text());
+							});
+						} else {
+							console.info('new', add);
+							hci.fetch(hci.CreateAddress(username, token, add.full_name, 
+									add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, 
+									add.phone_number), function(response){
+								console.info($(response).text());
+							});
+						}
+						window.location.reload(true);
+						return false;
 					}
-				}
-				return false;
+				});
 			});
 			
 		});
@@ -425,7 +436,7 @@ var shopshark = shopshark || {
 				$.cookie("username", signIn.authentication.user.username);
 				$.cookie("name", signIn.authentication.user.name);
 				$.cookie("last_login_date", signIn.authentication.user.last_login_date);
-				window.location.reload();
+				window.location.reload(true);
 			} else {
 				alert(locale.error[signIn.error.code]);
 			}
@@ -444,7 +455,7 @@ var shopshark = shopshark || {
 				$.cookie("name", null);
 				$.cookie("last_login_date", null);
 				$.bbq.removeState('logout');
-				window.location.reload();
+				window.location.reload(true);
 			} else {
 				alert(signOut.error.message);
 			}

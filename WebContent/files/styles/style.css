@@ -747,3 +747,6 @@ form.cmxform input.submit {
 form label.error {
 	color: red;
 }
+form legend input {
+	font-size: 200%;
+}

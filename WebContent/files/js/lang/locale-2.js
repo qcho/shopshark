@@ -89,6 +89,7 @@ var locale = {
 			b_back: "Atrás"
 		},
 		address_form:{
+			l_full_name: "Nombre completo",
 			l_address_line: "Dirección línea",
 			l_zip_code:"Código postal",
 			l_phone_number:"Teléfono",
@@ -107,7 +108,7 @@ var locale = {
 		    l_status: "Estado",
 		    l_progress: "Ver progreso",
 		    l_products: "Ver productos",
-		    l_unconfirmed: "No confirmada"
+		    l_unconfirmed: "No confirmada",
 		    l_status_1: "No confirmada",
 		    l_status_2: "Confirmada",
 		    l_status_3: "En viaje",
