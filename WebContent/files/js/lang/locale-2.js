@@ -67,7 +67,8 @@ var locale = {
 			"l_username" : "Nombre de usuario",
 			"l_full_name" : "Nombre completo",
 			"l_last_login" : "Último ingreso",	
-			"b_signout" : "Cerrar sessión"
+			"b_signout" : "Cerrar sessión",
+			p_userpanel: "Panel del usuario"
 		},
 		
 		cart : {
@@ -100,7 +101,8 @@ var locale = {
 			b_update: "Actualizar",
 			b_delete: "Borrar",
 			l_new: "Nueva dirección",
-			b_new: "Crear Nueva"
+			b_new: "Crear Nueva",
+			b_back: "Atrás"
 		},
 		order_detail:{
 		    l_order: "Orden",

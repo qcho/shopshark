@@ -109,6 +109,10 @@ var shopshark = shopshark || {
 		
 		$("#main_title").html(locale.web.l_user_panel);
 		
+		hci.fetch(hci.GetAccount(username,token), function(response){
+			
+		});
+		
 		hci.fetch(hci.GetAddressList(username, token), hci.GetCountryList(lang_id), hci.GetAccountPreferences(username, token), function(addList, CountryList, Account) {
 		
 			var jAddList = $.xml2json(addList);

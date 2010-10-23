@@ -68,7 +68,8 @@ var locale = {
 			"l_username" : "Username",
 			"l_full_name" : "Full name",
 			"l_last_login" : "Last login",
-			"b_signout" : "Close session"
+			"b_signout" : "Close session",
+			p_userpanel: "User panel"
 		},
 		
 		cart : {
@@ -101,7 +102,8 @@ var locale = {
 			b_update: "Update",
 			b_delete: "Delete",
 			l_new: "New address",
-			b_new: "Create New"
+			b_new: "Create New",
+			b_back: "Back"
 		},
 		order_detail:{
 		    l_order: "Order",

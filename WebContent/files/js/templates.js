@@ -64,7 +64,13 @@ $.template("address_form",
 "			</p>" +
 "</fieldset>" +
 "</form>" + 
-"{{/each}}"
+"{{/each}}" +
+"<div id='bottombar'>" +
+"	<a href='#remove=userpanel' class='bluebutton'>" +
+"		<span class='left'></span><span class='right'></span>" +
+"		${loc.b_back}" +
+"	</a>" +
+"</div>"
 );
 
 $.template("order_detail",
@@ -279,7 +285,7 @@ $.template("userNav",
 "		<p><strong>${loc.l_last_login}:</strong><br />" +
 "		${last_login_date}</p>" +
 "		<div class='links'>" +
-"			<a href='#userpanel'>settings</a>"+
+"			<a href='#userpanel'>${loc.p_userpanel}</a>"+
 "		</div>" +
 "	</fieldset>" +
 "	<div class='centered smalltopmargin'>" +
