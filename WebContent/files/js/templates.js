@@ -1,11 +1,14 @@
 $.template("address_form",
 "{{each addresses.address}}" +
 "<form class='address' id='address_${$value.id}' method='post' action=''>" +
-	"{{if $value.id >= 0}}" +
-	"    <h4>${$value.full_name}</h4>" +
+	"{{if $value.id}}" +
+	"    <fieldset>" +
+	"	<legend>${$value.full_name}</legend>" +
+	"	<input id='address_id' name='address_id' type='hidden' value='${$value.id}'/>" +
 	"{{else}}" +
-		"<h4>${loc.l_new}</h4>" +
-		"<input type='text' class='full_name' value='${loc.l_new_name}'>" +
+		"<fieldset>" +
+		"<legend>${loc.l_new}</legend>" +
+		"<input type='text' name='full_name' class='{required:true, minlength:1, maxlength:15}' value='${loc.l_new_name}'>" +
 	"{{/if}}" +
 "    <div class='description'>" +
 "        <table>" +
@@ -13,27 +16,27 @@ $.template("address_form",
 "            <tr>" +
 "                <td colspan='2'>" +
 "                    ${loc.l_address_line} 1:<br />" +
-"                    <input type='text' class='address_line_1' value='${$value.address_line_1}'>" +
+"                    <input name='address_line_1' type='text' class='{required:true, minlength:1, maxlength:80}' value='${$value.address_line_1}'>" +
 "                </td>" +
 "                <td colspan='1' class='short'>" +
 "                    ${loc.l_phone_number}:<br />" +
-"                    <input type='text' class='phone_number' value='${$value.phone_number}'>" +
+"                    <input type='text' name='phone_number' class='{required:true, type=number, minlength:1, maxlength:15}' value='${$value.phone_number}'>" +
 "                </td>" +
 "            </tr>" +
 "            <tr>" +
 "                <td colspan='2'>" +
 "                    ${loc.l_address_line} 2:<br />" +
-"                    <input type='text' class='address_line_2' value='${$value.address_line_2}'>" +
+"                    <input type='text' name='address_line_2' class='{required:true, minlength:1, maxlength:15}' value='${$value.address_line_2}'>" +
 "                </td>" +
 "                <td colspan='1' class='short'>" +
 "                    ${loc.l_zip_code}:<br />" +
-"                    <input type='text' class='zip_code' value='${$value.zip_code}'>" +
+"                    <input type='text' name='zip_code' class='{required:true, minlength:1, maxlength:15}' value='${$value.zip_code}'>" +
 "                </td>" +
 "            </tr>" +
 "            <tr>" +
 "                <td>" +
 "                    ${loc.l_country}:<br />" +
-"                    <select class='country'>" +
+"                    <select name='country' class='{required:true}'>" +
 "                        {{each(i,country) country_list}}" +
 "                            <option value='${country.id}' {{if (country.id == $value.country_id)}}selected=selected{{/if}}>${country.name}</option>" +
 "                        {{/each}}" +
@@ -41,18 +44,18 @@ $.template("address_form",
 "                </td>" +
 "                <td>" +
 "                    ${loc.l_state}:<br />" +
-"                    <select class='state'></select>" +
+"                    <select name='state' class='{required:true}'></select>" +
 "                </td>" +
 "                <td>" +
 "                    ${loc.l_city}:<br />" +
-"                    <input type='text' class='city' value='${$value.city}'>" +
+"                    <input type='text' name='city' class='{required:true, minlength:1, maxlength:15}' value='${$value.city}'>" +
 "                </td>" +
 "            </tr>" +
 "            <tr>" +
 "			    <td colspan='3' class='buttons'>" +
 "					{{if $value.id >= 0}}" +
 "					    <input class='button submit greenbutton_big' type='submit' value='${loc.b_update}'/>" +
-"						<input class='button submit greenbutton_big' type='submit' value='${loc.b_delete}'/>" +
+//"						<button class='button submit greenbutton_big' onclick='shopshark.deleteAddress(${$value.id})'>${loc.b_delete}</button>" +
 "					{{else}}" +
 "						<input class='button submit greenbutton_big' type='submit' value='${loc.b_new}'/>" +
 "					{{/if}}" +
@@ -63,6 +66,7 @@ $.template("address_form",
 "	</div>" +
 "			<p>" +
 "			</p>" +
+"</fieldset>" +
 "</form>" + 
 "{{/each}}"
 );
@@ -278,6 +282,9 @@ $.template("userNav",
 "		${name}</p>" +
 "		<p><strong>${loc.l_last_login}:</strong><br />" +
 "		${last_login_date}</p>" +
+"		<div class='links'>" +
+"			<a href='#userpanel'>settings</a>"+
+"		</div>" +
 "	</fieldset>" +
 "	<div class='centered smalltopmargin'>" +
 "		<a href='#logout' class='bluebutton'>" +
@@ -334,6 +341,10 @@ $.template("register",
 "				<input id='cpassword' name='password' type='password' class='{required:true, minlength:8, maxlength:15}' />" +
 "			</p>" +
 "			<p>" +
+"				<label for='cconfpassword'>${loc.l_confirm_password} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cconfpassword' name='password' type='password' class='{equalTo: \"#cpassword\"}' />" +
+"			</p>" +
+"			<p>" +
 "				<label for='cname'>${loc.l_name} <span class='hint'>(${loc.h_required})</span></label>" +
 "				<input id='cname' name='name' class='{required:true, minlength:1, maxlength:80}' />" +
 "			</p>" +
@@ -350,6 +361,12 @@ $.template("register",
 "			</p>" +
 "		</fieldset>" +
 "	</form>" +
+"</div>" + 
+"<div id='bottombar'>" +
+"	<a href='#remove=register' class='bluebutton'>" +
+"		<span class='left'></span><span class='right'></span>" +
+"		${loc.b_back}" +
+"	</a>" +
 "</div>"
 );
 

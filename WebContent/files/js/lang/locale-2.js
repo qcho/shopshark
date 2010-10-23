@@ -80,11 +80,13 @@ var locale = {
 			l_register: "Registrarse",
 			l_username: "Usuario",
 			l_password: "Contraseña",
+			l_confirm_password: "Confirmar contraseña",
 			l_name: "Nombre",
 			l_email: "Email",
-			l_date: "Fecha",
+			l_date: "Fecha de Nacimiento",
 			h_required: "requerido",
-			b_submit: "Registrar"
+			b_submit: "Registrar",
+			b_back: "Atrás"
 		},
 		address_form:{
 			l_address_line: "Dirección línea",

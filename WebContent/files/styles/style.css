@@ -716,15 +716,16 @@ form.cmxform fieldset fieldset label {
 }
 
 form.cmxform label { 
-	width: 200px; 
+	width: 150px; 
 	color: #20252A;
 	text-align: right;
 } /* Width of labels */
 form.cmxform fieldset fieldset label { margin-left: 203px; } /* Width plus 3 (html space) */
 form.cmxform label.error {
-	margin-left: 20px;
-	width: 220px;
+	margin-left: 5px;
+	text-align: left;
 	color: red;
+	width: auto;
 }
 
 form.cmxform label span.hint{
@@ -735,4 +736,14 @@ form.cmxform label span.hint{
 
 form.cmxform input.submit {
 	margin-left: 103px;
+}
+
+.links {
+	margin-top: 10px;
+	text-align: right;
+	
+}
+
+form label.error {
+	color: red;
 }

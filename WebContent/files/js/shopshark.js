@@ -125,7 +125,7 @@ var shopshark = shopshark || {
 				jAddList.addresses.address = [ jAddList.addresses.address ];
 			}
 			
-			jAddList.addresses.address = jAddList.addresses.address.concat([{  'id' : -1,
+			jAddList.addresses.address = jAddList.addresses.address.concat([{
 										     'full_name' : '',
 										     'address_line_1' : '',
 										     'address_line_2' : '',
@@ -137,11 +137,10 @@ var shopshark = shopshark || {
 			
 			$.tmpl("address_form", jAddList).appendTo("#main_content");
 			
-			var $countrySelects = $("#main_content").find('.country');
+			var $countrySelects = $("#main_content").find('select[name=country]');
 			$countrySelects.bind('change', function(e){
-				hci.fetch(hci.GetStateList(lang_id, e.target.value), function(states){
-
-					var $stateSelect = $(e.target).closest('.address').find('.state');
+			hci.fetch(hci.GetStateList(lang_id, e.target.value), function(states){
+					var $stateSelect = $(e.target).closest('.address').find('select[name=state]');
 					$stateSelect.empty();
 					$(states).find('state').each(function(index){
 						$stateSelect.append('<option>'+$(this).find('name').text()+'</option>');
@@ -149,9 +148,61 @@ var shopshark = shopshark || {
 				});
 			});
 			$countrySelects.trigger('change');
-
-            
+			$('form.address').bind('submit', function(e){
+				$form = $(e.target);
+				console.info($form);
+				$form.validate();
+				if ($form.valid()){
+					var add = $.deparam($form.serialize());
+					if (add.address_id){
+						console.info('update', add);
+					} else {
+						console.info('new', add);
+					}
+				}
+				return false;
+			});
+			
 		});
+	},
+	
+	deleteAddress : function(address_id){
+		hci.fetch(hci.DeleteOrder(), function(){
+			//TODO: api does not provide a delete method.
+		});
+	},
+
+	updateAddress : function(form) {
+		var u = $.deparam($(form).serialize());
+
+		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.dateISO), function(response) {
+			var error_code = $(response).find('error').attr('status');
+			if (error_code) {
+				alert(locale.error[error_code]);
+			} else {
+				alert(locale.web.success_register);
+				shopshark.signIn(u.username, u.password);
+			}
+			$.bbq.removeState('register');
+		});
+
+	},
+	
+	createAddress : function(form) {
+		var u = $.deparam($(form).serialize());
+
+		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.dateISO), function(response) {
+			var error_code = $(response).find('error').attr('status');
+			if (error_code) {
+				alert(locale.error[error_code]);
+			} else {
+				alert(locale.web.success_register);
+				shopshark.signIn(u.username, u.password);
+			}
+			$.bbq.removeState('register');
+		});
+
+>>>>>>> Stashed changes
 	},
 	
 	renderOrderList : function() {
@@ -472,7 +523,6 @@ var shopshark = shopshark || {
 		$("#main_content").empty();
 		$.tmpl("register", data).appendTo("#main_content");
 		$("#register form").validate( {
-			messages : locale.validator,
 			submitHandler : function(form) {
 				shopshark.register(form);
 			}
@@ -564,6 +614,12 @@ $(document).ready(function() {
 			url = $(this).attr('href').replace(/^#/, '');
 			console.info('click url:', url);
 			
+			if(url.indexOf('remove') == 0){
+				var target = url.split("=")[1];
+				$.bbq.removeState(target);
+				return false;
+			};
+			
 			if (url.indexOf("category") != -1) {
 				$.bbq.pushState(url, 2);
 			} else {
@@ -610,8 +666,7 @@ $(document).ready(function() {
 			}
 
 			if (state_userpanel === "" || state_userpanel) {
-				console.info("panel", state_userpanel);
-				shopshark.renderOrderList();
+				shopshark.renderUserPanel();
 				return;
 			}
 			
