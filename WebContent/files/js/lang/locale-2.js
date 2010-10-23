@@ -98,6 +98,18 @@ var locale = {
 			b_delete: "Borrar",
 			l_new: "Nueva dirección",
 			b_new: "Crear Nueva"
+		},
+		order_detail:{
+		    l_order: "Orden",
+		    l_address: "Dirección",
+		    l_status: "Estado",
+		    l_progress: "Ver progreso",
+		    l_products: "Ver productos",
+		    l_unconfirmed: "No confirmada"
+		    l_status_1: "No confirmada",
+		    l_status_2: "Confirmada",
+		    l_status_3: "En viaje",
+		    l_status_4: "Entregada"		    
 		}
 	},
 	validator : {

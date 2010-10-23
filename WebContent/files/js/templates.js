@@ -68,25 +68,28 @@ $.template("address_form",
 );
 
 $.template("order_detail",
-"{{each(i, o) order}}" +
+"{{each(i, o) orders}}" +
 "    <div class='order'>" +
-"      <h4>Orden ${$o.id}</h4>" +
+"      <h4>${loc.l_order} ${o.id}</h4>" +
 "      <div class='description'>" +
 "        <table><tbody>" +
-"          <tr>" +
-"        <td>${loc.l_address}: </td>" +
-"        <td>${$o.address}</td>" +
-"          </tr>" +
-"          <tr>" +
-"        <td>${loc.l_status}:</td>" +
-"        <td>${$o.status}</td>" +
-"          </tr>" +
-"          <tr>" +
-"        <td colspan='2' class='buttons'>" +
-"          <input class='button submit greenbutton_big' type='submit' value='${loc.l_progress}'/>" +
-"          <input class='button submit greenbutton_big' type='submit' value='${loc.l_products}'/>" +
-"        </td>" +
-"          </tr>" +
+"        <tr>" +
+"          <td>${loc.l_address}: </td>" +
+"          <td>${o.address}</td>" +
+"        </tr>" +
+"        <tr>" +
+"          <td>${loc.l_status}:</td>" +
+"          <td>${o.status_desc}</td>" +
+"        </tr>" +
+"        <tr>" +
+"          <td colspan='2' class='buttons'>" +
+"            <input class='progress button submit greenbutton_big' type='submit' value='${loc.l_progress}'/>" +
+"            <input class='products button submit greenbutton_big' type='submit' value='${loc.l_products}'/>" +
+"          </td>" +
+"        </tr>" +
+"        <tr>" +
+"          <td colspan='2'><ul class='itemlist'>{{each(j, item) o.items}} <li>Item</li> {{/each}}</ul></td>" +
+"        </tr>" +
 "        </tbody></table>" +
 "      </div>" +
 "    </div>" +

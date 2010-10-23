@@ -140,7 +140,7 @@ var shopshark = shopshark || {
 			var $countrySelects = $("#main_content").find('.country');
 			$countrySelects.bind('change', function(e){
 				hci.fetch(hci.GetStateList(lang_id, e.target.value), function(states){
-					console.info(e);
+
 					var $stateSelect = $(e.target).closest('.address').find('.state');
 					$stateSelect.empty();
 					$(states).find('state').each(function(index){
@@ -149,12 +149,9 @@ var shopshark = shopshark || {
 				});
 			});
 			$countrySelects.trigger('change');
-			
-			var 
-			
-			console.info("test", jAddList, jCountryList, jAccount);
+
+            
 		});
-		shopshark.renderAddressList("<response status='ok'>" + "  <addresses>" + "    <address id='1'>" + "      <full_name>ITBA 1</full_name>" + "      <address_line_1>Av. Eduardo Madero 399</address_line_1>" + "      <address_line_2 />" + "      <country_id>1</country_id>" + "      <state_id>1</state_id>" + "      <city>Capital Federal</city>" + "      <zip_code>C1106ACD</zip_code>" + "      <phone_number>0800-888-ITBA</phone_number>" + "    </address>" + "  </addresses>" + "</response>");
 	},
 	
 	renderOrderList : function() {
@@ -162,14 +159,56 @@ var shopshark = shopshark || {
 		var token = $.cookie('token');
 		var lang_id = $.cookie('language_id');
 		
-		$("#main_title").html(locale.web.l_order_list);
+		$('#main_title').html(locale.web.l_order_list);
 		
 		hci.fetch(hci.GetOrderList(username, token), hci.GetAddressList(username, token), function(xmlorders, xmladdresses) {
 		
-		    var orders = arrayify($.xml2json(xmlorders).orders.order);
-		    var addresses = arrayify($.xml2json(xmladdresses).addresses.address);
-		
-		};
+		    var $orders = $(arrayify($.xml2json(xmlorders).orders.order));
+		    var $addresses = $(arrayify($.xml2json(xmladdresses).addresses.address));
+		    
+		    $orders.loc = locale.template.order_detail;
+		    
+		    $orders.each( function(index) {
+		        var order = this;
+		        
+		        /* We'll add an 'address' field to the orders, resolving address_id: */
+                $addresses.each( function(index2) {
+                    var address = this;
+
+                    if (order.address_id == address.id)
+                        order.address = address.full_name;
+                
+                });
+                
+                if (!order.address)
+                    order.address = locale.template.order_detail.l_unconfirmed;
+
+                /* Done. Now, a proper status message: */
+                order.status_desc = locale.template.order_detail['l_status_' + order.status];
+
+		    });
+		    	    
+		    $('#main_content').empty();
+		    
+            var data = {'orders' : $orders,
+                        'loc'    : locale.template.order_detail
+                       };
+            
+            /* Let's output the html: */        
+                    
+		    $.tmpl('order_detail', data).appendTo('#main_content');
+		    
+		    /* We'll now bind the events needed for the buttons to work: */
+		    
+		    $('#main_content').find('.products').each( function(index) {
+                
+                var $itemlist = $($(this).closest('.order').find('.itemlist'));
+                
+		        $(this).bind('click', function(e) {
+                        $itemlist.toggle();
+		        });
+		    });
+		});
 	},
 
 	renderAddressList : function(response) {
@@ -572,7 +611,7 @@ $(document).ready(function() {
 
 			if (state_userpanel === "" || state_userpanel) {
 				console.info("panel", state_userpanel);
-				shopshark.renderUserPanel();
+				shopshark.renderOrderList();
 				return;
 			}
 			
