@@ -38,4 +38,4 @@ var shopshark = shopshark || {
 	}
 };
 
-shopshark.populateBySearch("ca");
+shopshark.populateBySearch("a");

@@ -2,6 +2,7 @@ var locale = {
 	id : "1",
 	code : "en",
 	web : {
+		l_loading: "Loading, please wait a moment please.",
 		l_success: "The operation was successful.",
 		"l_search" : "Search",
 		"l_language" : "Change languaje: ",
@@ -111,7 +112,7 @@ var locale = {
 		},
 		order_detail:{
 		    l_order: "Order",
-		    l_your_order: "Your order",
+		    
 		    l_address: "Address",
 		    l_status: "Status",
 		    l_progress: "View progress",
@@ -120,8 +121,7 @@ var locale = {
 		    l_status_1: "Unconfirmed",
 		    l_status_2: "Confirmed",
 		    l_status_3: "In transport",
-		    l_status_4: "Delivered",
-		    b_confirm: "Confirm order"
+		    l_status_4: "Delivered"
 		},
 		change_password:{
 			l_changepassword: "Change password",
@@ -130,6 +130,10 @@ var locale = {
 			l_confirm_password: "Confirm password",
 			h_required: "required",
 			b_submit: "Change"
+		},
+		checkout: {
+			l_your_order: "Your order",
+			b_confirm: "Confirm order"
 		}
 	},
 	validator: {

@@ -301,6 +301,7 @@ $.template("userNav",
 );
 
 $.template("cart",
+"<div class='cart'>" +	
 "	<table class='alternating' cellpadding='0' cellspacing='0' border='0'>" +
 "		<tbody class='chain-element' id='lines'>" +
 "		{{each items.item}}" +
@@ -308,6 +309,7 @@ $.template("cart",
 "				<td><input class='quantity' id='count_${$value.product_id}' value='${$value.count}' type='text'></td>" +
 "				<td class='name'><a href='#product=${$value.product_id}'>${loc.p_loading}</a></td>" +
 "				<td class='subtotal formattedCurrency'>$${$value.price}</td>" +
+"				<td class='removeitem'><img src='files/images/remove_icon.png' id='clear_${$value.product_id}'></td>" +
 "			</tr>" +
 "		{{/each}}" +
 "		</tbody>" +
@@ -325,10 +327,8 @@ $.template("cart",
 "			<span class='left'></span><span class='right'></span>" +
 "			${loc.b_checkout}" +
 "		</a>" +
-"		<span class='in_cart'>" +
-"			<span class='totalincart'>1</span> in<br>cart" +
-"		</span>" +
-"	</div>"
+"	</div>" +
+"</div>"
 );
 
 $.template("register",
@@ -351,7 +351,7 @@ $.template("register",
 "			</p>" +
 "			<p>" +
 "				<label for='cconfpassword'>${loc.l_confirm_password} <span class='hint'>(${loc.h_required})</span></label>" +
-"				<input id='cconfpassword' name='password' type='password' class='{equalTo: \"#cpassword\"}' />" +
+"				<input id='cconfpassword' name='password_conf' type='password' class='{equalTo: \"#cpassword\"}' />" +
 "			</p>" +
 "			<p>" +
 "		{{/if}}" +
@@ -390,13 +390,14 @@ $.template("register",
 
 $.template("checkout",
 "<div id='checkout'>" +
-"   <form id=''>" +
+"	<form method='post' action=''>" +
+"		<input name='order_id' type='hidden' value='${order_id}'/>" +
 "      <h4>${loc.l_your_order}:</h4>" +
-"      <ul>" +
-"           {{each(i, item) items}}" +
-"               <li>${item.qty} x ${item.name}</li>" +
+"      <select name='address_id'>" +
+"           {{each address}}" +
+"               <option value='${$value.id}'><strong>${$value.full_name}</strong> (${$value.address_line_1} ${$value.address_line_2})</option>" +
 "           {{/each}}" +
-"      </ul>" +
+"      </select>" +
 "      <input name='buy' class='button submit greenbutton_big' type='submit' value='${loc.b_confirm}'/>" +
 "   </form>" +
 "</div>"

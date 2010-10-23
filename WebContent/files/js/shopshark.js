@@ -3,10 +3,10 @@
  */
 
 function arrayify(thing) {
-    if ($.isArray(thing))
-        return thing;
-    else
-        return [thing];
+	if ($.isArray(thing))
+		return thing;
+	else
+		return [ thing ];
 }
 
 var shopshark = shopshark || {
@@ -29,7 +29,7 @@ var shopshark = shopshark || {
 
 	populateBySearch : function(criteria) {
 		if (criteria) {
-			$("#main_title").html(locale.web.l_search_results + ": <span>" + criteria + "</span>");
+			$("#main_title").html(locale.web.l_search_results + ": <span>" + $(criteria).text() + "</span>");
 			$("#main_content").load('content/loading.html');
 			hci.fetch(hci.GetProductListByName(criteria, this.order, this.items_per_page, this.page), function(prodResp) {
 				shopshark.renderProducts(prodResp);
@@ -73,12 +73,12 @@ var shopshark = shopshark || {
 		$('#main_content').empty();
 		if (prodList.products.size > 0) {
 			prodList.products.loc = locale.template.product_thumb;
-			
+
 			if (prodList.products.product && !$.isArray(prodList.products.product)) {
 				// make it array
 				prodList.products.product = [ prodList.products.product ];
 			}
-			
+
 			$.tmpl("product_thumb", prodList.products).appendTo("#main_content");
 
 			// Add paginator.
@@ -101,50 +101,68 @@ var shopshark = shopshark || {
 			$('#main_content').text("No products found.");
 		}
 	},
-	
+
 	renderCheckout : function(order_id) {
 
-	       var cart = { 'id' : order_id,
-	                    'items': [],
-	                    'loc' : locale.template.order_detail
-	                  };
+		var username = $.cookie('username');
+		var token = $.cookie('token');
 
-	       $('#cart').find('.item').each(function(index) {
+		$("#main_title").html(locale.template.cart.b_checkout + " " + locale.template.order_detail.l_order);
+		
+		shopshark.renderCart(order_id, "#main_content", function(){
+			
+			$("#main_content").find('.cart .buttons').hide();
+			
+			hci.fetch(hci.GetAddressList(username, token), function(response) {
+				var addresslist = $.xml2json(response).addresses;
+				addresslist.loc = locale.template.checkout;
+				addresslist.order_id = order_id;
+				$.tmpl('checkout', addresslist).appendTo('#main_content');
+				
+				$('#checkout form').bind('submit', function(e){
+					var l = $.deparam($(this).serialize());
+					hci.fetch(hci.ConfirmOrder(username, token, order_id, l.address_id), function(response){
+						var error_code = $(response).find('error').attr('code');
+						if (error_code) {
+							alert(locale.error[error_code]);
+						} else {
+							alert(locale.web.l_success);
+							window.location.reload(true);
+						}
+					});
+					return false;
+				});
+			});
+			
+		});
+		
+		
+		
 
-	           var item = { 'qty' : $(this).find('.quantity').val(),
-	                        'name': $(this).find('.name').find('a').html()
-	                      };
-
-	           cart.items = cart.items.concat(item);
-
-	       });
-
-	       $('#main_content').empty();
-	       console.info(cart.items);
-	       $.tmpl('checkout', cart).appendTo('#main_content');
-
-	   },
+	},
 
 	renderUserPanel : function() {
 		var username = $.cookie('username');
 		var token = $.cookie('token');
 		var lang_id = $.cookie('language_id');
 		$('#main_content').empty();
-		
+
 		$("#main_title").html(locale.web.l_user_panel);
-		
-		hci.fetch(hci.GetAccount(username,token), hci.GetAccountPreferences(username,token), function(acc,prefs){
+
+		hci.fetch(hci.GetAccount(username, token), hci.GetAccountPreferences(username, token), function(acc, prefs) {
 			var data = $.xml2json(acc).account;
 			data.loc = locale.template.register;
 			console.info(data);
 			$.tmpl("register", data).appendTo("#main_content");
-			$.tmpl("change_password", {loc:locale.template.change_password}).appendTo("#main_content");
-			
-			$("#register form").validate( {
+			$.tmpl("change_password", {
+				loc : locale.template.change_password
+			}).appendTo("#main_content");
+
+			$("#register form").validate({
 				submitHandler : function(form) {
 					var f = $.deparam($(form).serialize());
 					console.info(f);
-					hci.fetch(hci.UpdateAccount($.cookie('username'), $.cookie('token'), f.name, f.email, f.birth_date),function(response){
+					hci.fetch(hci.UpdateAccount($.cookie('username'), $.cookie('token'), f.name, f.email, f.birth_date), function(response) {
 						var error_code = $(response).find('error').attr('code');
 						if (error_code) {
 							alert(locale.error[error_code]);
@@ -156,12 +174,12 @@ var shopshark = shopshark || {
 					return false;
 				}
 			});
-			
-			$("#change_password form").validate( {
+
+			$("#change_password form").validate({
 				submitHandler : function(form) {
 					var f = $.deparam($(form).serialize());
 					console.info(f);
-					hci.fetch(hci.ChangePassword($.cookie('username'), f.password, f.new_password),function(response){	
+					hci.fetch(hci.ChangePassword($.cookie('username'), f.password, f.new_password), function(response) {
 						var error_code = $(response).find('error').attr('code');
 						if (error_code) {
 							alert(locale.error[error_code]);
@@ -174,14 +192,13 @@ var shopshark = shopshark || {
 				}
 			});
 		});
-		
-		
+
 		hci.fetch(hci.GetAddressList(username, token), hci.GetCountryList(lang_id), hci.GetAccountPreferences(username, token), function(addList, CountryList, Account) {
-		
+
 			var jAddList = $.xml2json(addList);
 			var jCountryList = $.xml2json(CountryList);
 			var jAccount = $.xml2json(Account);
-			
+
 			jAddList.loc = locale.template.address_form;
 			jAddList.country_list = jCountryList.countries.country;
 
@@ -189,46 +206,43 @@ var shopshark = shopshark || {
 				// make it array
 				jAddList.addresses.address = [ jAddList.addresses.address ];
 			}
-			
-			jAddList.addresses.address = jAddList.addresses.address.concat([{
-										     'full_name' : '',
-										     'address_line_1' : '',
-										     'address_line_2' : '',
-										     'phone_number' : '',
-										     'zip_code' : '',
-										     'country_id': '1',
-										     'state_id' : '1',
-										     'city' : '' }]);
-			
+
+			jAddList.addresses.address = jAddList.addresses.address.concat([ {
+				'full_name' : '',
+				'address_line_1' : '',
+				'address_line_2' : '',
+				'phone_number' : '',
+				'zip_code' : '',
+				'country_id' : '1',
+				'state_id' : '1',
+				'city' : ''
+			} ]);
+
 			$.tmpl("address_form", jAddList).appendTo("#main_content");
-			
+
 			var $countrySelects = $("#main_content").find('select[name=country_id]');
-			$countrySelects.bind('change', function(e){
-			hci.fetch(hci.GetStateList(lang_id, e.target.value), function(states){
+			$countrySelects.bind('change', function(e) {
+				hci.fetch(hci.GetStateList(lang_id, e.target.value), function(states) {
 					var $stateSelect = $(e.target).closest('.address').find('select[name=state_id]');
 					$stateSelect.empty();
-					$(states).find('state').each(function(index){
-						$stateSelect.append('<option value="'+$(this).attr('id')+'">'+$(this).find('name').text()+'</option>');
+					$(states).find('state').each(function(index) {
+						$stateSelect.append('<option value="' + $(this).attr('id') + '">' + $(this).find('name').text() + '</option>');
 					});
 				});
 			});
 			$countrySelects.trigger('change');
-			
-			$('form.address').each(function(i){
+
+			$('form.address').each(function(i) {
 				$(this).validate({
-					submitHandler: function(form) {
+					submitHandler : function(form) {
 						var add = $.deparam($(form).serialize());
-						if (add.address_id){
-							hci.fetch(hci.UpdateAddress(username, token, add.address_id, add.full_name, 
-									add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, 
-									add.phone_number), function(response){
-								//server error.
+						if (add.address_id) {
+							hci.fetch(hci.UpdateAddress(username, token, add.address_id, add.full_name, add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, add.phone_number), function(response) {
+								// server error.
 							});
 						} else {
-							hci.fetch(hci.CreateAddress(username, token, add.full_name, 
-									add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, 
-									add.phone_number), function(response){
-								//server error.
+							hci.fetch(hci.CreateAddress(username, token, add.full_name, add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, add.phone_number), function(response) {
+								// server error.
 							});
 						}
 						window.location.reload(true);
@@ -236,70 +250,74 @@ var shopshark = shopshark || {
 					}
 				});
 			});
-			
+
 		});
 	},
-	
-	deleteAddress : function(address_id){
-		hci.fetch(hci.DeleteOrder(), function(){
-			//api does not provide a delete method.
+
+	deleteAddress : function(address_id) {
+		hci.fetch(hci.DeleteOrder(), function() {
+			// api does not provide a delete method.
 		});
 	},
-	
+
 	renderOrderList : function() {
-        var username = $.cookie('username');
+		var username = $.cookie('username');
 		var token = $.cookie('token');
 		var lang_id = $.cookie('language_id');
-		
+
 		$('#main_title').html(locale.web.l_order_list);
-		
+
 		hci.fetch(hci.GetOrderList(username, token), hci.GetAddressList(username, token), function(xmlorders, xmladdresses) {
-		
-		    var $orders = $(arrayify($.xml2json(xmlorders).orders.order));
-		    var $addresses = $(arrayify($.xml2json(xmladdresses).addresses.address));
-		    
-		    $orders.loc = locale.template.order_detail;
-		    
-		    $orders.each( function(index) {
-		        var order = this;
-		        
-		        /* We'll add an 'address' field to the orders, resolving address_id: */
-                $addresses.each( function(index2) {
-                    var address = this;
 
-                    if (order.address_id == address.id)
-                        order.address = address.full_name;
-                
-                });
-                
-                if (!order.address)
-                    order.address = locale.template.order_detail.l_unconfirmed;
+			var $orders = $(arrayify($.xml2json(xmlorders).orders.order));
+			var $addresses = $(arrayify($.xml2json(xmladdresses).addresses.address));
 
-                /* Done. Now, a proper status message: */
-                order.status_desc = locale.template.order_detail['l_status_' + order.status];
+			$orders.loc = locale.template.order_detail;
 
-		    });
-		    	    
-		    $('#main_content').empty();
-		    
-            var data = {'orders' : $orders,
-                        'loc'    : locale.template.order_detail
-                       };
-            
-            /* Let's output the html: */        
-                    
-		    $.tmpl('order_detail', data).appendTo('#main_content');
-		    
-		    /* We'll now bind the events needed for the buttons to work: */
-		    
-		    $('#main_content').find('.products').each( function(index) {
-                
-                var $itemlist = $($(this).closest('.order').find('.itemlist'));
-                
-		        $(this).bind('click', function(e) {
-                        $itemlist.toggle();
-		        });
-		    });
+			$orders.each(function(index) {
+				var order = this;
+
+				/*
+				 * We'll add an 'address' field to the orders, resolving
+				 * address_id:
+				 */
+				$addresses.each(function(index2) {
+					var address = this;
+
+					if (order.address_id == address.id)
+						order.address = address.full_name;
+
+				});
+
+				if (!order.address)
+					order.address = locale.template.order_detail.l_unconfirmed;
+
+				/* Done. Now, a proper status message: */
+				order.status_desc = locale.template.order_detail['l_status_' + order.status];
+
+			});
+
+			$('#main_content').empty();
+
+			var data = {
+				'orders' : $orders,
+				'loc' : locale.template.order_detail
+			};
+
+			/* Let's output the html: */
+
+			$.tmpl('order_detail', data).appendTo('#main_content');
+
+			/* We'll now bind the events needed for the buttons to work: */
+
+			$('#main_content').find('.products').each(function(index) {
+
+				var $itemlist = $($(this).closest('.order').find('.itemlist'));
+
+				$(this).bind('click', function(e) {
+					$itemlist.toggle();
+				});
+			});
 		});
 	},
 
@@ -374,7 +392,7 @@ var shopshark = shopshark || {
 				$("#main_content").empty();
 				$.tmpl("product", resp.product).appendTo("#main_content");
 				if (resp.product.actors) {
-					$.ajax( {
+					$.ajax({
 						url : "youtube/?q=" + escape(resp.product.name + " HD trailer") + "&lang=es&setSafeSearch=STRICT&max-results=10&v=2&fields=entry(title,media:group(yt:videoid),yt:noembed)",
 						success : shopshark.loadVideo
 					});
@@ -468,11 +486,17 @@ var shopshark = shopshark || {
 				$.cookie("username", signIn.authentication.user.username);
 				$.cookie("name", signIn.authentication.user.name);
 				$.cookie("last_login_date", signIn.authentication.user.last_login_date);
-				window.location.reload(true);
+
+				var state_register = $.bbq.getState('register');
+				if (state_register) {
+					$.bbq.removeState('register');
+				} else {
+					window.location.reload(true);
+				}
 			} else {
 				alert(locale.error[signIn.error.code]);
 			}
-			$.bbq.removeState('clear');
+
 		});
 
 	},
@@ -495,12 +519,16 @@ var shopshark = shopshark || {
 
 	},
 
-	renderCart : function(order_id) {
+	renderCart : function(order_id, appendTo, handler) {
+		if (!appendTo) {
+			appendTo = "#cart";
+		}
 		$('#loading_cart').show();
 		hci.fetch(hci.GetOrder($.cookie("username"), $.cookie("token"), order_id), function(orderResp) {
 			shopshark.cartData = $.xml2json(orderResp);
 			var order = shopshark.cartData.order;
 			order.total = 0.0;
+			$(appendTo).empty();
 			if (order.items.item) {
 				if (order.items.item && !$.isArray(order.items.item)) {
 					// make it array
@@ -511,13 +539,13 @@ var shopshark = shopshark || {
 					order.total += parseFloat(v.price) * parseInt(v.count);
 				});
 				order.loc = locale.template.cart;
-				$('#cart').empty();
+
 				order.total = shopshark.formatNumber(order.total, 2);
-				$.tmpl("cart", order).appendTo("#cart");
+				$.tmpl("cart", order).appendTo(appendTo);
 
 				// Store cart names in cookies so we do not have to call the api
 				// every time.
-				$('#cart').find('a[href^=#product]').each(function(i, v) {
+				$(appendTo).find('a[href^=#product]').each(function(i, v) {
 					var p_id = $(v).attr('href').split('=')[1];
 					var name = $.cookie('c_p_' + p_id);
 					if (name) {
@@ -537,22 +565,32 @@ var shopshark = shopshark || {
 					var o_id = $('a[href^=#checkout]').attr('href').split('=')[1];
 					var p_id = $(this).attr('id').split('_')[1];
 					var new_count = e.target.value;
-					hci.fetch(hci.DeleteOrderItem($.cookie("username"), $.cookie("token"), o_id, p_id, "9999"), function(resp) {
+					hci.fetch(hci.DeleteOrderItem($.cookie("username"), $.cookie("token"), o_id, p_id, "999999"), function(resp) {
 						if (new_count > 0) {
 							hci.fetch(hci.AddOrderItem($.cookie("username"), $.cookie("token"), o_id, p_id, new_count), function(resp) {
-								shopshark.renderCart(shopshark.cartData.order.id);
+								shopshark.renderCart(shopshark.cartData.order.id, appendTo);
 							});
 						} else {
 							shopshark.renderCart(shopshark.cartData.order.id);
 						}
 					});
+				});
 
+				$('.removeitem img').bind('click', function(e) {
+					var o_id = $('a[href^=#checkout]').attr('href').split('=')[1];
+					var p_id = $(this).attr('id').split('_')[1];
+					hci.fetch(hci.DeleteOrderItem($.cookie("username"), $.cookie("token"), o_id, p_id, "999999"), function(resp) {
+						shopshark.renderCart(o_id, appendTo);
+					});
 				});
 
 			} else {
-				$('#cart').prepend('<div id="empty_cart"><p>' + locale.web.p_noitems + '</p></div>');
+				$(appendTo).prepend('<div id="empty_cart"><p>' + locale.web.p_noitems + '</p></div>');
 			}
 			$('#loading_cart').hide();
+			if(typeof handler === 'function'){
+				handler();
+			}
 		});
 	},
 
@@ -563,7 +601,7 @@ var shopshark = shopshark || {
 		$("#main_title").html(locale.web.l_newaccount);
 		$("#main_content").empty();
 		$.tmpl("register", data).appendTo("#main_content");
-		$("#register form").validate( {
+		$("#register form").validate({
 			submitHandler : function(form) {
 				shopshark.register(form);
 				return false;
@@ -582,7 +620,6 @@ var shopshark = shopshark || {
 				alert(locale.web.success_register);
 				shopshark.signIn(u.username, u.password);
 			}
-			$.bbq.removeState('register');
 		});
 
 	},
@@ -643,7 +680,7 @@ $(document).ready(function() {
 
 		// Automatic Search bar
 		$('input[name=query]').keyup(function(event) {
-			$.bbq.removeState( [ 'category', 'subcategory', 'product' ]);
+			$.bbq.removeState([ 'category', 'subcategory', 'product' ]);
 			$.bbq.pushState('search=' + escape(event.target.value));
 		});
 
@@ -655,15 +692,15 @@ $(document).ready(function() {
 		$('a[href^=#]').live('click', function(e) {
 			url = $(this).attr('href').replace(/^#/, '');
 			console.info('click url:', url);
-			
-			if(url.indexOf('remove') == 0){
+
+			if (url.indexOf('remove') == 0) {
 				var target = url.split("=")[1];
 				$.bbq.removeState(target);
 				return false;
-			};
-			
-			if (url.indexOf("category") != -1 
-					|| url.indexOf("product") != -1) {
+			}
+			;
+
+			if (url.indexOf("category") != -1 || url.indexOf("product") != -1) {
 				$.bbq.pushState(url, 2);
 			} else {
 				$.bbq.pushState(url);
@@ -708,32 +745,32 @@ $(document).ready(function() {
 			} else {
 				shopshark.order = "ASC";
 			}
-			
+
 			if (state_logout === "" || state_logout) {
-				if($.cookie('token')){
+				if ($.cookie('token')) {
 					shopshark.signOut();
 				} else {
 					$.bbq.removeState('logout');
 				}
 				return;
 			}
-			
+
 			if (state_register === "" || state_register) {
 				shopshark.renderRegisterForm();
 				return;
 			}
-			
+
 			if (state_userpanel === "" || state_userpanel) {
-				if($.cookie('token')){
+				if ($.cookie('token')) {
 					shopshark.renderUserPanel();
 				} else {
 					$.bbq.removeState('userpanel');
 				}
 				return;
 			}
-			
+
 			if (state_checkout) {
-				if($.cookie('token')){
+				if ($.cookie('token')) {
 					shopshark.renderCheckout(state_checkout);
 				} else {
 					$.bbq.removeState('checkout');
@@ -742,7 +779,7 @@ $(document).ready(function() {
 			}
 
 			if (state_clear) {
-				if($.cookie('token')){
+				if ($.cookie('token')) {
 					shopshark.clearCart(state_clear);
 				} else {
 					$.bbq.removeState('clear');
