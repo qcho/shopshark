@@ -101,17 +101,80 @@ var shopshark = shopshark || {
 			$('#main_content').text("No products found.");
 		}
 	},
+	
+	renderCheckout : function(order_id) {
+
+	       var cart = { 'id' : order_id,
+	                    'items': [],
+	                    'loc' : locale.template.order_detail
+	                  };
+
+	       $('#cart').find('.item').each(function(index) {
+
+	           var item = { 'qty' : $(this).find('.quantity').val(),
+	                        'name': $(this).find('.name').find('a').html()
+	                      };
+
+	           cart.items = cart.items.concat(item);
+
+	       });
+
+	       $('#main_content').empty();
+	       console.info(cart.items);
+	       $.tmpl('checkout', cart).appendTo('#main_content');
+
+	   },
 
 	renderUserPanel : function() {
 		var username = $.cookie('username');
 		var token = $.cookie('token');
 		var lang_id = $.cookie('language_id');
+		$('#main_content').empty();
 		
 		$("#main_title").html(locale.web.l_user_panel);
 		
-		hci.fetch(hci.GetAccount(username,token), function(response){
+		hci.fetch(hci.GetAccount(username,token), hci.GetAccountPreferences(username,token), function(acc,prefs){
+			var data = $.xml2json(acc).account;
+			data.loc = locale.template.register;
+			console.info(data);
+			$.tmpl("register", data).appendTo("#main_content");
+			$.tmpl("change_password", {loc:locale.template.change_password}).appendTo("#main_content");
 			
+			$("#register form").validate( {
+				submitHandler : function(form) {
+					var f = $.deparam($(form).serialize());
+					console.info(f);
+					hci.fetch(hci.UpdateAccount($.cookie('username'), $.cookie('token'), f.name, f.email, f.birth_date),function(response){
+						var error_code = $(response).find('error').attr('code');
+						if (error_code) {
+							alert(locale.error[error_code]);
+						} else {
+							alert(locale.web.l_success);
+							window.location.reload(true);
+						}
+					});
+					return false;
+				}
+			});
+			
+			$("#change_password form").validate( {
+				submitHandler : function(form) {
+					var f = $.deparam($(form).serialize());
+					console.info(f);
+					hci.fetch(hci.ChangePassword($.cookie('username'), f.password, f.new_password),function(response){	
+						var error_code = $(response).find('error').attr('code');
+						if (error_code) {
+							alert(locale.error[error_code]);
+						} else {
+							alert(locale.web.l_success);
+							window.location.reload(true);
+						}
+					});
+					return false;
+				}
+			});
 		});
+		
 		
 		hci.fetch(hci.GetAddressList(username, token), hci.GetCountryList(lang_id), hci.GetAccountPreferences(username, token), function(addList, CountryList, Account) {
 		
@@ -121,9 +184,7 @@ var shopshark = shopshark || {
 			
 			jAddList.loc = locale.template.address_form;
 			jAddList.country_list = jCountryList.countries.country;
-			
-			$('#main_content').empty();
-			
+
 			if (jAddList.addresses.address && !$.isArray(jAddList.addresses.address)) {
 				// make it array
 				jAddList.addresses.address = [ jAddList.addresses.address ];
@@ -158,18 +219,16 @@ var shopshark = shopshark || {
 					submitHandler: function(form) {
 						var add = $.deparam($(form).serialize());
 						if (add.address_id){
-							console.info('update', add);
 							hci.fetch(hci.UpdateAddress(username, token, add.address_id, add.full_name, 
 									add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, 
 									add.phone_number), function(response){
-								console.info($(response).text());
+								//server error.
 							});
 						} else {
-							console.info('new', add);
 							hci.fetch(hci.CreateAddress(username, token, add.full_name, 
 									add.address_line_1, add.address_line_2, add.country_id, add.state_id, add.city, add.zip_code, 
 									add.phone_number), function(response){
-								console.info($(response).text());
+								//server error.
 							});
 						}
 						window.location.reload(true);
@@ -183,38 +242,7 @@ var shopshark = shopshark || {
 	
 	deleteAddress : function(address_id){
 		hci.fetch(hci.DeleteOrder(), function(){
-			//TODO: api does not provide a delete method.
-		});
-	},
-
-	updateAddress : function(form) {
-		var u = $.deparam($(form).serialize());
-
-		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.dateISO), function(response) {
-			var error_code = $(response).find('error').attr('status');
-			if (error_code) {
-				alert(locale.error[error_code]);
-			} else {
-				alert(locale.web.success_register);
-				shopshark.signIn(u.username, u.password);
-			}
-			$.bbq.removeState('register');
-		});
-
-	},
-	
-	createAddress : function(form) {
-		var u = $.deparam($(form).serialize());
-
-		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.dateISO), function(response) {
-			var error_code = $(response).find('error').attr('status');
-			if (error_code) {
-				alert(locale.error[error_code]);
-			} else {
-				alert(locale.web.success_register);
-				shopshark.signIn(u.username, u.password);
-			}
-			$.bbq.removeState('register');
+			//api does not provide a delete method.
 		});
 	},
 	
@@ -538,6 +566,7 @@ var shopshark = shopshark || {
 		$("#register form").validate( {
 			submitHandler : function(form) {
 				shopshark.register(form);
+				return false;
 			}
 		});
 	},
@@ -545,8 +574,8 @@ var shopshark = shopshark || {
 	register : function(form) {
 		var u = $.deparam($(form).serialize());
 
-		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.dateISO), function(response) {
-			var error_code = $(response).find('error').attr('status');
+		hci.fetch(hci.CreateAccount(u.username, u.name, u.password, u.email, u.birth_date), function(response) {
+			var error_code = $(response).find('error').attr('code');
 			if (error_code) {
 				alert(locale.error[error_code]);
 			} else {
@@ -561,7 +590,7 @@ var shopshark = shopshark || {
 	clearCart : function(order_id) {
 		$('#cart').empty();
 		hci.fetch(hci.DeleteOrder($.cookie('username'), $.cookie('token'), order_id), function(response) {
-			var error_code = $(response).find('error').attr('status');
+			var error_code = $(response).find('error').attr('code');
 			if (error_code) {
 				alert(locale.error[error_code]);
 			} else {
@@ -633,7 +662,8 @@ $(document).ready(function() {
 				return false;
 			};
 			
-			if (url.indexOf("category") != -1) {
+			if (url.indexOf("category") != -1 
+					|| url.indexOf("product") != -1) {
 				$.bbq.pushState(url, 2);
 			} else {
 				$.bbq.pushState(url);
@@ -663,6 +693,7 @@ $(document).ready(function() {
 			var state_logout = e.getState('logout');
 			var state_clear = e.getState('clear');
 			var state_userpanel = e.getState('userpanel');
+			var state_checkout = e.getState('checkout');
 
 			if (state_page) {
 				shopshark.page = state_page;
@@ -677,9 +708,13 @@ $(document).ready(function() {
 			} else {
 				shopshark.order = "ASC";
 			}
-
-			if (state_userpanel === "" || state_userpanel) {
-				shopshark.renderUserPanel();
+			
+			if (state_logout === "" || state_logout) {
+				if($.cookie('token')){
+					shopshark.signOut();
+				} else {
+					$.bbq.removeState('logout');
+				}
 				return;
 			}
 			
@@ -687,14 +722,32 @@ $(document).ready(function() {
 				shopshark.renderRegisterForm();
 				return;
 			}
-
-			if (state_logout === "" || state_logout) {
-				shopshark.signOut();
+			
+			if (state_userpanel === "" || state_userpanel) {
+				if($.cookie('token')){
+					shopshark.renderUserPanel();
+				} else {
+					$.bbq.removeState('userpanel');
+				}
+				return;
+			}
+			
+			if (state_checkout) {
+				if($.cookie('token')){
+					shopshark.renderCheckout(state_checkout);
+				} else {
+					$.bbq.removeState('checkout');
+				}
 				return;
 			}
 
 			if (state_clear) {
-				shopshark.clearCart(state_clear);
+				if($.cookie('token')){
+					shopshark.clearCart(state_clear);
+				} else {
+					$.bbq.removeState('clear');
+				}
+				return;
 			}
 
 			if (state_product) {

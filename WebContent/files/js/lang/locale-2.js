@@ -2,6 +2,7 @@ var locale = {
 	id : "2",
 	code : "es",
 	web : {
+		l_success: "La operación ha sido exitosa.",
 		"l_search" : "Buscar",
 		"l_language" : "Cambiar idioma: ",
 		"b_asc" : "Ordenar Ascendente",
@@ -78,7 +79,8 @@ var locale = {
 			"p_loading" : "cargando..."
 		},
 		register:{
-			l_register: "Registrarse",
+			l_update: "Actualizar cuenta",
+			l_register: "Registrar nueva cuenta",
 			l_username: "Usuario",
 			l_password: "Contraseña",
 			l_confirm_password: "Confirmar contraseña",
@@ -87,9 +89,11 @@ var locale = {
 			l_date: "Fecha de Nacimiento",
 			h_required: "requerido",
 			b_submit: "Registrar",
+			b_submit_update: "Actualizar",
 			b_back: "Atrás"
 		},
 		address_form:{
+			l_title: "Direcciones",
 			l_full_name: "Nombre completo",
 			l_address_line: "Dirección línea",
 			l_zip_code:"Código postal",
@@ -106,6 +110,7 @@ var locale = {
 		},
 		order_detail:{
 		    l_order: "Orden",
+		    l_your_order: "Tu orden",
 		    l_address: "Dirección",
 		    l_status: "Estado",
 		    l_progress: "Ver progreso",
@@ -114,7 +119,16 @@ var locale = {
 		    l_status_1: "No confirmada",
 		    l_status_2: "Confirmada",
 		    l_status_3: "En viaje",
-		    l_status_4: "Entregada"		    
+		    l_status_4: "Entregada",
+		    b_confirm: "Confirmar orden"
+		},
+		change_password:{
+			l_changepassword: "Cambiar contraseña",
+			l_currpassword: "Contraseña actual",
+			l_password: "Nueva Contraseña",
+			l_confirm_password: "Confiramr contraseña",
+			h_required: "requerido",
+			b_submit: "Cambiar"
 		}
 	},
 	validator : {

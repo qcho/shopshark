@@ -300,35 +300,26 @@ hr
 .order table td .buttons { text-align: center; }
     
 .order .description td .button {width: 150px; margin-left: 5px;}    
-    
-.address
-	{width:600px;float:left;margin-bottom:25px; margin-right:20px; }
-.address h4 
-	{color:#2a3640;font-size:16px;border-bottom:1px dashed #cfd3d6;margin-top:0;margin-bottom:12px;padding:4px 0;}
-.address h4 span 
-	{color:#9aa3ab;font-weight:normal;font-style:italic;}
-	
-.address .full_name {
-	width: 600px;
-}
-	
-.description 
-	{width:600px;margin-left:11px;float:left;position:relative;}
 
-.description table { width: 578px; }
 .description table td { padding: 4px; }
 .description table td .short { width: 150px; }
-
 .address td .buttons { text-align: right; }
-
-.address .description td .button {width: 150px; margin-left: 5px;}
-
+.address .description td .button {width: auto; margin-left: 5px;}
 .address .description table td input { width: 100%; }
 .address .description table td select { width: 100%; }
-	
-.address .description p
-	{margin:0;}
+.address .description p {margin:0;}
 
+.address{
+	margin-top: 10px;
+}
+
+.address .button {
+	float:right;
+}
+
+.address table{
+	width: 100%;
+}
 
 /* SORTBUTTONS */
 .sortbutton
@@ -681,10 +672,9 @@ form.cmxform fieldset {
 	margin-bottom: 10px;
 }
 
-form.cmxform legend {
+form legend {
 	padding: 0 2px;
 	font-weight: bold;
-	_margin: 0 -7px; /* IE Win */
 }
 
 form.cmxform label {
@@ -748,5 +738,9 @@ form label.error {
 	color: red;
 }
 form legend input {
-	font-size: 200%;
+	font-size: 150%;
+}
+
+form input.bluebutton{
+	float:right;
 }

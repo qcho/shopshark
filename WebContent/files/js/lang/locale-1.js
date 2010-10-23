@@ -2,6 +2,7 @@ var locale = {
 	id : "1",
 	code : "en",
 	web : {
+		l_success: "The operation was successful.",
 		"l_search" : "Search",
 		"l_language" : "Change languaje: ",
 		"b_asc" : "Ascending Order",
@@ -79,7 +80,8 @@ var locale = {
 			"p_loading" : "loading..."
 		},
 		register:{
-			l_register: "Register",
+			l_update: "Update account",
+			l_register: "Register new account",
 			l_username: "Username",
 			l_password: "Password",
 			l_confirm_password: "Confirm password",
@@ -88,9 +90,11 @@ var locale = {
 			l_date: "Birth Date",
 			h_required: "required",
 			b_submit: "Register",
+			b_submit_update: "Update",
 			b_back: "Back"
 		},
 		address_form:{
+			l_title: "Addresses",
 			l_full_name: "Full name",
 			l_address_line: "Address line",
 			l_zip_code:"Zip code",
@@ -107,6 +111,7 @@ var locale = {
 		},
 		order_detail:{
 		    l_order: "Order",
+		    l_your_order: "Your order",
 		    l_address: "Address",
 		    l_status: "Status",
 		    l_progress: "View progress",
@@ -115,7 +120,16 @@ var locale = {
 		    l_status_1: "Unconfirmed",
 		    l_status_2: "Confirmed",
 		    l_status_3: "In transport",
-		    l_status_4: "Delivered"
+		    l_status_4: "Delivered",
+		    b_confirm: "Confirm order"
+		},
+		change_password:{
+			l_changepassword: "Change password",
+			l_currpassword: "Current password",
+			l_password: "New Password",
+			l_confirm_password: "Confirm password",
+			h_required: "required",
+			b_submit: "Change"
 		}
 	},
 	validator: {

@@ -1,4 +1,6 @@
 $.template("address_form",
+"<fieldset>" +
+"<legend>${loc.l_title}</legend>"+
 "{{each addresses.address}}" +
 "<form class='address' id='address_${$value.id}' method='post' action=''>" +
 	"{{if $value.id}}" +
@@ -53,7 +55,7 @@ $.template("address_form",
 "					    <input class='button submit greenbutton_big' type='submit' value='${loc.b_update}'/>" +
 //"						<button class='button submit greenbutton_big' onclick='shopshark.deleteAddress(${$value.id})'>${loc.b_delete}</button>" +
 "					{{else}}" +
-"						<input class='button submit greenbutton_big' type='submit' value='${loc.b_new}'/>" +
+"						<input class='button submit bluebutton' type='submit' value='${loc.b_new}'/>" +
 "					{{/if}}" +
 "               </td>" +
 "            </tr>" +
@@ -65,6 +67,7 @@ $.template("address_form",
 "</fieldset>" +
 "</form>" + 
 "{{/each}}" +
+"</fieldset>" +
 "<div id='bottombar'>" +
 "	<a href='#remove=userpanel' class='bluebutton'>" +
 "		<span class='left'></span><span class='right'></span>" +
@@ -329,14 +332,18 @@ $.template("cart",
 );
 
 $.template("register",
-
 "<div id='register'>" +
 "	<form class='cmxform' method='post' action=''>" +
 "		<fieldset>" +
+"		{{if !name}}" +
 "			<legend>${loc.l_register}</legend>" +
+"		{{else}}" +
+"			<legend>${loc.l_update}</legend>" +
+"		{{/if}}" +
+"		{{if !name}}" +
 "			<p>" +
 "				<label for='cusername'>${loc.l_username} <span class='hint'>(${loc.h_required})</span></label>" +
-"				<input id='cusername' name='username' class='{required:true, minlength:1, maxlength:15}' />" +
+"				<input id='cusername' name='username' class='{required:true, minlength:1, maxlength:15}'/>" +
 "			</p>" +
 "			<p>" +
 "				<label for='cpassword'>${loc.l_password} <span class='hint'>(${loc.h_required})</span></label>" +
@@ -347,30 +354,54 @@ $.template("register",
 "				<input id='cconfpassword' name='password' type='password' class='{equalTo: \"#cpassword\"}' />" +
 "			</p>" +
 "			<p>" +
+"		{{/if}}" +
 "				<label for='cname'>${loc.l_name} <span class='hint'>(${loc.h_required})</span></label>" +
-"				<input id='cname' name='name' class='{required:true, minlength:1, maxlength:80}' />" +
+"				<input id='cname' name='name' class='{required:true, minlength:1, maxlength:80}' {{if name}}value='${name}'{{/if}}/>" +
 "			</p>" +
 "			<p>" +
 "			<label for='cemail'>${loc.l_email} <span class='hint'>(${loc.h_required})</span></label>" +
-"				<input id='cemail' name='email' class='{required:true, minlength:1, email:true, maxlength:128}' />" +
+"				<input id='cemail' name='email' class='{required:true, minlength:1, email:true, maxlength:128}' {{if email}}value='${email}'{{/if}}/>" +
 "			</p>" +
 "			<p>" +
 "				<label for='cdate'>${loc.l_date} <span class='hint'>(${loc.h_required})</span></label>" +
-"				<input id='cdate' name='dateISO' class='{required:true, minlength:1, dateISO:true, maxlength:128}' />" +
+"				<input id='cdate' name='birth_date' class='{required:true, minlength:1, dateISO:true, maxlength:128}' {{if birth_date}}value='${birth_date}'{{/if}}/>" +
 "			</p>" +
+"		{{if name}}" +
 "			<p>" +
-"				<input class='submit greenbutton_big' type='submit' value='${loc.b_submit}'/>" +
+"				<input class='submit greenbutton_big' type='submit' value='${loc.b_submit_update}'/>" +
 "			</p>" +
+"		{{else}}" +
+"			<p>" +
+"				<input class='submit bluebutton' type='submit' value='${loc.b_submit}'/>" +
+"			</p>" +
+"		{{/if}}" +
 "		</fieldset>" +
 "	</form>" +
 "</div>" + 
-"<div id='bottombar'>" +
-"	<a href='#remove=register' class='bluebutton'>" +
-"		<span class='left'></span><span class='right'></span>" +
-"		${loc.b_back}" +
-"	</a>" +
+"{{if !name}}" +
+"	<div id='bottombar'>" +
+"		<a href='#remove=register' class='bluebutton'>" +
+"			<span class='left'></span><span class='right'></span>" +
+"			${loc.b_back}" +
+"		</a>" +
+"	</div>" +
+"{{/if}}"
+);
+
+$.template("checkout",
+"<div id='checkout'>" +
+"   <form id=''>" +
+"      <h4>${loc.l_your_order}:</h4>" +
+"      <ul>" +
+"           {{each(i, item) items}}" +
+"               <li>${item.qty} x ${item.name}</li>" +
+"           {{/each}}" +
+"      </ul>" +
+"      <input name='buy' class='button submit greenbutton_big' type='submit' value='${loc.b_confirm}'/>" +
+"   </form>" +
 "</div>"
 );
+
 
 $.template("myaccount",
 "<div>" +
@@ -384,5 +415,30 @@ $.template("myaccount",
 "		<div>Second tab content</div>" +
 "		<div>Third tab content</div>" +
 "	</div>" +
+"</div>"
+);
+
+$.template("change_password",
+"<div id='change_password'>" +
+"	<form class='cmxform' method='post' action=''>" +
+"		<fieldset>" +
+"			<legend>${loc.l_changepassword}</legend>" +
+"			<p>" +
+"				<label for='ccurrpassword'>${loc.l_currpassword} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='ccurrpassword' name='password' type='password' class='{required:true, minlength:8, maxlength:15}' />" +
+"			</p>" +
+"			<p>" +
+"				<label for='cpassword'>${loc.l_password} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cpassword' name='new_password' type='password' class='{required:true, minlength:8, maxlength:15}' />" +
+"			</p>" +
+"			<p>" +
+"				<label for='cconfpassword'>${loc.l_confirm_password} <span class='hint'>(${loc.h_required})</span></label>" +
+"				<input id='cconfpassword' name='new_password_conf' type='password' class='{equalTo: \"#cpassword\"}' />" +
+"			</p>" +
+"			<p>" +
+"				<input class='submit greenbutton_big' type='submit' value='${loc.b_submit}'/>" +
+"			</p>" +
+"		</fieldset>" +
+"	</form>" +
 "</div>"
 );
