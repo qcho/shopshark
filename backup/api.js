@@ -24,19 +24,19 @@
     hciapi.Common: {
             sUrl: hciapi.baseUrl + "pepe",
             GetLanguageList: function(){
-              console.info("test5", this);
+              //console.info("test5", this);
             },
             GetCountryList: function(language_id){
-              console.info("test", this);
+              //console.info("test", this);
             },
             GetStateList: function(language_id, country_id){
-              console.info("test", this);
+              //console.info("test", this);
             },
             GetAccountPreferences: function(username, auth_token){
-              console.info("test", this);
+              //console.info("test", this);
             },
             SetAccountPreferences: function(username, auth_token, value){
-              console.info("test", this);
+              //console.info("test", this);
             }
         },
         
@@ -63,7 +63,7 @@ ApiUrl = {
     }
 
 Hciapi.Common.GetLanguageList();
-console.info(Hciapi.Common.baseUrl);
+//console.info(Hciapi.Common.baseUrl);
 
 
 /*
@@ -125,6 +125,6 @@ serviceURL: this.baseURL + "Common.groovy?method=",
  */
 
 hci.fetch(hci.GetLanguageList(), hci.GetCountryList(1), function(langList, countryList){
-	console.info("langList", $(langList).text());
-	console.info("countryList", $(countryList).text());
+	//console.info("langList", $(langList).text());
+	//console.info("countryList", $(countryList).text());
 	});

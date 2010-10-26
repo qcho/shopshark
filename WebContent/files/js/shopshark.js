@@ -29,7 +29,7 @@ var shopshark = shopshark || {
 
 	populateBySearch : function(criteria) {
 		if (criteria) {
-			$("#main_title").html(locale.web.l_search_results + ": <span>" + $(criteria).text() + "</span>");
+			$("#main_title").html(locale.web.l_search_results + ": <span>" + $("<div/>").text(criteria).html() + "</span>");
 			$("#main_content").load('content/loading.html');
 			hci.fetch(hci.GetProductListByName(criteria, this.order, this.items_per_page, this.page), function(prodResp) {
 				shopshark.renderProducts(prodResp);
@@ -152,7 +152,7 @@ var shopshark = shopshark || {
 		hci.fetch(hci.GetAccount(username, token), hci.GetAccountPreferences(username, token), function(acc, prefs) {
 			var data = $.xml2json(acc).account;
 			data.loc = locale.template.register;
-			console.info(data);
+			//console.info(data);
 			$.tmpl("register", data).appendTo("#main_content");
 			$.tmpl("change_password", {
 				loc : locale.template.change_password
@@ -161,7 +161,7 @@ var shopshark = shopshark || {
 			$("#register form").validate({
 				submitHandler : function(form) {
 					var f = $.deparam($(form).serialize());
-					console.info(f);
+					//console.info(f);
 					hci.fetch(hci.UpdateAccount($.cookie('username'), $.cookie('token'), f.name, f.email, f.birth_date), function(response) {
 						var error_code = $(response).find('error').attr('code');
 						if (error_code) {
@@ -178,7 +178,7 @@ var shopshark = shopshark || {
 			$("#change_password form").validate({
 				submitHandler : function(form) {
 					var f = $.deparam($(form).serialize());
-					console.info(f);
+					//console.info(f);
 					hci.fetch(hci.ChangePassword($.cookie('username'), f.password, f.new_password), function(response) {
 						var error_code = $(response).find('error').attr('code');
 						if (error_code) {
@@ -392,10 +392,11 @@ var shopshark = shopshark || {
 				$("#main_content").empty();
 				$.tmpl("product", resp.product).appendTo("#main_content");
 				if (resp.product.actors) {
-					$.ajax({
-						url : "youtube/?q=" + escape(resp.product.name + " HD trailer") + "&lang=es&setSafeSearch=STRICT&max-results=10&v=2&fields=entry(title,media:group(yt:videoid),yt:noembed)",
-						success : shopshark.loadVideo
-					});
+//					$.ajax({
+//						url : "youtube/?q=" + escape(resp.product.name + " HD trailer") + "&lang=es&setSafeSearch=STRICT&max-results=10&v=2&fields=entry(title,media:group(yt:videoid),yt:noembed)",
+//						success : shopshark.loadVideo
+//					});
+					$.getJSON("http://gdata.youtube.com/feeds/api/videos/?q=" + escape(resp.product.name + " HD trailer") + "&lang=es&setSafeSearch=STRICT&max-results=10&v=2&fields=entry(title,media:group(yt:videoid),yt:noembed)&alt=json-in-script&format=5&callback=?", shopshark.loadVideo);
 				} else {
 					// GOOGLE API DOES NOT HAVE THE BOOKS for preview.
 					/*
@@ -417,9 +418,8 @@ var shopshark = shopshark || {
 	},
 
 	loadVideo : function(resp) {
-		var video = $(resp).find("entry").not('entry:has("[nodeName=yt:noembed]")').first();
-		var videoid = video.find("[nodeName=yt:videoid]").text();
-
+		//console.info();
+		var videoid = resp.feed.entry[0].media$group.yt$videoid.$t;
 		var iframe = "	<iframe class='youtube-player' width='640' height='385' src='//www.youtube.com/embed/" + videoid + "?autoplay=1' frameborder='0'>" + "		Your browser does not support iframes." + "	</iframe>";
 
 		$("#gallery").append($(iframe));
@@ -691,7 +691,7 @@ $(document).ready(function() {
 		// Override click events to enable hashing ie #product=1
 		$('a[href^=#]').live('click', function(e) {
 			url = $(this).attr('href').replace(/^#/, '');
-			console.info('click url:', url);
+			//console.info('click url:', url);
 
 			if (url.indexOf('remove') == 0) {
 				var target = url.split("=")[1];

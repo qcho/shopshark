@@ -1,5 +1,5 @@
 hci.fetch(hci.GetOrderList($.cookie('username'), $.cookie('token')),function(orderListResp){
-    console.info($(orderListResp).text());
+    //console.info($(orderListResp).text());
 });
 <response status='ok'>
   <orders>
@@ -19,7 +19,7 @@ hci.fetch(hci.GetOrderList($.cookie('username'), $.cookie('token')),function(ord
 
 
 hci.fetch(hci.CreateOrder($.cookie('username'), $.cookie('token')),function(orderResp){
-    console.info($(orderResp).text());
+    //console.info($(orderResp).text());
 });
 <response status='ok'>
   <order id='609' />
@@ -29,14 +29,14 @@ hci.fetch(hci.CreateOrder($.cookie('username'), $.cookie('token')),function(orde
 
 
 hci.fetch(hci.AddOrderItem($.cookie('username'), $.cookie('token'), "609", "1", "5"),function(orderResp){
-    console.info($(orderResp).text());
+    //console.info($(orderResp).text());
 });
 <response status='ok' />
 
 
 
 hci.fetch(hci.GetOrder($.cookie('username'), $.cookie('token'), "609"),function(orderListResp){
-    console.info($(orderListResp).text());
+    //console.info($(orderListResp).text());
 });
 <response status='ok'>
   <order id='609'>
@@ -62,7 +62,7 @@ hci.fetch(hci.GetOrder($.cookie('username'), $.cookie('token'), "609"),function(
 
 hci.fetch(hci.CreateAddress($.cookie('username'), $.cookie('token'), "Home", "home1", "home2", "1", "1", "1", "1234", "43211234")
 ,function(resp){
-    console.info($(resp).text());
+    //console.info($(resp).text());
 });
 <response status='ok'>
   <address id='278' />
@@ -73,7 +73,7 @@ hci.fetch(hci.CreateAddress($.cookie('username'), $.cookie('token'), "Home", "ho
 
 hci.fetch(hci.ConfirmOrder($.cookie('username'), $.cookie('token'), "609", "278")
 ,function(resp){
-    console.info($(resp).text());
+    //console.info($(resp).text());
 });
 <response status='ok' />
 
@@ -81,7 +81,7 @@ hci.fetch(hci.ConfirmOrder($.cookie('username'), $.cookie('token'), "609", "278"
 
 hci.fetch(hci.GetAddress($.cookie('username'), $.cookie('token'), "279")
 ,function(resp){
-    console.info($(resp).text());
+    //console.info($(resp).text());
 });
 <response status='ok'>
   <address id='279'>
